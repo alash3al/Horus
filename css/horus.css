@@ -9,6 +9,7 @@ footer {
      position:fixed;
      top:60px;
      width:21.97%;
+     margin-bottom:20px; 
 }
 
 @media (max-width: 767px) {
