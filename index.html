@@ -148,12 +148,12 @@ $horus-&gt;config('horus.mode', 'dev');
 # Or multiple configs
 $horus-&gt;config(array(
     'horus.mode' =&gt; 'dev',
-     'horus.views_dir' =&gt; 'path/to/views/dir'
 ));
 
 // List of configurations and there default values
 
 #  the temp directory, default is php temp dir, will be also for session
+#  Only could be set on horus construction
 'horus.temp_dir'            => null,
 
 #  enable gzip compression ?
@@ -169,12 +169,15 @@ $horus-&gt;config(array(
 'horus.fix_xml'             =>  false,
 
 # simulate htaccess if you cannot use mod_rewrite, default is true
+#  Only could be set on horus construction
 'horus.enable_simulator'    =>  true,
 
 # default views directory , default is none
+#  Only could be set on horus construction only for default views class
 'horus.views_dir'           =>  null,
 
 # default views extension, default is .tpl
+#  Only could be set on horus construction only for default views class
 'horus.views_ext'           =>  'tpl',
 
 # horus mode [dev (show all errors), anything else will hide all]
