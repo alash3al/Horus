@@ -684,8 +684,8 @@ $horus->loader->realpath('Horus_DB');
                         </p>
                         <hr />
                         <p>
-                            <pre class="prettyprint">function limit_words($subject, $offset, $limit)</pre>
-                            Limit subject based on words, e.g: you need only 5 words from the start of subject:
+                            <pre class="prettyprint">function limit_words($subject, $offset, $limit, $ends = ' ...')</pre>
+                            Limit subject based on words, e.g: you need only 5 words from the start of subject and end it with ...:
                             <code>echo limit_words('this is test statement and this is test', 0, 5)</code>
                         </p>
                         <hr />
