@@ -144,9 +144,19 @@ class Horus
      */
     public function errorHandler($errno, $errstr = '', $errfile = '', $errline = '')
     {
+        $x = func_get_args();
         // is $errno [in the range of] error_reporting() ?
         if($errno & error_reporting())
-            throw new ErrorException($errstr, $errno, 0, $errfile, $errline);
+            echo $this->horusTemplate('Horus Caught an error', 
+            '<p style="text-align:left;">
+                <b>Message: </b>'.strip_tags($x[1]).'<br />
+                <b>File: </b>'.$x[2].'<br />
+                <b>Line: </b>'.$x[3].'<br />
+                <b>Help: </b>   <a target="_blank" title="Search Google For Help" href="http://google.com/search?q=PHP '.$x[1].'">Google</a> | 
+                                <a target="_blank" title="Search Yandex For Help" href="http://yandex.com/yandsearch?text=PHP '.$x[1].'">Yandex</a> |
+                                <a target="_blank" title="Search Bing For Help" href="http://bing.com/search?q=PHP '.$x[1].'">Bing</a> <br />
+            </p>
+        ', 'body{text-align:center; margin: 10%} a{text-decoration: none; color: blue} a:hover{color: red}');
         else
             return ;
     }
@@ -161,21 +171,12 @@ class Horus
       */
      public function exceptionHandler(Exception $e)
      {
-        $x = (array)$e->getTrace();
-        
-        if(empty($x)) return;
-        
-        $x = $x[0]['args'];
-        
-        if(count($x) < 3) {
-            $x = $e;
-            $x = array(
-                0,
-                $e->getMessage(),
-                $e->getFile(),
-                $e->getLine()
-            );
-        }
+        $x = array(
+            0,
+            $e->getMessage(),
+            $e->getFile(),
+            $e->getLine()
+        );
         
         echo $this->horusTemplate('Horus Caught an error', 
             '<p style="text-align:left;">
