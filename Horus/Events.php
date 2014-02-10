@@ -61,16 +61,19 @@ class Horus_Events
     {
         if(!isset($this->events[$tag])) return null;
         
+        $result = null;
+        
         foreach((array)$this->events[$tag] as $priority)
         {
             if(!empty($priority))
             {
                 foreach((array)$priority as $callback)
                 {
-                    call_user_func_array($callback, $eventArgs);
+                    $result = call_user_func_array($callback, $eventArgs);
                 }
             }
         }
+        return $result;
     }
     
     // --------------------------------------------------------------------
