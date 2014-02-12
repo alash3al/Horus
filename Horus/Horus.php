@@ -70,7 +70,7 @@ class Horus
         ini_set('session.use_only_cookies', 1);
         ini_set('session.use_strict_mode', 1);
         ini_set('session.name', 'HORUS_SESSID');
-        ini_set('session.save_path', (empty($this->config['horus.temp_dir']) ? $this->config('horus.temp_dir') : session_save_path()));
+        ini_set('session.save_path', $this->config('horus.temp_dir'));
         
         // load some files
         require $this->basedir . 'Functions.php';
@@ -236,6 +236,8 @@ class Horus
      */
     public function errDoc($title, $message, $return = false)
     {
+        flush_buffer();
+        ob_start();
         $r = $this->horusTemplate($title, '<p>'.$message.'</p>', 'body{text-align: center; margin: 18%;} p{font-size: 17px}');
         
         if($return == true)
