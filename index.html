@@ -7,7 +7,7 @@
     <meta name="description" content="Horus is a lightwight micro php 5 framework" />
     <meta name="author" content="Mohammed Abdullah Alashaal | Senior PHP Developer" />
 
-    <title>Horus Framework - Version 1.0.0</title>
+    <title>Horus Framework - Smart PHP 5 Framework</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.css" rel="stylesheet" />
@@ -28,13 +28,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#home">Horus</a>
+                <a class="navbar-brand" href="#home">Horus Framework</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav">
-                    <!-- <li>...</li> -->
+                    <li><a target="_blank" href="https://github.com/alash3al/Horus">Github</a></li>
+                    <li><a target="_blank" href="https://facebook.com/pharaoh.framework">Facebook</a></li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -45,690 +46,71 @@
     <div class="container">
 
         <div class="row">
-
-            <div class="col-md-3">
-                <!-- TODO: <p class="lead">Shop Name</p> -->
-                <div class="list-group sidebar-nav-fixed">
-                    <a href="#home" class="list-group-item active">Getting Started</a>
-                    <a href="#features" class="list-group-item">Features</a>
-                    <a href="#download" class="list-group-item">Download &amp; Install</a>
-                    <a href="#hello-world" class="list-group-item">Hello World</a>
-                    <a href="#config" class="list-group-item">Configurations</a>
-                    <a href="#routing" class="list-group-item">Routing</a>
-                    <a href="#views" class="list-group-item">Views</a>
-                    <a href="#events" class="list-group-item">Events</a>
-                    <a href="#db" class="list-group-item">Database</a>
-                    <a href="#errors" class="list-group-item">Errors</a>
-                    <a href="#loader" class="list-group-item">Loader &amp; Autoloading</a>
-                    <a href="#common-functions" class="list-group-item">Common Functions</a>
-                    <a href="#more" class="list-group-item">More</a>
-                </div>
+            
+            <h1 class="page-header">Horus Framework</h1>
+            <div class="lead">
+                Horus Framework is a simple yet powerful micro php framework 
+                perfect for getting programmers start .<br />
+                No more big size framework or useless libraries just strong code-base
+                and well designed skeleton for any type of app(s)
             </div>
-
-            <div class="col-md-9">
-                
-                <!-- #home -->
-                <div id="home">
-                    <h1 class="page-header">Getting Started</h1>            
-                    <p class="">
-                        Welcome to Horus, a micro framework for PHP <br />
-                        Horus is lightweight smart micro extensible framework that helps you in
-                        rapid web applications development to create simple, smart and powerful applications .
-                        <p><a class="btn btn-success" href="#download">Download it now</a></p>
-                    </p>
-                </div>
-                
-                <br /><br />
-                
-                <!-- #features -->
-                <div id="features">
-                    <h1 class="page-header">Features</h1>         
-                    <p class="">
-                        <ul>
-                            <li>Simple yet powerful router</li>
-                            <li>Custom views</li>
-                            <li>Good helpers for common functions</li>
-                            <li>Pretty error &amp; exception handling</li>
-                            <li>Better events system (hooks)</li>
-                            <li>Very simple configurations</li>
-                            <li>Very simple database class (improves PDO)</li>
-                        </ul>
-                    </p>
-                </div>
-                
-                <br /><br />
-                
-                <!-- #download -->                
-                <div id="download">
-                    <h2 class="page-header">Download &amp; Install</h2>
-                    <p class="">
-                        <a target="_blank" title="download horus framework" href="https://github.com/alash3al/horus/zipball/master">Download</a>
-                         and extract Horus Framwork into your project directory 
-                        and <code>require/include</code> it in your application’s <code>index.php</code> file.
-                        <pre class="prettyprint"> &lt;?php require 'Horus/Horus.php'; </pre>
-                    </p>
-                </div>
-                
-                <br /><br />
-                
-                <!-- #hello-world -->                
-                <div id="hello-world">
-                    <h2 class="page-header">Hello World</h2>
-                    <p class="">
-<pre class="prettyprint">
-// Start Horus Framework
-$horus = new Horus;
-
-// Route HTTP GET request
-$horus-&gt;router-&gt;get('hello', function(){
-    echo 'hello world';
-});
-
-// Run the application
-$horus-&gt;run();
-</pre>
-                    </p>
-                </div>
-                
-                <br /><br />
-                
-                <!-- #config -->                
-                <div id="config">
-                    <h2 class="page-header">Configurations</h2>
-                    <p class="">
-                    Horus Framework provides you with a simple way to configure it easily
-                    here is how to do that :
-<pre class="prettyprint">
-// There are two ways to configure horus framework
-
-# (1): on construction
-$horus = new Horus(array('horus.mode' =&gt; 'dev'));
-# (2): While developing (after construction)
-$horus-&gt;config('horus.mode', 'dev');
-# Or multiple configs
-$horus-&gt;config(array(
-    'horus.mode' =&gt; 'dev',
-));
-
-// List of configurations and there default values
-
-#  the temp directory, default is php temp dir, will be also for session
-#  Only could be set on horus construction
-'horus.temp_dir'            => null,
-
-#  enable gzip compression ?
-'horus.enable_gzip'         =>  true,
-
-# minify the output ?
-'horus.minify_output'       =>  false,
-
-# fix html errors ? (only if the output is just html), default is false
-'horus.fix_html'            =>  false,
-
-# fix xml errors ? (only if the output is just xml), default is false
-'horus.fix_xml'             =>  false,
-
-# simulate htaccess if you cannot use mod_rewrite, default is true
-#  Only could be set on horus construction
-'horus.enable_simulator'    =>  true,
-
-# default views directory , default is none
-#  Only could be set on horus construction only for default views class
-'horus.views_dir'           =>  null,
-
-# default views extension, default is .tpl
-#  Only could be set on horus construction only for default views class
-'horus.views_ext'           =>  'tpl',
-
-# horus mode [dev (show all errors), anything else will hide all]
-'horus.mode'                =>  'dev'
-
-</pre>
-                    </p>
-                </div>
-                
-                <br /><br />
-                
-                <!-- #Routing -->                
-                <div id="routing">
-                    <h2 class="page-header">Rounting</h2>
-                    Horus Framework provides you with an easy simple smart 
-                    way to rute your application uri easily .
-                    You can route any HTTP request <code>[POST, GET, HEAD, ...]</code>
-                    or custom HTTP requests <code>[FOO, BAR, ...]</code> .
-                    Here is how to do that:
-                    <p class="">
-<pre class="prettyprint">
-# start horus ...
-$horus = new Horus();
-
-# route GET request
-$horus->router->get('hello', function(){
-    echo 'GET REQUEST ... Hello';
-});
-
-# route POST request
-$horus->router->post('hello', function(){
-    echo 'POST REQUEST ... Hello';
-});
-
-# route PUT request
-$horus->router->post('hello', function(){
-    echo 'PUT REQUEST ... Hello';
-});
-
-# route any (works on any request method)
-$horus->router->any('hello', function(){
-    echo 'Hi, I Work On All HTTP Request Methods';
-});
-</pre>
-                    </p>
-                    <p>
-                        <div class="alert alert-warning">
-                            <b>Note: </b> the short function way '<code>function(){...}</code>' is
-                            works from PHP 5.3 , so if your php lower than 5.3 you will do this .
-                        </div>
-<pre class="prettyprint">
-# start horus ...
-$horus = new Horus();
-
-# route Any request
-$horus->router->any('hello', 'hello_function');
-function hello_function()
-{
-    echo 'hi';   
-}
-</pre>
-                    </p>
-                    <p>
-                        <div class="alert alert-warning">
-                            <b>Note: </b> You can also use any valid callback like <code>'class::method'</code>
-                            or <code>'array($class, $method)'</code>
-                        </div>
-<pre class="prettyprint">
-# start horus ...
-$horus = new Horus();
-
-# route Any request
-$horus->router->any('hello', 'test::hello1');
-# route Any request
-$horus->router->any('hello', array(new test, 'hello2'));
-class test
-{
-    static function hello1()
-    {
-        echo 'hello 1';   
-    }
-    static function hello2()
-    {
-        echo 'hello 2';   
-    }
-}
-</pre>
-                    </p>
-                    <p>
-                        <div class="alert alert-warning">
-                            <b>Note: </b> instead of callbacks you can route a full class and the class must
-                            has an index method
-                        </div>
-<pre class="prettyprint">
-# start horus ...
-$horus = new Horus();
-
-# route Any request
-$horus->router->any('hello', 'test::hello1');
-# route Any request
-$horus->router->any('hello', 'test');
-class test
-{
-    function index()
-    {
-        echo 'hello index';   
-    }
-    
-    static function hello1()
-    {
-        echo 'hello 1';   
-    }
-    static function hello2()
-    {
-        echo 'hello 2';   
-    }
-}
-# now you can goto {'hello/', 'hello/index', 'hello/hello1', 'hello/hello2'}
-</pre>
-                    </p>
-                    <p>
-                        <div class="alert alert-warning">
-                            <b>Note: </b> You can name your routes
-                        </div>
-<pre class="prettyprint">
-# start horus ...
-$horus = new Horus();
-
-$horus->router->any('hello/{alpha}', function($param_alpha){
-    echo 'the alpha param requested is: ', $param_alpha;
-});
-# {alpha}: is sortcut to ([a-zA-Z]+)
-# if any thing other than it requested you will see '404 not found'
-
-$horus->router->any('hello/{alpha}/{num}', function($param_alpha, $param_num){
-    echo 'the alpha param requested is: ', $param_alpha, '&gt;br /&gt;';
-    echo 'the num param requested is: ', $param_num, '&gt;br /&gt;';
-});
-# {num}: is sortcut to ([0-9+\.]+)  'float too'
-
-# List of shortcuts
-/*****************************************************
-{alpha}:    [a-zA-Z]+           only letters
-{num}:      [0-9\.]+            only numbers
-{alnum}:    [a-zA-Z0-9\.]+      only letters + numbers
-{str}:      [a-zA-Z0-9-_\.]+    for slug
-{any}:      .+                  for any string after the uri
-{*}:        ?|(.*?)             for the uri and any thing after it too
-******************************************************/
-</pre>
-                    </p>
-                    
-                    <p>
-                        <div class="alert alert-warning">
-                            <b>Note: </b> You can also route multiple uri/pattern
-                        </div>
-<pre class="prettyprint">
-# start horus ...
-$horus = new Horus();
-
-$horus->router->any(array('hello-1', 'hello-2'), function(){
-    echo 'i work on hello-1 and hello-2';
-});
-</pre>
-                    </p>
-                    
-                    <p>
-                        <div class="alert alert-warning">
-                            <b>Note: </b> You can also route multiple request method
-                        </div>
-<pre class="prettyprint">
-# start horus ...
-$horus = new Horus();
-
-$horus->router->map(array('hello-1', 'hello-2'), function(){
-    echo 'i work on hello-1 and hello-2';
-}, 'GET|POST|PUT');
-</pre>
-                    </p>
-                </div>
-                
-                <br /><br />
-                
-                <!-- #views -->
-                <div id="views">
-                    <h1 class="page-header">Views</h1>
-                    <p>
-                        Horus provides you with simple views class that will do your needs .
-                        you only required to set the <code>horus.views_dir</code> and <code>horus.views_ext</code> in the configurations
-                    </p>
-<pre class="prettyprint">
-# start horus ...
-$horus = new Horus(array(
-    'horus.views_dir' => 'path/to/your/views_dir',
-    'horus.views_ext' => 'html'
-));
-// assign var
-$horus->view->addVar('var1', 'valu1');
-// assign vars
-$horus->view->addVar(array(
-    'var1' => 'value1',
-    'var2' => 'value2' 
-));
-// remove var
-$horus->view->unsetVar('var1');
-// get var
-$horus->view->getVar('var1');
-// var exists ?
-$horus->view->hasVar('var1');
-// load a view as string (and optionally pass additional vars too)
-$horus->view->load('view_name', array('extraVar1' => 'value'));
-// render/display a view as string (and optionally pass additional vars too)
-$horus->view->render('view_name', array('extraVar1' => 'value'));
-</pre>
-                </div>
-                    
-                <br /><br />
-                
-                <!-- #events -->
-                <div id="events">
-                    <h1 class="page-header">Events &amp; Hooks</h1>
-                    <p>
-                        Events or Hooks are ways to extend your code , 
-                        Horus Framework is built in with events so you can extend it easily .
-                        First you should know how to dealt with events:
-<pre class="prettyprint">
-# start horus ...
-$horus = new Horus();
-
-# Add/bind/listen event under tag ('tag_1')
-# function(){....} just in PHP 5.3 you can use any other valid php callback
-$horus->events->listen('tag_1', function(){
-    echo 'i\'m 1 &gt;br /&gt;';
-});
-# dispatch/run events under tag 'tag_1'
-# and optionally pass array of prameters to them
-$horus->events->dispatch('tag_1', array('param1', 'param2'));
-</pre>
-                    </p>
-                    <p>
-                        <div class="alert alert-warning">
-                            <b>Note: </b> You can extend horus core using the next events tags
-                        </div>
-<pre class="prettyprint">
-/***********************************************************************
-'horus.before_dispatch' =>  [action] run before router be dispatched
-'horus.after_dispatch'  =>  [action] run after router dispatched 
-'horus.output'          =>  [filter] to edit the output 
-                            (the output will passed to it 
-                            and it must only return output
-                            and don't echo, just return)
-************************************************************************/
-</pre>
-                    </p>
-                </div>
-                
-                <br /><br />
-                
-                <!-- #db -->
-                <div id="db">
-                    <h1 class="page-header">Database</h1>
-                    <p>
-                        Horus Framework doesn't love any overhead so it doesn't love
-                        ORMs it just extends <code>PDO</code> and simplified some things
-                        let's see it:
-<pre class="prettyprint">
-# start horus ...
-$horus = new Horus();
-
-# just like PDO to connect
-$horus->db->connect('dns', ....);
-
-# create a query (improved function) 
-# (and optionally pass array of binds inputs)
-$horus->db->query(
-    'select * from table where col1=? and col2 = ?', 
-    array('value1', 'value2'
-));
-
-// fetch just what pdo does
-var_dump($horus->db->fetchAll());
-
-// Yes every thing from just one object
-// So i call it (PDO Improved) as it merged PDO with PDOStatement
-// So you can access any method of them just from that object '$horus->db'
-</pre>
-                    </p>
-                </div>
-                
-                <br /><br />
-                
-                <div id="errors">
-                    <h1 class="page-header">Errors</h1>
-                    Horus by default handles errors and exceptions in pretty way . <br />
-                    Also you can display error doeument easily:
-<pre class="prettyprint">
-# start horus ...
-$horus = new Horus();
-
-# show an error page
-$horus->errorDoc('error title', 'error escription');
-# or get it and display it manully
-echo $horus->errorDoc('error title', 'error escription', true);
-
-# there are also some error documents shortcuts
-echo $horus->errorDocs()->e400; // or
-echo $horus->errorDocs()->e401; // or
-
-// you can use any error from the next
-
-/*****************
-
-    'e400'
-    'e401'
-    'e402'
-    'e403'
-    'e404'
-    'e405'
-    'e406'
-    'e500'
-    'e502'
-    'e503'
-    'e504'
-
-******************/
-
-</pre>
-                </div>
-                
-                <br /><br />
-                
-                <!-- #loader -->
-                <div id="loader">
-                    <h1 class="page-header">Loader and Autoloading</h1>
-                    <p>
-                        Horus provides you simple and easy way for autoloading <br />
-                        it supports 'pear naming convention' also supports namespaces . <br />
-                        It uses this style of naming <code>{VendorName}_{ClassName}</code>
-                        or <code>\{VendorName}\ClassName</code> also it converts any <code>\</code>
-                        and <code>_</code> to directory_separator . <br /> So it converts 
-                        <code>{vendor}_className</code> => <code>path/to/vendor/className.php</code>
-                        or to <code>path/to/vendor/className/className.php</code> . <br />
-                        Let's work with loader:
-<pre class="prettyprint">
-# start horus ...
-$horus = new Horus();
-
-# add your project/application vendor e.g: 'Test'
-$horus->loader->addVendor('MyApp');
-# now your clsses must have namespace 'MyApp' or start with prefix 'MyApp_'
-
-# load a classFile
-$horus->loader->load('Horus_DB');
-
-# load a file
-$horus->loader->load('full/path/to/file');
-
-# just search for a class file and get it's realpath
-$horus->loader->realpath('Horus_DB');
-</pre>
-                        
-                    </p>
-                </div>
-                
-                <br /><br />
-                
-                <!-- #common-functions -->
-                <div id="common-functions">
-                    <h1 class="page-header">Common Functions</h1>
-                    <p>
-                        Horus comes with simple common helpers that will help you while
-                        developing .<br />
-                        
-                        <p>
-                            <pre class="prettyprint">function dump($var, $var_dump = false)</pre>
-                            Print var in human readable way <br />
-                            By default it uses <code>print_r</code> + <code>pre</code>  
-                            but if you like <code>var_dump</code> + <code>pre</code> <br />
-                            just set <code>$var_dump</code> to true . <br />
-                        </p>
-                        <hr />
-                        <p>
-                            <pre class="prettyprint">function flush_buffer($start_new = false)</pre>
-                            Cleans the output buffer <br />
-                        </p>
-                        <hr />
-                        <p>
-                            <pre class="prettyprint">function headeri($string, $replace = false, $http_response_code = null)</pre>
-                            An improved function instead of <code>header()</code> that will flush the output
-                            if header sent then apply it .
-                        </p>
-                        <hr />
-                        <p>
-                            <pre class="prettyprint">function go($to, $using = 302)</pre>
-                            Redirect to another page using <code>302|301|'html'|'js'</code><br />
-                            <b class="badge">example</b><br />
-                            <code>go('http://google.com', 'js')</code> redirect using javascript <br />
-                            <code>go('http://google.com', 'html')</code> redirect using html <br />
-                            <code>go('http://google.com', 302)</code> redirect using http-302 <br />
-                            <code>go('http://google.com', 301)</code> redirect using http-301 
-                        </p>
-                        <hr />
-                        <p>
-                            <pre class="prettyprint">function http_cache($lastfor = 3600)</pre>
-                            Cache pages in the user browser for a time <code>$lastfor</code>
-                        </p>
-                        <hr />
-                        <p>
-                            <pre class="prettyprint">function stop($http_status_code, $output = null)</pre>
-                            Exit and send status code and a message . <br />
-                            <b class="badge">example</b><br />
-                            <code>stop(404, '&lt;p&gt;page not found&lt;/p&gt;')</code>
-                        </p>
-                        <hr />
-                        <p>
-                            <pre class="prettyprint">function status_code($code)</pre>
-                            Gets status code message . <br />
-                            <b class="badge">example</b><br />
-                            <code>status_code(404)</code> will return '404 Not Found'
-                        </p>
-                        <hr />
-                        <p>
-                            <pre class="prettyprint">function cURL($url, array $curl_options = array())</pre>
-                            Quick cURL connection, will return array of page content and page info (headers) <br />
-                            <code>$url</code> the url to connect to . <br />
-                            <code>$curl_options</code> array of curl options, default empty means (CURLOPT_RETURNTRANSFER => true) <br />
-                            <b class="badge">example</b><br />
-                            <code>$data = cURL('google');</code> <br />
-                            <code>echo 'content: ', $data['content'];</code> <br />
-                            <code>dump($data['info'])</code>
-                        </p>
-                        <hr />
-                        <p>
-                            <pre class="prettyprint">function session_init($lifetime = 0, $regenerate_id = true)</pre>
-                            Start new session (alternative to session_start()) <br />
-                            <code>$lifetime</code>: the period (in sec) of the session, default 0 means 900 sec <br />
-                            <code>$regenerate_id</code>: regenerate the id every refresh ? (good for security) <br />
-                        </p>
-                        <hr />
-                        <p>
-                            <pre class="prettyprint">function session_end()</pre>
-                            Destroy session and free $_SESSION array .
-                        </p>
-                        <hr />
-                        <p>
-                            <pre class="prettyprint">function server($key = null)</pre>
-                            get value from <code>$_SERVER</code> <br />
-                            <b class="badge">example</b><br />
-                            <code>echo server('request uri');</code> or
-                            <code>echo server('request-uri');</code> or
-                            <code>echo server('request_uri');</code> or
-                            <code>echo server('request/uri');</code> or
-                            <code>echo server('REQUEST_URI');</code> 
-                            if <code>$key</code> is null will return all <code>$_SERVER</code> array
-                        </p>
-                        <hr />
-                        <p>
-                            <pre class="prettyprint">function isHttps()</pre>
-                            check if the request is using HTTPS
-                        </p>
-                        <hr />
-                        <p>
-                            <pre class="prettyprint">function isAjax()</pre>
-                            check if the request is under Ajax
-                        </p>
-                        <hr />
-                        <p>
-                            <pre class="prettyprint">function isApache()</pre>
-                            check if the server is apache
-                        </p>
-                        <hr />
-                        <p>
-                            <pre class="prettyprint">function isCli()</pre>
-                            check if the script run under Command line
-                        </p>
-                        <hr />
-                        <p>
-                            <pre class="prettyprint">function isCgi()</pre>
-                            check if the script run under CGI
-                        </p>
-                        <hr />
-                        <p>
-                            <pre class="prettyprint">function uri($to = null)</pre>
-                            Generate uri to an internal page in horus application
-                        </p>
-                        <hr />
-                        <p>
-                            <pre class="prettyprint">function asset($to = null)</pre>
-                            Generate direct url to an asset file in horus application
-                        </p>
-                        <hr />
-                        <p>
-                            <pre class="prettyprint">function random_str($length = 5)</pre>
-                            Generate random string with a certain length
-                        </p>
-                        <hr />
-                        <p>
-                            <pre class="prettyprint">function random_serial($serials_count = 1, $blocks_count = 5, $block_size = 5, $separaor = '-')</pre>
-                            Generate random serial . <br />
-                            <code>$serials_count</code>: how many serials do you need ? <br />
-                            <code>$blocks_count</code>: how many blocks per serials ? <br />
-                            <code>$block_size</code>: size of each block ? <br />
-                            <code>$separator</code>: the blocks delimiter ? <br />
-                        </p>
-                        <hr />
-                        <p>
-                            <pre class="prettyprint">function limit_words($subject, $offset, $limit, $ends = ' ...')</pre>
-                            Limit subject based on words, e.g: you need only 5 words from the start of subject and end it with ...:
-                            <code>echo limit_words('this is test statement and this is test', 0, 5)</code>
-                        </p>
-                        <hr />
-                    </p>
-                </div>
-                
-                <br /><br />
-                
-                <!-- #more -->
-                <div id="more">
-                    <h1 class="page-header">More ?</h1>
-                    You can get an instance of horus <code>Horus::getInstance();</code> <br />
-                    You can set, get, call and override any thing . <br />
-<pre class="prettyprint">
-# start horus
-$horus = new Horus();
-
-# set custom var globally
-$horus->var1 = value1;
-
-# get var
-echo $horus->var1;
-
-# add new custom methods
-$horus->myMethod = function($param){echo $param;};
-
-# override methods only for (router, view, db, loader and events) methods
-$horus->view = new yourOwnViewClass();
-#or
-$horus->view = function($file){echo file_get_contents($file);};
-</pre>              
-                    <br /><br />
-                    <h1 class="page-header">Developers</h1>
-                    <p>
-                        <ul>
-                            <li><a target="_blank" href="http://fb.com/alash3al">Mohammed Alashaal</a> An Egyptian senior web developer</li>
-                        </ul>
-                    </p>
-                </div>
-                
-                </div>
+            
+            <div id="features">
+                <h1 class="page-header">Features</h1>         
+                <p class="">
+                    <ul>
+                        <li class="list-group">Simple yet powerful router
+                            <ul>
+                                <li>Regex Based and comes with regex shortcuts</li>
+                                <li>Any valid callback for routing </li>
+                                <li>Class Routing support <code>'pattern/method/param/param/...etc'</code></li>
+                                <li>RESTful Requests Routing</li>
+                                <li>Multi Methods Routing</li>
+                                <li>Multi Patterns Per Class or Callback</li>
+                                <li>Nested Routes Support <code>from version 1.1.1</code></li>
+                            </ul>
+                        </li>
+                        <li class="list-group">Full Output Control
+                            <ul>
+                                <li>Extensible, you can assign any event/hook filter and edit it</li>
+                                <li>GZIP, you can optionaly enable or disable gzip</li>
+                                <li>HTML Tidy, you can optionaly enable or disable html fixer</li>
+                                <li>XML Tidy, you can optionaly enable or disable xml fixer</li>
+                                <li>Minifier, you can optionaly enable/disable output minifier to remove dublicated spaces,lines,tabs, .. etc</li>
+                            </ul>
+                        </li>
+                        <li>Custom views</li>
+                        <li>HTTP Class <code>from version 1.1.1</code></li>
+                        <li>Good helpers for common functions</li>
+                        <li>Better events system (hooks or event listener/dispatcher)</li>
+                        <li>Fully extensible</li>
+                        <li>Very simple configurations</li>
+                        <li>Very simple database class (improves PDO)</li>
+                        <li>Assign/Unset any method on the fly</li>
+                        <li>Secure Session functions</li>
+                        <li>Works on most basic PHP hosting planes</li>
+                        <li>Framework Size <code>&lt; 100 kb</code></li>
+                    </ul>
+                </p>
             </div>
-
+            
+            <div id="getting-started">
+                <h1 class="page-header">Getting started</h1>
+                <p class="label">
+                    <ul>
+                        <li><a href="./version-1.1.1.html">Version 1.1.1</a><code>Fixed Bugs with some updates</code></li>
+                        <li><a href="./version-1.0.0.html">Version 1.0.0</a></li>
+                    </ul>
+                </p>
+            </div>
+            
+            <div id="developer">
+                <h1 class="page-header">Developer(s)</h1>
+                <ul>
+                    <li><a target="_blank" href="http://fb.com/alash3al">Mohammed Al Ashaal</a></li>
+                </ul>
+            </div>
+            
         </div>
 
     </div>
@@ -755,16 +137,6 @@ $horus->view = function($file){echo file_get_contents($file);};
     <script src="js/jquery-1.10.2.js"></script>
     <script src="js/bootstrap.js"></script>
     <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js?skin=sunburst"></script>    
-    <script type="text/javascript">
-        $(document).ready(function(){
-        
-            $('.list-group-item').click(function(){
-                $('.list-group-item').removeClass('active');
-                $(this).addClass('active');
-            });
-        
-        });
-    </script>
 
 </body>
 
