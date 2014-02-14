@@ -48,7 +48,8 @@ class Horus
         'horus.enable_simulator'    =>  true,
         'horus.views_dir'           =>  null,
         'horus.views_ext'           =>  'tpl',
-        'horus.mode'                =>  'dev'      // [development, production]
+        'horus.mode'                =>  'dev',      // [development, production]
+        'horus.session_name'        => 'HORUS_SESSID',
     );
     
     /**
@@ -67,9 +68,9 @@ class Horus
         ini_set('session.hash_bits_per_character', 6);
         ini_set('session.hash_function', 1);
         ini_set('session.use_only_cookies', 1);
-        ini_set('session.use_only_cookies', 1);
+        //ini_set('session.use_only_cookies', 1); Duplicated
         ini_set('session.use_strict_mode', 1);
-        ini_set('session.name', 'HORUS_SESSID');
+        ini_set('session.name', (string) strtoupper($this->config('horus.session_name')));
         ini_set('session.save_path', $this->config('horus.temp_dir'));
         
         // load some files
