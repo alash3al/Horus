@@ -7,7 +7,7 @@
     <meta name="description" content="Horus is a lightwight micro php 5 framework" />
     <meta name="author" content="Mohammed Abdullah Alashaal | Senior PHP Developer" />
 
-    <title>Horus Framework - Version 1.0.0</title>
+    <title>Horus Framework - Version 1.1.1</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.css" rel="stylesheet" />
@@ -51,11 +51,12 @@
                 <!-- TODO: <p class="lead">Shop Name</p> -->
                 <div class="list-group sidebar-nav-fixed">
                     <a href="#home" class="list-group-item active">Getting Started</a>
-                    <a href="#features" class="list-group-item">Features</a>
+                    <a href="#changelog" class="list-group-item">Changelog</a>
                     <a href="#download" class="list-group-item">Download &amp; Install</a>
                     <a href="#hello-world" class="list-group-item">Hello World</a>
                     <a href="#config" class="list-group-item">Configurations</a>
                     <a href="#routing" class="list-group-item">Routing</a>
+                    <a href="#http" class="list-group-item">HTTP</a>
                     <a href="#views" class="list-group-item">Views</a>
                     <a href="#events" class="list-group-item">Events</a>
                     <a href="#db" class="list-group-item">Database</a>
@@ -81,18 +82,18 @@
                 
                 <br /><br />
                 
-                <!-- #features -->
-                <div id="features">
-                    <h1 class="page-header">Features</h1>         
+                <!-- #changelog -->
+                <div id="changelog">
+                    <h1 class="page-header">Changelog</h1>         
                     <p class="">
                         <ul>
-                            <li>Simple yet powerful router</li>
-                            <li>Custom views</li>
-                            <li>Good helpers for common functions</li>
-                            <li>Pretty error &amp; exception handling</li>
-                            <li>Better events system (hooks)</li>
-                            <li>Very simple configurations</li>
-                            <li>Very simple database class (improves PDO)</li>
+                            <li>Fixed old bugs</li>
+                            <li>Optimized some codes</li>
+                            <li>New HTTP Class</li>
+                            <li>Router now supports nested routes</li>
+                            <li>removed (stop(), status_code(), http_cache(), flush_buffer())</li>
+                            <li>Removed error handlers</li>
+                            <li>More Configuration Options</li>
                         </ul>
                     </p>
                 </div>
@@ -153,33 +154,60 @@ $horus-&gt;config(array(
 
 // List of configurations and there default values
 
+# http interface version
+# only set on construction
+horus.http_version          =>  '1.1'
+
+# session_hash_bits (see php.net for more info)
+# only set on construction
+horus.session_hash_bits     =>  5
+
+# session_hash_function 
+# (hash function used to hash session ids, see php.net for more info)
+# only set on construction
+horus.session_hash_function =>  1
+
+# session_use_only_cookies
+# only store the session in user browser as cookies ? (see php.net for more info)
+# only set on construction
+horus.session_use_only_cookies => true
+
+# session_http_only
+# only allow it over http
+# only set on construction
+horus.session_http_only     => true
+
+# session, only use strict mode to check session id
+# only set on construction
+horus.session_use_strict_mode = true
+
 #  the temp directory, default is php temp dir, will be also for session
 #  Only could be set on horus construction
-'horus.temp_dir'            => null,
+'horus.temp_dir'            => null
 
 #  enable gzip compression ?
-'horus.enable_gzip'         =>  true,
+'horus.enable_gzip'         =>  true
 
 # minify the output ?
-'horus.minify_output'       =>  false,
+'horus.minify_output'       =>  false
 
 # fix html errors ? (only if the output is just html), default is false
-'horus.fix_html'            =>  false,
+'horus.fix_html'            =>  false
 
 # fix xml errors ? (only if the output is just xml), default is false
-'horus.fix_xml'             =>  false,
+'horus.fix_xml'             =>  false
 
 # simulate htaccess if you cannot use mod_rewrite, default is true
 #  Only could be set on horus construction
-'horus.enable_simulator'    =>  true,
+'horus.enable_simulator'    =>  true
 
 # default views directory , default is none
 #  Only could be set on horus construction only for default views class
-'horus.views_dir'           =>  null,
+'horus.views_dir'           =>  null
 
 # default views extension, default is .tpl
 #  Only could be set on horus construction only for default views class
-'horus.views_ext'           =>  'tpl',
+'horus.views_ext'           =>  'tpl'
 
 # horus mode [dev (show all errors), anything else will hide all]
 'horus.mode'                =>  'dev'
@@ -358,6 +386,83 @@ $horus->router->map(array('hello-1', 'hello-2'), function(){
 }, 'GET|POST|PUT');
 </pre>
                     </p>
+                    
+                    <p>
+                        <div class="alert alert-warning">
+                            <b>Note: </b> Horus now supports nested routes 
+                        </div>
+<pre class="prettyprint">
+# start horus ...
+$horus = new Horus();
+
+$horus->router->any('/test/{*}', function(){
+    echo 'we are in test<br />';
+    $horus->router->any('/test/test1/{*}', function(){
+        echo 'we are in test/test1 <br />';
+        $horus->router->any('/test/test1/test2/{*}', function(){
+            echo 'we are in test/test1/test2 <br />';
+            // route a class
+            $horus->router->any('/test/test1/test2/{*}', 'MyClass');
+        });
+        
+    });
+    
+});
+</pre>
+                    </p>
+                </div>
+                
+                <br /><br />
+                
+                <div id="http">
+                    <h1 class="page-header">HTTP Class</h1>
+                    <p>
+                        Horus comes with this from version <code>1.1.1</code> to simply deal with
+                        http headers easily without basic bugs .
+                    </p>
+                    
+<pre class="prettyprint">
+#start horus
+$horus = new Horus();
+
+// add header
+$horus->http->header('X-My-Header: test', true);
+// i told it to also replace it "true" the second param
+
+// set status code
+$horus->http->status(404); 
+// just enter status code!
+// and it will add it after checking whether HTTP/version or Status: ...
+
+// get current code
+echo $horus->http->status();
+
+// append to the body
+$horus->http->output('added data'); 
+
+// replace the body
+$horus->http->output('added data', true); 
+
+// halt(stop) and set the status code to 404
+$horus->http->halt(404); 
+
+// halt(stop) and set the status code to 404 also show a message
+$horus->http->halt(404, '404 page not found');
+
+// redirect using (by default uses 302 code)
+$horus->http->redirect('http://google.com');
+
+// redirect using 301 code
+$horus->http->redirect('http://google.com', 301);
+
+// cache wep page on http for a time (by default is 3600 seconds)
+$horus->http->cache();
+
+// cache wep page on http for 10 seconds
+$horus->http->cache(10);
+
+</pre>
+                    
                 </div>
                 
                 <br /><br />
@@ -427,9 +532,13 @@ $horus->events->dispatch('tag_1', array('param1', 'param2'));
 'horus.before_dispatch' =>  [action] run before router be dispatched
 'horus.after_dispatch'  =>  [action] run after router dispatched 
 'horus.output'          =>  [filter] to edit the output 
-                            (the output will passed to it 
-                            and it must only return output
-                            and don't echo, just return)
+                            (the output will passed to it)
+                            e.g:    $horus->events->listen('horus.output', function($output){
+                                        return 'New output is ', $output;
+                                    });
+                            or:     $horus->events->listen('horus.before_dispatch', function(){
+                                        echo 'I\'m before dispatch';
+                                    });
 ************************************************************************/
 </pre>
                     </p>
@@ -472,8 +581,7 @@ var_dump($horus->db->fetchAll());
                 
                 <div id="errors">
                     <h1 class="page-header">Errors</h1>
-                    Horus by default handles errors and exceptions in pretty way . <br />
-                    Also you can display error doeument easily:
+                    You can display error doeument easily:
 <pre class="prettyprint">
 # start horus ...
 $horus = new Horus();
@@ -561,14 +669,8 @@ $horus->loader->realpath('Horus_DB');
                         </p>
                         <hr />
                         <p>
-                            <pre class="prettyprint">function flush_buffer($start_new = false)</pre>
-                            Cleans the output buffer <br />
-                        </p>
-                        <hr />
-                        <p>
                             <pre class="prettyprint">function headeri($string, $replace = false, $http_response_code = null)</pre>
-                            An improved function instead of <code>header()</code> that will flush the output
-                            if header sent then apply it .
+                            An improved function instead of <code>header()</code> uses the new http class .
                         </p>
                         <hr />
                         <p>
@@ -579,25 +681,6 @@ $horus->loader->realpath('Horus_DB');
                             <code>go('http://google.com', 'html')</code> redirect using html <br />
                             <code>go('http://google.com', 302)</code> redirect using http-302 <br />
                             <code>go('http://google.com', 301)</code> redirect using http-301 
-                        </p>
-                        <hr />
-                        <p>
-                            <pre class="prettyprint">function http_cache($lastfor = 3600)</pre>
-                            Cache pages in the user browser for a time <code>$lastfor</code>
-                        </p>
-                        <hr />
-                        <p>
-                            <pre class="prettyprint">function stop($http_status_code, $output = null)</pre>
-                            Exit and send status code and a message . <br />
-                            <b class="badge">example</b><br />
-                            <code>stop(404, '&lt;p&gt;page not found&lt;/p&gt;')</code>
-                        </p>
-                        <hr />
-                        <p>
-                            <pre class="prettyprint">function status_code($code)</pre>
-                            Gets status code message . <br />
-                            <b class="badge">example</b><br />
-                            <code>status_code(404)</code> will return '404 Not Found'
                         </p>
                         <hr />
                         <p>
@@ -637,27 +720,27 @@ $horus->loader->realpath('Horus_DB');
                         <hr />
                         <p>
                             <pre class="prettyprint">function isHttps()</pre>
-                            check if the request is using HTTPS
+                            check if the request is using HTTPS, return bool
                         </p>
                         <hr />
                         <p>
                             <pre class="prettyprint">function isAjax()</pre>
-                            check if the request is under Ajax
+                            check if the request is under Ajax, return bool
                         </p>
                         <hr />
                         <p>
                             <pre class="prettyprint">function isApache()</pre>
-                            check if the server is apache
+                            check if the server is apache, return bool
                         </p>
                         <hr />
                         <p>
                             <pre class="prettyprint">function isCli()</pre>
-                            check if the script run under Command line
+                            check if the script run under Command line, return bool
                         </p>
                         <hr />
                         <p>
                             <pre class="prettyprint">function isCgi()</pre>
-                            check if the script run under CGI
+                            check if the script run under CGI, return bool
                         </p>
                         <hr />
                         <p>
@@ -718,13 +801,7 @@ $horus->view = new yourOwnViewClass();
 #or
 $horus->view = function($file){echo file_get_contents($file);};
 </pre>              
-                    <br /><br />
-                    <h1 class="page-header">Developers</h1>
-                    <p>
-                        <ul>
-                            <li><a target="_blank" href="http://fb.com/alash3al">Mohammed Alashaal</a> An Egyptian senior web developer</li>
-                        </ul>
-                    </p>
+                    
                 </div>
                 
                 </div>
