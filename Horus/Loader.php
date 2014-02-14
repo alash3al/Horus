@@ -49,11 +49,11 @@ class Horus_Loader
      */
     function load($filename)
     {
-        if(file_exists($filename) and is_file($filename)) {
+        if(is_file($filename)) {
             return include $filename;
         }
         
-        if(file_exists($f = $this->realpath($filename)) and is_file($f)) {
+        if(is_file($f = $this->realpath($filename))) {
             return include $f;
         }
         
