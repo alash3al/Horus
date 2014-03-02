@@ -838,7 +838,11 @@ $users->multi_delete = function(array $ids){
     horus()->orm->delete()->where('id in '.$ids);
     horus()->orm->inputs($inputs);
     
-    return horus()->orm->on(horus()->orm->table);
+    $result = horus()->orm->on(horus()->orm->table);
+    
+    horus()->orm->reset(); // this used to reset the orm to its start
+    
+    return $result;
     
     // NOTE: horus() function is only available from 
     // Version 1.3.0
