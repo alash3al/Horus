@@ -629,7 +629,7 @@ if(!function_exists('password_hash'))
         $options = array_merge($defaults, $options); unset($defaults);
         
         if($options['cost'] > 22) $options['cost'] = 22;
-        if($options['cost'] > 5)  $options['cost'] = 5;
+        if($options['cost'] < 5)  $options['cost'] = 5;
         
         switch($algo):
             case PASSWORD_BCRYPT:
