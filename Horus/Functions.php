@@ -868,6 +868,7 @@ if(!function_exists('events_listen'))
         }
         
         $GLOBALS['horus_events'][$tag][$order][] =  $callback;
+        ksort($GLOBALS['horus_events'][$tag]);
     }
 }
 
@@ -882,17 +883,21 @@ if(!function_exists('events_dispatch'))
      * @param array     $arguments
      * @return void
      */
-    function events_dispatch($tag, array $arguments = array())
+    function events_dispatch($tag, $arguments = null)
     {
+        $arguments = (array) $arguments;
+        
         if( !isset($GLOBALS['horus_events'][$tag]) ) {
             $GLOBALS['horus_events'][$tag] = array();
         }
         
         $x = null;
+        $index = ($c = count($arguments)) > 1 ? $c-1 : $c;
         
         foreach( $GLOBALS['horus_events'][$tag] as $order => &$ids ) {
             foreach( $ids as &$c ) {
                 if( is_callable($c) ) {
+                    $arguments[$index] = $x;
                     $x = call_user_func_array($c, $arguments);
                 }
             }
