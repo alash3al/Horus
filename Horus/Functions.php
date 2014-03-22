@@ -829,7 +829,7 @@ if(!function_exists('maili'))
         $hdrs = array
         (
             'From'          =>  sprintf('%s %s', $name, $from),
-            'X-Mailer'      =>  sprintf('PHP/Horus/%s', phpversion().'/'.Horus::VERSION),
+            'X-Mailer'      =>  sprintf('PHP/%s', phpversion()),
             'MIME-Version'  =>  '1.0',
             'Content-type'  =>  'text/html; charset=UTF-8'
         );
@@ -837,7 +837,7 @@ if(!function_exists('maili'))
         $hdrs = array_merge($hdrs, $headers);
         $headers = null;
         
-        foreach($headers as $k => &$v) {
+        foreach($hdrs as $k => &$v) {
             $headers .= sprintf('%s: %s %s', $k, $v, PHP_EOL); 
         }
         
