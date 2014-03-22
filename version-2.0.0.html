@@ -105,6 +105,7 @@
               <li><a href="#lang" data-toggle="tab">Lang</a></li>
               <li><a href="#db" data-toggle="tab">DB</a></li>
               <li><a href="#functions" data-toggle="tab">Functions</a></li>
+              <li><a href="#extend" data-toggle="tab">Extend</a></li>
             </ul>
            <!-- End Nav tabs --> 
             
@@ -1285,6 +1286,79 @@ $users->multi_delete(array(1, 12, 3));
                 </div>      
                 <!-- { db } -->
                 
+                <!-- ////////////////////////////////////////////// -->
+                
+                <!-- { extend } -->
+                <div class="tab-pane fade" id="extend">
+                    
+                    <p class="lead">
+                        Horus provides you with simple ways to exted it easily without a hassle . <br />
+                        There are 2 ways {<code>Events/Hooks</code> } or { <code>OOP Overloading</code> }
+                    </p>
+                    
+                    <span class="h3 text-muted"> <span class="glyphicon glyphicon-flag"></span> Events/Hooks</span>
+<br /><br />
+<pre class="prettyprint"><code>
+/*
+
+Those are horus hooks
+
+----------------------------
+horus.boot              ->  when horus starts
+horus.before_dispatch   ->  before dispatch all routes
+horus.after_dispatch    ->  after dispatch routes
+horus.output            ->  to control the output { the output will be passed to all hooks }
+horus.shutdown          ->  when horus shutsdown
+----------------------------
+
+*/
+
+// edit the output
+events_listen( 'horus.output', function($output){
+    return '<!-- hi, output -->'.$output;
+});
+
+// stop with hello
+events_listen('horus.boot', function(){
+    die('hi');
+});
+
+# all events stored in $GLOBALS['horus_events'], so you can control them too
+
+</code></pre>
+
+                    
+                    <span class="h3 text-muted"> <span class="glyphicon glyphicon-flag"></span> OOP Overloading </span>
+<br /><br />
+<pre class="prettyprint"><code>
+
+// assign var to horus
+horus() -> my_var = 'my value';
+
+// get var
+echo horus()-> my_var;
+
+// add method
+horus()->method = function($txt){
+    echo $txt;
+};
+
+// use method
+horus()->method('hi'); // show hi
+
+// use it as static
+Horus::method('hi');
+
+// unset var/method
+unset(horus()->my_var);
+
+// check if isset
+isset(horus()->my_var);
+
+</code></pre>
+                </div>
+                <!-- { extend } -->
+                
             </div>
            <!-- End Tab panes --> 
             
@@ -1310,4 +1384,4 @@ $users->multi_delete(array(1, 12, 3));
               $(this).tab('show')
             });
 
-        </script
+        </script>
