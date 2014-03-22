@@ -95,7 +95,7 @@
             <br /><br />
             
             <!-- Nav tabs -->
-            <ul class="nav nav-tabs">
+            <ul class="nav nav-tabs" id="wikiTabs">
               <li class="active"><a href="#intro" data-toggle="tab">Introduction</a></li>
               <li><a href="#start" data-toggle="tab">Getting started</a></li>
               <li><a href="#configs" data-toggle="tab">Configurations</a></li>
@@ -126,7 +126,7 @@
                     
                     <hr />
                     
-                    <h1> <span class="glyphicon glyphicon-ok-sign"></span> What is Horus Framework Features ? </h1>
+                    <h1> <span class="glyphicon glyphicon-ok-sign"></span> What are Horus Framework Features ? </h1>
                     <ul>
                         <li>No Complex Code</li>
                         <li>Built-in Smart Router</li>
@@ -148,7 +148,7 @@
                     
                     <hr />
                     
-                    <h1> <span class="glyphicon glyphicon-bullhorn"></span> What is new in this version ? </h1>
+                    <h1> <span class="glyphicon glyphicon-bullhorn"></span> What is the new in this version ? </h1>
                     <ul>
                         <li>Removed events class, replaced with just 3 tiny functions</li>
                         <li>Removed loader class, replaced with a smart tiny auto(load&amp;map) function</li>
@@ -191,8 +191,8 @@
                 <!-- { start } -->
                 <div class="tab-pane fade" id="start">
                     
-                    After downloading the Horus Framework <code>Version 2.0</code>  from the introduction, you don't need
-                    any thing to do except for uncompress it then start coding directly .
+                    After downloading the Horus Framework <code>Version 2.0</code>  from the <a id="goToIntro" href="#">introduction</a>, you don't need
+                    any thing to do except for decompressing it then start coding directly .
                     Now open your <code>index.php</code> and start , 
 <br /><br />
 <pre class="prettyprint">
@@ -218,7 +218,7 @@
     
     // start it and tell horus to use it's own router
     new Horus( array( 
-        'horus.use_router'          =>  yes //  yes = true
+        'horus.use_router'          =>  yes, //  yes = true
         'horus.enable_simulator'    =>  yes //  enable simulator if your server has no support for mod_rewrite
     ));
     
@@ -1309,5 +1309,8 @@ $users->multi_delete(array(1, 12, 3));
               e.preventDefault()
               $(this).tab('show')
             });
-
-        </script
+			$('#goToIntro').click(function(){
+				$('#wikiTabs a[href="#intro"]').tab('show');
+				return false;
+			});
+        </script>
