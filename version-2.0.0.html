@@ -1314,9 +1314,36 @@ horus.shutdown          ->  when horus shutsdown
 */
 
 // edit the output
-events_listen( 'horus.output', function($output){
-    return '<!-- hi, output -->'.$output;
+// horus passing the output as the first argument
+// and the second (last) argument is contains the last value
+// of the last dispatched event
+events_listen( 'horus.output', function($output, $filtered){
+    return '<!-- hi -->'.(empty($filtered) ? $output : $filtered); 
 });
+
+// new example for filtering
+$txt = 'my text';
+
+// add event (will edit on the $txt) so it will be the first arg
+// but the last arg contains the value of last edited
+
+event_listen('test-tag', function($default_text, $last_filtered){
+    if(empty($last_filtered)) {
+        return '&lt;i>'.$default_text.'&lt;/i>';
+    } else
+        return '&lt;i>'.$last_filtered.'&lt;/i>';
+});
+
+event_listen('test-tag', function($default_text, $last_filtered){
+    if(empty($last_filtered)) {
+        return '&lt;b>'.$default_text.'&lt;/b>';
+    } else
+        return '&lt;b>'.$last_filtered.'&lt;/b>';
+});
+
+// dispatch and edit it
+// will show "&lt;b>&lt;i>my text&lt;/i>&lt;/b>"
+echo events_dispatch('test-tag', $txt);
 
 // stop with hello
 events_listen('horus.boot', function(){
