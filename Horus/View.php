@@ -43,7 +43,7 @@ class Horus_View
      * @param string $views_extension
      * @return void
      */
-    function setup($views_dir, $views_extension)
+    function setup($views_directory, $views_extension)
     {
         $this->dir = realpath($views_directory) . DIRECTORY_SEPARATOR;
         $this->ext = '.' . ltrim($views_extension, '.');
