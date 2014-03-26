@@ -73,7 +73,7 @@ class Horus
         spl_autoload_register(array($this, 'XAutoloader'));
         
         // start the http manager
-        $this->http     =   new Horus_Http((bool) $this->config('horus.http_version'));
+        $this->http     =   new Horus_Http($this->config('horus.http_version'));
         
         // load the common functions file
         require_once $this->coredir . 'Functions.php';
@@ -93,10 +93,12 @@ class Horus
     public function XAutoloader($ClassName)
     {
         $ClassName = rtrim(ltrim(str_replace( array('_', '/', '\\'), self::DS, $ClassName ), self::DS), self::DS);
-        $pre = (array) explode(self::DS, $ClassName, 2);
-        @$pre = $pre[0];
+        $x = (array) explode(self::DS, $ClassName, 2);
+        @$pre = $x[0];
         $Root = isset($this->autoloads[$pre]) ? $this->autoloads[$pre] . self::DS : dirname(dirname(__FILE__)) . self::DS;
-
+        $ClassName = isset($this->autoloads[$pre]) ? $x[1] : $ClassName;
+        $Root = preg_replace('/'.preg_quote(self::DS, '/').'+/', self::DS, $Root);
+        
         if( is_file( $f = realpath($Root . $ClassName . '.php') ) ) {
             return require_once $f;
         }
@@ -153,12 +155,14 @@ class Horus
     {
 
         // get a configs key ?
-        if(!is_array($key) and is_null($value))
+        if(!is_array($key) and is_null($value)) {
             return isset($this->configs[$key]) ? $this->configs[$key] : null;
+        }
             
         // get all configs
-        elseif($key === '*')
+        elseif($key === '*') {
             return $this->configs;
+        }
         
         // set configs ?
         else {
@@ -285,10 +289,14 @@ class Horus
         // then send it to http manager
         // then dispatch on-shutdown events
         ob_start();
+        
         echo events_dispatch('horus.output', array($output));
+        
         $x = ob_get_clean();
         $output = empty($x) ? $output : $x; unset($x);
+        
         $this->http->send($output);
+        
         events_dispatch('horus.shutdown');
         
         // ------------------------------
@@ -481,7 +489,7 @@ class Horus
     public function __call($name, $args)
     {
         return  (isset(self::$vars[$name]) and !empty(self::$vars[$name]))
-                ? call_user_func_array(self::$vars[$name], $args)
+                ? @call_user_func_array(self::$vars[$name], $args)
                 : null;
     }
     
@@ -491,7 +499,7 @@ class Horus
     public static function __callStatic($name, $args)
     {
         return  (isset(self::$vars[$name]) and !empty(self::$vars[$name]))
-                ? call_user_func_array(self::$vars[$name], $args)
+                ? @call_user_func_array(self::$vars[$name], $args)
                 : null;
     }
     
