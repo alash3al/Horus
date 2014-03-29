@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+    
+        <!-- basic meta -->
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="Horus Framework Version 2.0, New Smart Features" />
+        <meta name="author" content="Mohammed Abdullah Alashaal" />
+        
+        <title>Horus Framework - V 2.0</title>
+    
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+        <link href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/united/bootstrap.min.css" rel="stylesheet" />
+        <!-- TODO: <link rel="stylesheet" href="http://laravel.com/assets/css/plugins.css" /> -->
+        <style>
+            body{padding-top: 50px;}
+            .tab-pane{padding: 20px;}
+            .pln{color:#fffefe!important;}
+            pre .str{color:#f4645f;}
+            pre .kwd{color:#4bb1b1;}
+            pre .com{color:#888888;}
+            pre .typ{color:#ef7c61;}
+            pre .lit{color:#bcd42a;}
+            pre .pun,pre .opn,pre .clo{color:#ffffff;}
+            pre .tag{color:#4bb1b1;}
+            pre .atn{color:#ef7c61;}
+            pre .atv{color:#bcd42a;}
+            pre .dec,pre .var{color:#660066;}
+            pre .fun{color:#ff0000;}
+            .prettyprint{display:block;font-family:Monaco,Consolas, "Lucida Console ",monospace;background-color:#333;font-size:10px;border:0;color:#e9e4e5;line-height:1.9em;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;-moz-background-clip:padding-box;-webkit-background-clip:padding-box;background-clip:padding-box;padding:5px!important;white-space:pre;overflow:hidden;}
+            .prettyprint .pln{color:#e9e4e5;}
+            .prettyprint .com{color:#888;}
+            .prettyprint .pun,.prettyprint .opn,.prettyprint .clo{color:#fff;}
+            .prettyprint .dec,.prettyprint .var{color:#606;}
+            .prettyprint .fun{color:red;}
+            .prettyprint code{font-family:Monaco,Consolas, "Lucida Console ",monospace;font-size:12px;}
+            .prettyprint .str,.prettyprint .lit,.prettyprint .atv{color:#bcd42a;}
+            .prettyprint .kwd,.prettyprint .tag{color:#4bb1b1;}
+            .prettyprint .typ,.prettyprint .atn{color:#ef7c61;}
+        </style>
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+          <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        
+    </head>
+    
+    <body>
+    
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="./">Horus Framework</a>
+                </div>
+    
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a target="_blank" href="https://github.com/alash3al/Horus">Github</a></li>
+                        <li><a target="_blank" href="https://facebook.com/pharaoh.framework">Facebook</a></li>
+                        <li><a href="#">TOP</a></li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container -->
+        </nav>
+    
+        <div class="container">
+    
+            <!-- Logo -->
+            <div class="row text-center center-block" style="margin-top: 20px;">
+                <h1> Horus Framework <small>Version 2.0</small> </h1>
+                <i> " Code is poetry, So Let's Be Smart " </i>
+                <br /><br />
+                <div class="text-center center-block">
+                    <span><iframe src="http://ghbtns.com/github-btn.html?user=alash3al&repo=Horus&type=watch&count=true" height="30" width="118" frameborder="0" scrolling="0" style="width:118px; height: 30px;" allowTransparency="true"></iframe></span>
+                    <span><iframe src="http://ghbtns.com/github-btn.html?user=alash3al&repo=Horus&type=fork&count=true" height="30" width="118" frameborder="0" scrolling="0" style="width:118px; height: 30px;" allowTransparency="true"></iframe></span>
+                    <span><iframe src="http://ghbtns.com/github-btn.html?user=alash3al&type=follow&count=true" height="30" width="168" frameborder="0" scrolling="0" style="width:168px; height: 30px;" allowTransparency="true"></iframe></span>
+                </div>
+            </div>
+           <!-- End Logo --> 
+            
+            <br /><br />
+            
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" id="wikiTabs">
+              <li class="active"><a href="#intro" data-toggle="tab">Introduction</a></li>
+              <li><a href="#start" data-toggle="tab">Getting started</a></li>
+              <li><a href="#configs" data-toggle="tab">Configurations</a></li>
+              <li><a href="#router" data-toggle="tab">Routing</a></li>
+              <li><a href="#autoload" data-toggle="tab">Autoloading</a></li>
+              <li><a href="#view" data-toggle="tab">View</a></li>
+              <li><a href="#lang" data-toggle="tab">Lang</a></li>
+              <li><a href="#db" data-toggle="tab">DB</a></li>
+              <li><a href="#functions" data-toggle="tab">Functions</a></li>
+            </ul>
+           <!-- End Nav tabs --> 
+            
+            <!-- Tab panes -->
+            <div class="tab-content">
+            
+                <!-- { intro } -->
+                <div class="tab-pane fade in active" id="intro">
+                
+                    <h1> <span class="glyphicon glyphicon-info-sign"></span> What is Horus ? </h1>
+                    <blockquote>
+                        An OOP PHP micro-framework, a lightweight toolkit to help developers lay down the foundation of their PHP-based websites and applications .
+                        The Horus Framework is a pretty solid attempt at designing a good OOP framework in as a small package as possible.
+                        Focused on a light codebase and on a solid, standards-friendly approach, 
+                        Horus can be used to write advanced applications without having to deal with complex coding toolkits like Zend or CakePHP. 
+                        Horus is easy to learn and the code is pretty well commented in case developers need help figuring out what's going on
+                        -- <i> <a target="_blank" title="softpedia editors review" href="http://webscripts.softpedia.com/script/Frameworks/Horus-Framework-82303.html">"Softpedia"</a> </i>
+                    </blockquote>
+                    
+                    <hr />
+                    
+                    <h1> <span class="glyphicon glyphicon-ok-sign"></span> What are Horus Framework Features ? </h1>
+                    <ul>
+                        <li>No Complex Code</li>
+                        <li>Built-in Smart Router</li>
+                        <li>Built-in Events/Hooks</li>
+                        <li>Built-in Database Class</li>
+                        <li>Built-in Simple ORM</li>
+                        <li>Built-in Secure Session Management</li>
+                        <li>Built-in Full Output Control</li>
+                        <li>Built-in Views Manager</li>
+                        <li>Built-in Smart Autoloader</li>
+                        <li>Built-in HTTP Manager</li>
+                        <li>Built-in helpful functions</li>
+                        <li>Easy Configurations</li>
+                        <li>Extensible</li>
+                        <li>Control Any thing in Horus Without Hacking The Core</li>
+                        <li>No Big files on loading to start</li>
+                    </ul>
+                    
+                    
+                    <hr />
+                    
+                    <h1> <span class="glyphicon glyphicon-bullhorn"></span> What is the new in this version ? </h1>
+                    <ul>
+                        <li>Removed events class, replaced with just 3 tiny functions</li>
+                        <li>Removed loader class, replaced with a smart tiny auto(load&amp;map) function</li>
+                        <li>Updated the <code>mod_rewrite</code> simulator</li>
+                        <li>New Functions</li> 
+                        <li>Removed non-helpful codes</li>
+                        <li>Re-Optimized the core</li>
+                        <li>New Hooks/Events in the core</li>
+                        <li>Horus Classes Now Under your Full Control</li>
+                    </ul>
+                
+                    <hr />
+                    
+                    <h1> <span class="glyphicon glyphicon-question-sign"></span> What Requirements  Horus Need ? </h1>
+                    <ul>
+                        <li>Any Web Server <code>e.g: Apache</code></li>
+                        <li>PHP 5 <code>tested on PHP 5.2</code></li>
+                    </ul>
+                    
+                    <hr />
+                    
+                    <h1> <span class="glyphicon glyphicon-download"></span> How to download Horus ? </h1>
+                    There are many ways to download it:
+                    <ul>
+                        <li>From <a target="_blank" href="http://webscripts.softpedia.com/script/Frameworks/Horus-Framework-82303.html">Softpedia</a></li>
+                        <li>From <a target="_blank" href="https://github.com/alash3al/Horus/releases/latest">Github Archive</a></li>
+                    </ul>
+                    
+                    <hr />
+                    
+                    <h1> <span class="glyphicon glyphicon-copyright-mark"></span> Who made Horus Framework ? </h1>
+                    The Horus Framework Created By <a href="http://facebook.com/alash3al" target="_blank">Mohammed Alashaal</a> and still the core developer for it,
+                    Also there are some good <a target="_blank" href="https://github.com/alash3al/Horus/network">contributers</a> .
+                
+                </div>
+                <!-- { intro } -->
+              
+                <!-- //////////////////////////////////////////////// -->
+              
+                <!-- { start } -->
+                <div class="tab-pane fade" id="start">
+                    
+                    After downloading the Horus Framework <code>Version 2.0</code>  from the <a id="goToIntro" href="#">introduction</a>, you don't need
+                    any thing to do except for decompressing it then start coding directly .
+                    Now open your <code>index.php</code> and start , 
+<br /><br />
+<pre class="prettyprint">
+<code>
+    // include horus
+    require_once 'Horus/Horus.php';
+    
+    // start it
+    new Horus;
+    
+    // say hello world
+    echo "Hello World";
+</code>
+</pre>
+<br />
+                    Now use your your browser t open it, you will see <code>Hello World</code>, Easy or not :) .
+                    You can notice that we didn't use any routing , but how about saying hello world using <code>Horus Router</code> ?
+<br /><br />
+<pre class="prettyprint">
+<code>
+    // include horus
+    require_once 'Horus/Horus.php';
+    
+    // start it and tell horus to use it's own router
+    new Horus( array( 
+        'horus.use_router'          =>  yes, //  yes = true
+        'horus.enable_simulator'    =>  yes //  enable simulator if your server has no support for mod_rewrite
+    ));
+    
+    // respond to a get request saying "Hello World"
+    horus('router') -> get('/', function(){
+        echo "Hello World";
+    });
+</code>
+</pre>
+                    Now Goto Horus with your browser you will see <code>Hello World</code>
+                </div>
+                <!-- { start } -->
+                
+                <!-- /////////////////////////////////////////////////// -->
+                
+                <!-- Configurations -->
+                <div class="tab-pane fade" id="configs">
+                    
+                    <p class="lead">
+                        <code>Horus Framework</code> is built-in very easy configurations to control what you want .
+                    </p>
+                    <br />
+                    <span class="h3 text-muted"> <span class="glyphicon glyphicon-book"></span> How to config <code>Horus</code> ? </span>
+<br /><br />
+<pre class="prettyprint"><code>
+    // 1)- when you construct horus, just give it an assoc-array of configurations, like this
+    new Horus(array('key' => 'value'));
+    
+    // 2)- using config() method
+    horus()->config('key', 'value');
+    # or
+    horus()->config(array('key' => 'value'));
+    
+    // to fetch any configuration
+    echo horus()->config('key');
+    
+</code></pre>
+<br />
+                    <span class="h3 text-muted"> <span class="glyphicon glyphicon-book"></span> List of available configurations </span>
+                    <br /><br />
+                    <table class="table table-responsive table-striped table-bordered">
+                        <tr>
+                            <th>key</th>
+                            <th>value</th>
+                            <th>default</th>
+                        </tr>
+                        <tr>
+                            <td> horus.use_router </td>
+                            <td> <code> true </code> / <code> false </code> </td>
+                            <td> <code>false</code> </td>
+                        </tr>
+                        <tr>
+                            <td> horus.timezone </td>
+                            <td> see it on <a target="_blank" href="https://php.net/manual/en/timezones.php">PHP.net</a> </td>
+                            <td> <code>PHP Default</code> </td>
+                        </tr>
+                        <tr>
+                            <td> horus.default_404 </td>
+                            <td> a callback e.g <code>function(){ echo '404 not found'; }</code> </td>
+                            <td> <code>Horus Default</code> </td>
+                        </tr>
+                        <tr>
+                            <td> horus.auto_run </td>
+                            <td> <code>true</code> / <code>false</code> </td>
+                            <td> <code>true</code> <br />
+                            if you set it to false, you must type <code>horus()->run();</code> at the end of your <code>index.php</code></td>
+                        </tr>
+                        <tr>
+                            <td> horus.http_version </td>
+                            <td> <code>string</code> </td>
+                            <td> <code>1.1</code> </td>
+                        </tr>
+                        <tr>
+                            <td> horus.enable_simulator </td>
+                            <td> <code>true</code> / <code>false</code> </td>
+                            <td> <code>false</code> <br />
+                                if your server has no support for mod_rewrite, set to true/yes
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> horus.session_name </td>
+                            <td> <code>string</code> </td>
+                            <td> <code>HORUS_SESSID</code> </td>
+                        </tr>
+                        <tr>
+                            <td> horus.session_hash_function </td>
+                            <td> Se it on <a href="http://au2.php.net/manual/en/session.configuration.php#ini.session.hash-function" target="_blank">PHP.net</a> </td>
+                            <td> <code>1</code> </td>
+                        </tr>
+                        <tr>
+                            <td> horus.session_use_only_cookies </td>
+                            <td> Se it on <a href="http://au2.php.net/manual/en/session.configuration.php#ini.session.use-only-cookies" target="_blank">PHP.net</a> </td>
+                            <td> <code>true</code> </td>
+                        </tr>
+                        <tr>
+                            <td> horus.session_http_only </td>
+                            <td> Se it on <a href="http://au2.php.net/manual/en/session.configuration.php#ini.session.cookie-httponly" target="_blank">PHP.net</a> </td>
+                            <td> <code>true</code> </td>
+                        </tr>
+                        <tr>
+                            <td> horus.session_regenerate_id </td>
+                            <td> <code>true</code> / <code>false</code> </td>
+                            <td> <code>true</code> </td>
+                        </tr>
+                        <tr>
+                            <td> horus.session_save_path </td>
+                            <td> string </td>
+                            <td> <code>PHP Default</code> </td>
+                        </tr>
+                        <tr>
+                            <td> horus.enable_gzip </td>
+                            <td> <code>true</code> / <code>false</code> </td>
+                            <td> <code>true</code> </td>
+                        </tr>
+                        <tr>
+                            <td> horus.minify_output </td>
+                            <td> <code>true</code> / <code>false</code> </td>
+                            <td> <code>false</code> </td>
+                        </tr>
+                        <tr>
+                            <td> horus.fix_html </td>
+                            <td> <code>true</code> / <code>false</code> </td>
+                            <td> <code>false</code> only if the page is html </td>
+                        </tr>
+                        <tr>
+                            <td> horus.fix_xml </td>
+                            <td> <code>true</code> / <code>false</code> </td>
+                            <td> <code>false</code> only if the page is xml and fix_html is false </td>
+                        </tr>
+                        <tr>
+                            <td> horus.mode </td>
+                            <td> <code>dev</code> / <code>production</code> </td>
+                            <td> <code>dev</code> </td>
+                        </tr>
+                    </table>
+                    
+                    
+                </div>
+                <!-- Configurations -->
+                
+                <!-- /////////////////////////////////////////////////// -->
+              
+                <!-- { Router } -->
+                <div class="tab-pane fade" id="router">
+                    
+                    <h1> <span class="glyphicon glyphicon-flag"></span> Features </h1>
+                    <ul>
+                        <li>Supports Callbacks Routing</li>
+                        <li>Supports Class Routing</li>
+                        <li>Supports Nested Routing</li>
+                        <li>Supports RESTful Request Routing</li>
+                        <li>Easy to use</li>
+                        <li>Light &amp; Small Code</li>
+                        <li>Regex Based</li>
+                        <li>Built-in Regex shortcuts</li>
+                        <li>Clean Urls even if you have no support for mod_rewrite, just enable horus simulator</li>
+                        <li>Respond to any HTTP Method even custom</li>
+                    </ul>
+                    
+                    <hr />
+                    
+                    <h1> <span class="glyphicon glyphicon-bookmark"></span> Supported HTTP Methods </h1>
+                    With <code>Horus Router</code> You can respond to <code>GET</code>, <code>POST</code>, <code>PUT</code>
+                    , <code>HEAD</code>, <code>DELETE</code>, .... etc . <br />
+                    <br />
+                    <span class="h3 text-muted"> <span class="glyphicon glyphicon-book"></span> Examples: </span>
+<br /><br />
+<pre class="prettyprint"><code>
+    // include horus core
+    require_once "Horus/Horus.php";
+    
+    // Construct it
+    // Note that my server supports mod_rewrite, so i don't need simulator
+    // And i'm working on PHP 5.4, so i use the new array style [], you can use array()
+    new Horus( [ 'horus.use_router' => yes ] );
+    
+    // i'll use horus('router')-> or horus()->router->
+    
+    // Respond to a get request on the '/page-1' path
+    horus('router') -> get('/page-1', function(){
+        echo 'We are in get request';
+    });
+    
+    // Respond to a post request on the '/page-1' path
+    horus('router') -> post('/page-1', function(){
+        echo 'We are in post request';
+    });
+
+    // Respond to a put request on the '/page-1' path
+    horus('router') -> put('/page-1', function(){
+        echo 'We are in put request';
+    });
+    
+    // Respond to a put, get request on the '/page-1' path
+    horus('router') -> put_get('/page-1', function(){
+        echo 'We are in put or get request';
+    });
+    
+    // Respond to a put, post get request on the '/page-1' path
+    horus('router') -> put_post_get('/page-1', function(){
+        echo 'We are in put,post or get request';
+    });
+    
+    // Respond to all/any requests ( get, post, put, patch, ... etc ) on the '/page-1' path
+    horus('router') -> any('/page-1', function(){
+        echo 'We are in any request';
+    });
+    
+    // And so, you can use any http method
+    // just "horus('router') -> {method}($pattern, $callback)"
+    
+</code></pre>
+
+                    <hr />
+                    
+                    <h1> <span class="glyphicon glyphicon-bookmark"></span> Supported Callbacks </h1>
+                    <br />
+                    <span class="h3 text-muted"> <span class="glyphicon glyphicon-book"></span> Anonymous/Lambada Function </span>
+<br /><br />
+<pre class="prettyprint"><code>
+// after you included horus and started it
+
+// sample usage
+horus('router') -> any('/', function(){
+    echo 'hello';
+});
+
+// with parameters
+horus('router') -> any('/{alpha}', function($arg){
+    echo 'hello ', $arg;
+});
+
+horus('router') -> any('/{alpha}/{num}', function($alpha, $num){
+    echo 'hello ', $alpha, ' ', $num;
+});
+
+// NOTE: anonymous function is only available in PHP >= PHP 5.3
+
+// You can use lambada
+horus('router') -> any('/', create_function('', 'echo "hello";'));
+
+# {alpha} is a regexp shortuct, all shortucts are:
+# {num}     --->    ([0-9\.]+)          { example "152423" }
+# {alpha}   --->    ([a-zA-Z]+)         { example: "mystring" }
+# {alnum}   --->    ([a-zA-Z0-9\.]+)    { example: "mystring132.321" }
+# {str}     --->    ([a-zA-Z0-9-_\.]+)  { example: "my-string_132.345" }
+# {any}     --->    '.+'                { supports any char }
+# {*}       --->    '?|(.*?)'           { to apply the callback on all sub-paths }
+</code></pre>
+               
+                    <br />
+                    <span class="h3 text-muted"> <span class="glyphicon glyphicon-book"></span> Basic Function </span>
+<br /><br />
+<pre class="prettyprint"><code>
+// after you included horus and started it
+
+// sample usage
+function func_1()
+{
+    echo 'hello';
+}
+horus('router') -> any('/', 'func_1');
+
+// with parameters
+function func_2($name)
+{
+    echo "hello ", $name;
+}
+horus('router') -> any('/{alpha}', 'func_2');
+
+function func_3($alpha, $num)
+{
+    echo 'hello ', $alpha, ' ', $num;
+}
+horus('router') -> any('/{alpha}/{num}', 'func_3');
+</code></pre>
+                    <br />
+                    <span class="h3 text-muted"> <span class="glyphicon glyphicon-book"></span> Class methods </span>
+<br /><br />
+<pre class="prettyprint"><code>
+// after you included horus and started it
+
+// Simple Class
+Class Test
+{
+    public static function page1()
+    {
+        echo we are in "page1";
+    }
+    
+    public function page2()
+    {
+        echo we are in "page2";
+    }
+    
+    function insert()
+    {
+        // ...
+    }
+}
+
+// construct it
+$text = new Test;
+
+// Route some methods from it
+horus('router') -> any('/p1', 'Test::page1');
+horus('router') -> any('/p2', array( $test, 'page2' ));
+horus('router') -> any('/p2', [ $test, 'page2' ]); // only in PHP >= PHP 5.4
+</code></pre>
+                    <br />
+                    <span class="h3 text-muted"> <span class="glyphicon glyphicon-book"></span> Class Routing </span>
+<br /><br />
+<pre class="prettyprint"><code>
+// after you included horus and started it
+
+// Simple Class
+Class Test2
+{
+    public function index()
+    {
+        // this method is important in each class
+    }
+    
+    public function page1()
+    {
+        echo we are in "page1";
+    }
+    
+    public function page2()
+    {
+        echo we are in "page2";
+    }
+    
+    public function page_3()
+    {
+        echo 'page-3';
+    }
+}
+
+// Route some methods from it
+horus('router') -> any('/', 'Test2');
+// Now each method works as a page .
+// Now you can enter '/page1', '/page2', '/page_3', '/page-3', 'page-3.html', '/page1.php', '/index' and '/'
+// You noticed that Horus Router converts '-' to '_' and ignore any '.extension' to be very easy
+</code></pre>    
+                </div>
+                <!-- { Router } -->
+              
+                <!-- { Autoload } -->
+                <div class="tab-pane fade" id="autoload">
+                    
+                    <p class="lead">
+                        Horus Framework has built-in smart autoloader . by default it's registered using
+                        <code>spl_autoload_register()</code>, you can add your own, but here i'll speak about horus autoloader .
+                        <br />
+                        Horus Autoloader Converts any underscore and backslash to the system directory separator, based on the horus installation
+                        directory, so <code>new Horus_View</code> will converted to <small><code>'/path/to/horus_installation/Horus/View.php'</code></small> . <br />
+                    </p>
+                    
+                    <br />
+                    <span class="h3 text-muted"> <span class="glyphicon glyphicon-book"></span> Examples:</span>
+<br /><br />
+<pre class="prettyprint"><code>
+    # say that we have the next directory structure
+    /*
+    
+    ------------------------
+        -\
+        --\MyApp
+        --\Horus
+        --\index.php
+        --\.htaccess
+    ------------------------    
+    
+    # when you call "new MyApp_ClassName", then horus autoloader will
+      load "\MyApp\ClassName.php" then start it.
+    
+    # or "new Horus_View" , then horus autoloader will
+      load "\Horus\View.php" then start it.
+    
+    # or "use \MyApp\Namespace\File" , then horus autoloader will
+      load "\MyApp\Namespace\File.php" then start it.
+    
+    # so you noticed that this autoloader is based on the directory name
+      an if you changed the directory name, you will be in a problem, so to solve this
+      you need to set a new path alias
+      e.g: if you changed the name of "Horus" directory to "Core"
+    */
+    
+    // tell horus that the new path of 'Horus' prefix is '\Core\'
+    horus()->autoloadPathAlias('Horus', '\Core\');
+    
+</code></pre>
+
+                </div>
+                <!-- { Autoload } -->
+              
+                <!-- { View } -->
+                <div class="tab-pane fade" id="view">
+                
+                    <p class="lead">Horus has built in views manager class that is very simple and easy .</p>
+                    <span class="h3 text-muted"> <span class="glyphicon glyphicon-flag"></span> Usage </span>
+                    <br /><br />
+<pre class="prettyprint"><code>
+    // after you included and started horus
+    
+    // start the view
+    $view = new Horus_View;
+    
+    // set the views path and it's extension
+    $view -> setup('path/to/views_dir', '.html');
+    
+    // add var to the view
+    $view -> addVar('var', 'value');
+    # or
+    $view -> addVar(array('var' => 'value'));
+    
+    // remove a var
+    $view -> unsetVar('var');
+    
+    // has the var 'var' ?
+    $view -> hasVar('var'); // returns bool
+    
+    // load a view file(s) 'header, body' as string and pass array of vars to them
+    $vars = array( 'var1' => 'val1', 'var2' => 'val2' );
+    $v = $view->load('header, body', $vars);
+    echo $v;
+    # to display it directly
+    $view->render('header, body', $vars);
+    
+    // NOTE: you can assign the $view var to horus directly, and use it noramlly
+    horus()->view = $view;
+    // horus()->view->render(....) or horus('view')->render(....);
+    
+</code></pre>
+                    
+                </div>
+                <!-- { View } -->
+              
+                <!-- ////////////////////////////////////// -->
+              
+                <!-- { Lang } -->
+                <div class="tab-pane fade" id="lang">
+                    
+                    <p class="lead">Horus has build-in multi-language manager</p>
+                    <span class="h3 text-muted"> <span class="glyphicon glyphicon-flag"></span> Usage </span>
+<br /><br />
+<pre class="prettyprint"><code>
+    // after you included and started horus
+    
+    // start the view
+    $view = new Horus_Lang;
+    
+    // set the languages path and it's extension
+    $lang -> setup('path/to/langs_dir', '.lang');
+    
+    // load a language file { the file must return an array contains keys => values }
+    // say that we have lang-file "en.lang" then it's contents is
+    /*
+        &lt;?php
+            return array
+            (
+                'key1' => 'val1',
+                'key2' => 'val2'
+            );
+        ?&gt;
+    */
+    $lang->load('en');
+    
+    // add translations ( assoc-array )
+    $lang -> add(array('key' => 'value'));
+    
+    // get a translation
+    echo $lang->get('key');
+    
+    // translate full subject
+    echo $lang->translate('my subject');
+    
+</code></pre>
+                </div>
+                <!-- { Lang } -->
+              
+                <!-- { functions } -->
+                <div class="tab-pane fade" id="functions">
+                    
+                    <p>
+                            Horus comes with simple common helpers that will help you while
+                            developing .<br />
+                            
+                            <p>
+                                <pre class="prettyprint"><code>function dump($var, $var_dump = false)</code></pre>
+                                Print var in human readable way <br />
+                                By default it uses <code>print_r</code> + <code>pre</code>  
+                                but if you like <code>var_dump</code> + <code>pre</code> <br />
+                                just set <code>$var_dump</code> to true . <br />
+                            </p>
+                            <hr />
+                            <p>
+                                <pre class="prettyprint"><code>function headeri($string, $replace = false, $http_response_code = null)</code></pre>
+                                An improved function instead of <code>header()</code> uses the new http class .
+                            </p>
+                            <hr />
+                            <p>
+                                <pre class="prettyprint"><code>function go($to, $using = 302)</code></pre>
+                                Redirect to another page using <code>302|301|'html'|'js'</code><br />
+                                <b class="badge">example</b><br />
+                                <code>go('http://google.com', 'js:5')</code> redirect using javascript after 5 seconds, you could write 'js' only <br />
+                                <code>go('http://google.com', 'html:5')</code> redirect using html after 5 seconds, you could write 'html' only <br />
+                                <code>go('http://google.com', 302)</code> redirect using http-302 <br />
+                                <code>go('http://google.com', 301)</code> redirect using http-301 
+                            </p>
+                            <hr />
+                            <p>
+                                <pre class="prettyprint"><code>function cURL($url, array $curl_options = array())</code></pre>
+                                Quick cURL connection, will return array of page content and page info (headers) <br />
+                                <code>$url</code> the url to connect to . <br />
+                                <code>$curl_options</code> array of curl options, default empty means (CURLOPT_RETURNTRANSFER => true) <br />
+                                <b class="badge">example</b><br />
+                                <code>$data = cURL('google');</code> <br />
+                                <code>echo 'content: ', $data['content'];</code> <br />
+                                <code>dump($data['info'])</code>
+                            </p>
+                            <hr />
+                            <p>
+                                <pre class="prettyprint"><code>function session_init($lifetime = 0)</code></pre>
+                                Start new session (alternative to session_start()) <br />
+                                <code>$lifetime</code>: the period (in sec) of the session, default 0 means 900 sec <br />
+                            </p>
+                            <hr />
+                            <p>
+                                <pre class="prettyprint"><code>function session_end()</code></pre>
+                                Destroy session and free $_SESSION array .
+                            </p>
+                            <hr />
+                            <p>
+                                <pre class="prettyprint"><code>function server($key = null)</code></pre>
+                                get value from <code>$_SERVER</code> <br />
+                                <b class="badge">example</b><br />
+                                <code>echo server('request uri');</code> or
+                                <code>echo server('request-uri');</code> or
+                                <code>echo server('request_uri');</code> or
+                                <code>echo server('request/uri');</code> or
+                                <code>echo server('REQUEST_URI');</code> 
+                                if <code>$key</code> is null will return all <code>$_SERVER</code> array
+                            </p>
+                            <hr />
+                            <p>
+                                <pre class="prettyprint"><code>function isHttps()</code></pre>
+                                check if the request is using HTTPS, return bool
+                            </p>
+                            <hr />
+                            <p>
+                                <pre class="prettyprint"><code>function isAjax()</code></pre>
+                                check if the request is under Ajax, return bool
+                            </p>
+                            <hr />
+                            <p>
+                                <pre class="prettyprint"><code>function isApache()</code></pre>
+                                check if the server is apache, return bool
+                            </p>
+                            <hr />
+                            <p>
+                                <pre class="prettyprint"><code>function isCli()</code></pre>
+                                check if the script run under Command line, return bool
+                            </p>
+                            <hr />
+                            <p>
+                                <pre class="prettyprint"><code>function isCgi()</code></pre>
+                                check if the script run under CGI, return bool
+                            </p>
+                            <hr />
+                            <p>
+                                <pre class="prettyprint"><code>function uri($to = null)</code></pre>
+                                Generate uri to an internal page in horus application
+                            </p>
+                            <hr />
+                            <p>
+                                <pre class="prettyprint"><code>function asset($to = null)</code></pre>
+                                Generate direct url to an asset file in horus application
+                            </p>
+                            <hr />
+                            <p>
+                                <pre class="prettyprint"><code>function random_str($length = 5)</code></pre>
+                                Generate random string with a certain length
+                            </p>
+                            <hr />
+                            <p>
+                                <pre class="prettyprint"><code>function random_serial($serials_count = 1, $blocks_count = 5, $block_size = 5, $separaor = '-')</code></pre>
+                                Generate random serial . <br />
+                                <code>$serials_count</code>: how many serials do you need ? <br />
+                                <code>$blocks_count</code>: how many blocks per serials ? <br />
+                                <code>$block_size</code>: size of each block ? <br />
+                                <code>$separator</code>: the blocks delimiter ? <br />
+                            </p>
+                            <hr />
+                            <p>
+                                <pre class="prettyprint"><code>function limit_words($subject, $offset, $limit, $ends = ' ...')</code></pre>
+                                Limit subject based on words, e.g: you need only 5 words from the start of subject and end it with ...:
+                                <code>echo limit_words('this is test statement and this is test', 0, 5)</code>
+                            </p>
+                            <hr />
+                            <p>
+                                <pre class="prettyprint"><code>function array_insert(array $into, mixed $new, int $position)</code></pre>
+                                insert array or element into any position of another array <br />
+                                <p class="badge">example:</p>
+    <pre class="prettyprint"><code>
+        $into = array(1,2,3,6,7);
+        $new = array(4, 5);
+        $position = 3;
+        $result = array_insert($into, $new, $position);
+        // will be: array(1, 2, 3, 4, 5, 6, 7)
+    </code></pre>
+                            </p>
+                            <hr />
+                            <pre class="prettyprint"><code>function horus($using = null)</code></pre>
+                            to get <code>horus</code> instance
+                            <p class="badge">example:</p><br />
+    <pre class="prettyprint"><code>
+        // 1)-
+        horus()->view->render('header');
+        // 2)-
+        horus('view')->render('header);
+    </code></pre>
+                        <hr />
+                        <pre class="prettyprint"><code>function array_start(array $array)</code></pre>
+                        to get the first element in an array <br />
+                        <p class="badge">example:</p>
+    <pre class="prettyprint"><code>
+        echo array_start(array(1,2,3,4,5));
+        // will output '1'
+    </code></pre>      
+                        <hr />
+                        <pre class="prettyprint"><code>function array_end(array $array)</code></pre>
+                        to get the last element in an array <br />
+                        <p class="badge">example:</p><br />
+    <pre class="prettyprint"><code>
+        echo array_end(array(1,2,3,4,5));
+        // will output '5'
+    </code></pre>      
+                        <hr />
+                        <pre class="prettyprint"><code>function array_isset(array $array, array $keys)</code></pre>
+                        check if the given <code>$keys</code> are fully exists in <code>$array</code> <br />
+                        <p class="badge">example:</p><br />
+    <pre class="prettyprint"><code>
+        echo array_isset(array(1,2,3,4,5), array(1,3));
+        // will output '1'
+        
+        echo array_isset(array(1,2,3,4,5), array(1,8));
+        // will output '0' or null
+    </code></pre>      
+                        <hr />
+                        <pre class="prettyprint"><code>function array_unset(array $array, array $keys)</code></pre>
+                        unset array of keys from an array <br />
+                        <p class="badge">example:</p><br />
+    <pre class="prettyprint"><code>
+        $new = array_unset(array('x'=> 1, 'y'=>2, 'xz'=>3), array('x', 'y'));
+        // will remove $new will only be array('xz' => 3)
+    </code></pre>
+                        <hr />
+                        <pre class="prettyprint"><code>function define_array(array $defines)</code></pre>
+                        just like <code>define()</code> but will work over an array <br />
+                        <p class="badge">example:</p><br />
+    <pre class="prettyprint"><code>
+        define_array(array(
+            'DS' => DIRECTORY_SEPARATOR,
+            'NAME' => 'HORUS_FRAMEWORK',
+        ));
+        echo DS;
+        echo NAME;
+    </code></pre>      
+                        <hr />
+                        
+                        <pre class="prettyprint"><code>function mempty()</code></pre>
+                        check whether var(s) empty <br />
+                        <p class="badge">example:</p><br />
+    <pre class="prettyprint"><code>
+        if(mempty($_GET['key1'], $_GET['key2'], $_GET['key3'])) {
+            echo 'empty';
+        }
+    </code></pre>
+                        <hr />
+                        
+                        <pre class="prettyprint"><code>function halt($code = 200, $message = null)</code></pre>
+                        exit application and set status code and show message <br />
+                        <p class="badge">example:</p><br />
+    <pre class="prettyprint"><code>
+        halt(404, 'not found');
+        // or
+        halt(404, horus()->errDocs()->e404);
+    </code></pre>
+                        <hr />
+                        
+                        <pre class="prettyprint"><code>array_get(array $input, $needle, $except = null)</code></pre>
+                        Get elements from array or get all except some <br />
+                        <p class="badge">example:</p><br />
+    <pre class="prettyprint"><code>
+        $array = array(1,2,3,4,5,6,7,8,9);
+        // get all
+        dump( array_get($array, '*') );
+        // get all except 1,2
+        dump( array_get($array, '*', array(1,2)) );
+        // get only 1,2
+        dump( array_get($array, array(1,2)) );
+    </code></pre>
+                        <hr />
+                        
+                        <pre class="prettyprint"><code>function password_hash($password, $algo = PASSWORD_DEFAULT, array $options = array())</code></pre>
+                        Horus introduces this api in any PHP 5 version not only PHP 5.5, you don't need to upgrade to PHP 5.5 :D <br />
+                        Creates a new password hash using a strong one-way hashing algorithm. <br />
+                        See More Here <a target="_blank" href="http://www.php.net/manual/en/function.password-hash.php">Here</a>
+                        <hr />
+                        
+                        <pre class="prettyprint"><code>function password_get_info($hash)</code></pre>
+                        See More Here <a target="_blank" href="http://www.php.net/manual/en/function.password-get-info.php">Here</a>
+                        <hr />
+                        
+                        <pre class="prettyprint"><code>function password_needs_rehash($hash, $algo = PASSWORD_DEFAULT, array $options = array())</code></pre>
+                        See More Here <a target="_blank" href="http://www.php.net/manual/en/function.password-needs-rehash.php">Here</a>
+                        <hr />
+                        
+                        <pre class="prettyprint"><code>function password_verify($password, $hash)</code></pre>
+                        See More Here <a target="_blank" href="http://www.php.net/manual/en/function.password-verify.php">Here</a>
+                        <hr />
+                        
+                        <pre class="prettyprint"><code>function paginate($data_size, $current_page, $limit = 5, $link_format = '?p=%d', $max_links = 5)</code></pre>
+                        Smart Tiny Pagination Function, No need to ownload big class for small operation ;) <br />
+                        <p class="badge">example:</p><br />
+    <pre class="prettyprint"><code>
+        // how many results to paginate ?
+        $count = 45;
+        // how many results per page ?
+        $perpage = 5;
+        // what is the current page ?
+        $current = $_GET['p']; // we used site.com/?p=xxx as our pager counter
+        // what is the target link format ?
+        // i'll use site.com/?p=xxx where xxx is an integer, we replace
+        // the integer parameter with '%d'
+        // e.g: for site.com/?go=news&new=blog&p=%d
+        $target = '?p=%d';
+        // how many links do you want ?
+        // < 1 2 3 4 5 > those are 5 
+        $links = 5;
+        // now paginate
+        $p = paginate($count, $current, $perpage, $target, $links);
+        // now the var '$p' is an array contains
+        // 1)- pages_count  (how many pages)
+        // 2)- start        (the offset used for e.g: 'select .... limit $start, $limit')
+        // 3)- limit        (the data limit = perpage)
+        // 4)- links[]      (array contains generated links)
+        //                  they are: next, prev, current, first, last and (from 1 to links_limit)
+        $sql = "select * from table limit {$p['start']},{$p['start']}";
+        $query = horus('db')->query($sql);
+        while($row = horus('db')->fetch()) {
+            // show data here
+        }
+        // show links ?
+        foreach( $p['links'] as $name => $href) {
+               echo sprintf('<a href="%s"> %s </a> &nbsp; &nbsp;', $href, $name);
+        }
+        // will print next prev first last current 1 2 3 4 5
+        // note: if there is no prev, next, then the $href of them will be false
+        // to help you detect it and make it "disabled=''"
+    </code></pre>
+    
+                        
+                        <hr />
+                        
+                        <pre class="prettyprint"><code>function array_column (array $array , $column_key, $index_key = null)</code></pre>
+                        Return the values from a single column in the input array <br />
+                        Also this function only exits in PHP >= PHP 5.5, But horus give it to you ^_^ <br />
+                        See it <a target="_blank" href="http://php.net/array_column">Here</a>
+                        
+                        <hr />
+                        
+                        <pre class="prettyprint"><code>function maili($from, $to, $subject, $message, $name = '',array $headers = array())</code></pre>
+                        mail-[i]-mproved function <br />
+    <pre class="prettyprint"><code>
+        // yourmail
+        $from = 'yourmail@gmail.com';
+        // to (supports multiple)
+        $to =  'to@gmail.com'; // or array('m1@gmail.com', 'm2@gmail.com', ... );
+        // subject
+        $subject = 'test';
+        // message [supports html, and also it set to utf-8]
+        $message = 'hi this is message';
+        // name [will show in target mailbox from <MyName yourmail@gmail.com>] "Optional"
+        $name = 'myname';
+        // more headers ? assoc array of your custom headers
+        $headers  = array('Content-Type'=>'text/html; charset=UTF-8'); // this is the default
+        // now send [ returns bool ]
+        dump(maili($from, $to, $subject, $message, $name, $headers));
+    </code></pre>
+                        <hr />
+                        
+                        <pre class="prettyprint"><code>events_listen($tag, $callback, $order = 0)</code></pre>
+                        register new event <br />
+                        <code>$tag</code> : the event tag/place/category . <br />
+                        <code>$callback</code> : the event callback . <br />
+                        <code>$order</code> : the event order/periority { small number = heigh periority }
+                    
+                        <hr />
+                        
+                        <pre class="prettyprint"><code>events_dispatch($tag, array $arguments = array())</code></pre>
+                        run events under category/tag {<code>$tag</code>} and pass arguments if needed . <br />
+                        <code>Returns</code> the last dispatched value .
+                        
+                        <hr />
+                        
+                        <pre class="prettyprint"><code>function events_all()</code></pre>
+                        returns all registered events .
+                        
+                        <hr />
+                        
+                        <pre class="prettyprint"><code>function session_started()</code></pre>
+                        check if the session is started, returns bool .
+                        
+                        <hr />
+                        
+                        <pre class="prettyprint"><code>array_assoc_get(array $input, $needle, $except = null)</code></pre>
+                        Get elements { keys => values } from array or get all except some <br />
+                        <p class="badge">example:</p><br />
+<pre class="prettyprint"><code>
+    $array = array( 'k1'=>'v1', 'k2'=>'v2', 'k3'=>'v3' );
+    // get all
+    dump( array_get($array, '*') );
+    // get all except for 'k1', 'k2'
+    // will return array('k1' => 'v1')
+    dump( array_get($array, '*', array('k1', 'k2')) );
+    // get only 'k1', 'k2'
+    dump( array_get($array, array('k1', 'k2')) );
+</code></pre>
+                        
+                        <hr />
+    
+                        <p class="h4">error documents</p>
+<pre class="prettyprint"><code>
+# start horus ...
+$horus = new Horus();
+
+# show an error page
+$horus->errorDoc('error title', 'error escription');
+# or get it and display it manully
+echo $horus->errorDoc('error title', 'error escription', true);
+
+# there are also some error documents shortcuts
+echo $horus->errorDocs()->e400; // or
+echo $horus->errorDocs()->e401; // or
+
+// you can use any error from the next
+
+/*****************
+
+    'e400'
+    'e401'
+    'e402'
+    'e403'
+    'e404'
+    'e405'
+    'e406'
+    'e500'
+    'e502'
+    'e503'
+    'e504'
+
+******************/
+</code></pre>
+
+                    </p>
+                
+                </div>
+                <!-- { functions } -->
+                
+                <!-- /////////////////////////////// -->
+                
+                <!-- { db } -->
+                <div class="tab-pane fade" id="db">
+                    <p>
+                        Horus Framework doesn't love any overhead so it extends <code>PDO</code> and simplified some things
+                        let's see it:
+<pre class="prettyprint"><code >
+# start horus ...
+$horus = new Horus;
+
+# just like PDO to connect
+$horus->db = new Horus_DB; // or horus()->db = ....
+$horus->db->connect('dns', 'username', 'password', $options);
+
+// OR
+
+# Connect to mysql server
+$horus->db->mysql('db server', 'db name', 'username', 'password');
+
+# Connect to sqlite
+$horus->db->sqlite('db_filepath');
+
+# Connect to mssql {sql server} server
+$horus->db->mssql('db server', 'db name', 'username', 'password');
+
+# Connect to oracle server
+$horus->db->oracle('db server', 'db name', 'username', 'password');
+
+# Connect to postgre server
+$horus->db->pgsql('db server', 'db name', 'username', 'password');
+
+# create a query (improved function) 
+# (and optionally pass array of binds inputs)
+$horus->db->query(
+    'select * from table where col1=? and col2 = ?', 
+    array('value1', 'value2'
+));
+
+// fetch just what pdo does
+var_dump($horus->db->fetchAll());
+
+// Yes every thing from just from one object
+// So i call it (PDO Improved) as it merged PDO with PDOStatement
+// So you can access any method of them just from that object '$horus->db'
+
+</code></pre>
+                    </p>
+                
+                <br /><br />
+                
+                <div id="orm">
+                    <h1 class="page-header">ORM </h1>
+                    <p>
+                        Horus Framework provides you a simple extensible ORM For the database
+                        <br />
+                        ORM is "Object Rational Mapper" for database operations, to simplify dealing with it .<br />
+                    </p>
+                    
+<pre class="prettyprint"><code>
+// start horus
+$horus = new Horus;
+
+// use it
+// you will need the horus_db construction
+$horus->db = new Horus_DB;
+$orm = new Horus_DB_ORM($horus->db);
+
+// you can access any 'db' method from 'orm' too
+$orm -> mysql('server', 'dbname', 'username', 'password');
+
+// set the table
+$users = $orm->on('users');
+
+# insert ( single-insert )
+// insert into users(name, city, icon) values(?, ?, ?)
+// return bool
+$users->insert(array
+( 
+    'name'  =>  'user name',
+    'city'  =>  'user city',
+    'icon'  =>  'user icon'
+))->end();
+
+// only show the generated sql statement ?
+echo $users->insert(array
+( 
+    'name'  =>  'user name',
+    'city'  =>  'user city',
+    'icon'  =>  'user icon'
+))->getSQL();
+
+// show the inputs only ?
+dump($users->getInputs());
+
+# insert multiple users at one query (good for performance)
+// insert multiple rows at once
+// return bool
+$users->minsert(array
+(
+    // into
+    array('name', 'city', 'icon'),
+    
+    // values
+    array('name 1', 'city 1', 'icon 1'),
+    array('name 2', 'city 2', 'icon 2'),
+    array('name 3', 'city 3', 'icon 3'),
+    array('name 4', 'city 4', 'icon 4'),
+    array('name 5', 'city 5', 'icon 5'),
+    array('name 6', 'city 6', 'icon 6')
+))->end(); 
+// this is won't work for sqlite old versions that don't
+// supports 'Values(?, ?),(?, ?),...', so for sqlite set 
+// the seconde param to true, as following:
+$users->minsert(array
+(
+    // into
+    array('name', 'city', 'icon'),
+    
+    // values
+    array('name 1', 'city 1', 'icon 1'),
+    array('name 2', 'city 2', 'icon 2'),
+    array('name 3', 'city 3', 'icon 3'),
+    array('name 4', 'city 4', 'icon 4'),
+    array('name 5', 'city 5', 'icon 5'),
+    array('name 6', 'city 6', 'icon 6')
+), true)->end(); 
+
+# update
+// return bool
+$users->update(array
+(
+    'name' => 'new name',
+    'icon' => 'new icon'
+))->where('id = ?', 5)->end();
+
+# or
+// return bool
+$users->update(array
+(
+    'name' => 'new name',
+    'icon' => 'new icon'
+))->where('id = ? and name = ?', array(5, 'old name'))->end();
+
+# or
+// return bool
+$users->update(array
+(
+    'name' => 'new name',
+    'icon' => 'new icon'
+))->where('id = ? and name = ?')->inputs(array(5, 'old name'))->end();
+
+# select
+// return bool
+$users->select('*')
+                    ->where('id = ?', 5)
+                    ->limit(1)
+                    ->order('id', 'DESC')
+                    ->end();
+// now fetch, just like pdo, any fetch method
+$users->fetchAll(PDO::FETCH_OBJ);
+
+# delete
+// return bool
+$users->delete()->where('id' , 5)->end();
+
+// you can also add a sql statement
+$users->delete()->sql('where id = ?', 5)->end();
+// or
+$users->delete()->sql('where id = ?')->inputs(5)->end();
+
+# you can add any feature !
+# smart, advanced development
+$users->multi_delete = function(array $ids){
+    $inputs = $ids;
+    $ids = array_fill(1, count($ids), '?');
+    $ids = implode(', ', $inputs);
+    
+    horus()->orm->delete()->where('id in '.$ids);
+    horus()->orm->inputs($inputs);
+    
+    return horus()->orm->on(horus()->orm->table);
+    
+    // NOTE: horus() function is only available from 
+    // Version 1.3.0
+};
+// now use it
+$users->multi_delete(array(1, 12, 3));
+
+</code></pre>
+</div>
+                </div>      
+                <!-- { db } -->
+                
+            </div>
+           <!-- End Tab panes --> 
+            
+            <!-- start footer -->
+            <footer style="background: #f9f9f9; padding: 15px; border-top: 1px solid #eee;">
+                <small> Theme using <a target="_blank" href="http://getbootstrap.com">Twitter Bootstrap</a> and <a target="_blank" href="http://www.bootstrapcdn.com/">Bootstrap CDN</a> </small> <br />
+                <small> Author <a target="_blank" href="http://facebook.com/alash3al">Mohammed Alashaal</a> </small> <br />
+                <small> Copyright 2014 &copy; Horus Framework </small>
+            </footer>
+            <!-- end footer -->
+        
+        </div>
+        <!-- /.container -->
+    
+        <!-- JavaScript -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <script src="http://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+        <script type="text/javascript">
+            
+            $('tabs a').click(function (e) {
+              e.preventDefault()
+              $(this).tab('show')
+            });
+			$('#goToIntro').click(function(){
+				$('#wikiTabs a[href="#intro"]').tab('show');
+				return false;
+			});
+        </script>
