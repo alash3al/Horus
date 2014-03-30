@@ -4,4 +4,4 @@
     
     new Horus;
     
-    echo "hello development version";
+    echo "Hi Dev";

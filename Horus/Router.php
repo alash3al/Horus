@@ -110,6 +110,18 @@ class Horus_Router
     // --------------------------------------------------------------------
     
     /**
+     * Check if the router has dispatched
+     * 
+     * @return bool
+     */
+    public function dispatched()
+    {
+        return $this->dispatched;
+    }
+    
+    // --------------------------------------------------------------------
+    
+    /**
      * Get URI Segment(s)
      * 
      * @return array | string

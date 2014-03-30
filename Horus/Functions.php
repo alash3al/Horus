@@ -867,7 +867,7 @@ if(!function_exists('events_listen'))
             $GLOBALS['horus_events'][$tag] = array();
         }
         
-        $GLOBALS['horus_events'][$tag][$order][] =  $callback;
+        $GLOBALS['horus_events'][$tag] =  array_insert($GLOBALS['horus_events'][$tag], $callback, $order);
         ksort($GLOBALS['horus_events'][$tag]);
     }
 }
@@ -894,31 +894,14 @@ if(!function_exists('events_dispatch'))
         $x = null;
         $index = ($c = count($arguments)) > 1 ? $c-1 : $c;
         
-        foreach( $GLOBALS['horus_events'][$tag] as $order => &$ids ) {
-            foreach( $ids as &$c ) {
-                if( is_callable($c) ) {
-                    $arguments[$index] = $x;
-                    $x = call_user_func_array($c, $arguments);
-                }
+        foreach( $GLOBALS['horus_events'][$tag] as &$c ) {
+            if( is_callable($c) ) {
+                $arguments[$index] = $x;
+                $x = call_user_func_array($c, $arguments);
             }
         }
         
         return $x;
-    }
-}
-
-// -------------------------------------------------------------------
-
-if(!function_exists('events_all'))
-{
-    /**
-     * Get all registered events
-     * 
-     * @return array
-     */
-    function events_all()
-    {
-        return $GLOBALS['horus_events'];
     }
 }
 

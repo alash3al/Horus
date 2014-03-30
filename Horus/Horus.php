@@ -49,6 +49,8 @@ class Horus
     protected $configs = array();
     /** @ignore */
     protected $autoloads = array();
+    /** @ignore */
+    protected $default_usage = array('router', 'levels', 'simulator');
     
     // --------------------------------------------------------------------
     
@@ -380,6 +382,15 @@ class Horus
      */
     protected function boot()
     {
+        // horus.use => array(...)
+        if($this->config('horus.use') == '*') {
+            $this->config('horus.use', $this->default_usage);
+        }
+        
+        foreach((array) $this->config('horus.use') as $v) {
+            $this->config(sprintf('horus.use_%s', $v), true);
+        }
+        
         // call the url_rewriter simulator
         $this->simulator();
         
@@ -412,6 +423,13 @@ class Horus
                 $this->router   =   new Horus_Router();
             }
         }
+        
+        // using levels ?
+        if($this->config('horus.use_levels')) {
+            if(!isset($this->levels)) {
+                $this->levels = new Horus_Levels;
+            }
+        }
     }
     
     // --------------------------------------------------------------------
@@ -425,6 +443,7 @@ class Horus
     {
         return array
         (
+            'horus.use'                         =>  array(),
             'horus.use_router'                  =>  false,
             'horus.timezone'                    =>  date_default_timezone_get(),
             'horus.default_404'                 =>  create_function('', 'echo horus()->errDocs()->e404;'),
@@ -463,7 +482,7 @@ class Horus
         $_SERVER['REQUEST_URI'] = '/' . ltrim($_SERVER['REQUEST_URI'], '/');
         
         // simulate ?
-        if($this->config('horus.enable_simulator') == true) {
+        if($this->config('horus.enable_simulator') == true or $this->config('horus.use_simulator') == true) {
             $_SERVER['SCRIPT_URI'] .= basename($_SERVER['SCRIPT_NAME']) . '/';
             
             if(!isset($_SERVER['PATH_INFO'])) {
@@ -476,8 +495,7 @@ class Horus
         
         if(stripos($_SERVER['PATH_INFO'], $_SERVER['SCRIPT_NAME']) === 0) {
             $_SERVER['PATH_INFO'] = substr($_SERVER['PATH_INFO'], strlen($_SERVER['SCRIPT_NAME']));
-        }
-        elseif(stripos($_SERVER['PATH_INFO'], dirname($_SERVER['SCRIPT_NAME'])) === 0) {
+        } elseif(stripos($_SERVER['PATH_INFO'], dirname($_SERVER['SCRIPT_NAME'])) === 0) {
             $_SERVER['PATH_INFO'] = substr($_SERVER['PATH_INFO'], strlen(dirname($_SERVER['SCRIPT_NAME'])));
         }
 
