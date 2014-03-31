@@ -952,3 +952,20 @@ if(!function_exists('array_assoc_get'))
         return $result;
     }
 }
+
+// -------------------------------------------------------------------
+
+if(!function_exists('levels_protect'))
+{
+    if(!isset($GLOBALS['levels_key'])) {
+        $GLOBALS['levels_key'] = 'ulevel';
+    }
+    
+    function levels_protect($allowed)
+    {
+        return (bool) (
+            !empty($_SESSION[$GLOBALS['levels_key']]) and
+            in_array($_SESSION[$GLOBALS['levels_key']], (array) $allowed)
+        );
+    }
+}

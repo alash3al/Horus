@@ -50,7 +50,7 @@ class Horus
     /** @ignore */
     protected $autoloads = array();
     /** @ignore */
-    protected $default_usage = array('router', 'levels', 'simulator');
+    protected $default_usage = array('router', 'simulator');
     
     // --------------------------------------------------------------------
     
