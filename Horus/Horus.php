@@ -6,7 +6,7 @@
  * @copyright   2014 Mohammed Al-Ashaal
  * @link        http://alash3al.github.io/Horus/
  * @license     https://github.com/alash3al/Horus/blob/master/LICENSE
- * @version     2.0.0
+ * @version     3.0.0
  * @package     Horus
  * @filesource
  *
@@ -68,8 +68,6 @@ class Horus
     protected $configs = array();
     /** @ignore */
     protected $autoloads = array();
-    /** @ignore */
-    protected $optional_libs = array('router');
     
     /**
      * Horus Constructor
@@ -238,7 +236,7 @@ class Horus
         if($this->config('horus.use_router') == true) {
             
             $this->events->trigger('horus.before.dispatch');
-            $x = $this->router->dispatch();
+            $x = $this->router->state();
             $this->events->trigger('horus.after.dispatch');
             
             if($x == false) {
@@ -269,14 +267,6 @@ class Horus
      */
     protected function boot()
     {
-        // horus.use => array(...)
-        if($this->config('horus.use') == '*') {
-            $this->config('horus.use', (array) $this->optional_libs);
-        }
-        foreach((array) $this->config('horus.use') as $l) {
-            $this->config(sprintf('horus.use_%s', $l), true);
-        }
-        
         // call the url_rewriter simulator
         $this->simulator();
         

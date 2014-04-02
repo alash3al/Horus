@@ -6,7 +6,7 @@
  * @copyright   2014 Mohammed Al-Ashaal
  * @link        http://alash3al.github.io/Horus/
  * @license     https://github.com/alash3al/Horus/blob/master/LICENSE
- * @version     2.0.0
+ * @version     3.0.0
  * @package     Horus
  * @filesource
  *
