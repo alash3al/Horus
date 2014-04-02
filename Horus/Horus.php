@@ -9,6 +9,27 @@
  * @version     2.0.0
  * @package     Horus
  * @filesource
+ *
+ * MIT LICENSE
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
  
 // -------------------------------------------------------------------
@@ -21,9 +42,7 @@ defined('no') or define('no', false, true);
 // -------------------------------------------------------------------
 
 /**
- * Horus
- * 
- * Horus is a PHP 5 micro framework perfect for getting programmers start
+ * Horus Framework Kernel
  * 
  * @package  Horus
  * @author   Mohammed Al-Ashaal
@@ -33,14 +52,14 @@ defined('no') or define('no', false, true);
 class Horus
 {
     /** @ignore */
-    CONST VERSION   = '2.0';
+    CONST VERSION   = '3.0.0';
     /** @ignore */
     CONST DS        = DIRECTORY_SEPARATOR;
     
     /** @ignore */
     protected $coredir;
     /** @ignore */
-    protected static $vars;
+    protected $vars;
     /** @ignore */
     protected static $instance;
     /** @ignore */
@@ -50,9 +69,7 @@ class Horus
     /** @ignore */
     protected $autoloads = array();
     /** @ignore */
-    protected $default_usage = array('router', 'simulator');
-    
-    // --------------------------------------------------------------------
+    protected $optional_libs = array('router');
     
     /**
      * Horus Constructor
@@ -65,17 +82,25 @@ class Horus
         // start output block
         ob_start();
         
-        
         // set the instance, core-directory & configurations
         $this->coredir  = dirname(__FILE__) . self::DS;
         $this->configs  = array_merge($this->getDefaultConfigs(), $configs);
         self::$instance = $this;
         
         // Our Smart AutoClassMapper Autoloader
-        spl_autoload_register(array($this, 'XAutoloader'));
+        spl_autoload_register(array($this, 'autoload'));
         
-        // start the http manager
+        // assign some methods
+        $this->vars     =   new Horus_Container;
         $this->http     =   new Horus_Http($this->config('horus.http_version'));
+        $this->events   =   new Horus_Events;
+        $this->defaultErrorDoc =   create_function('$title, $content, $style = null', '
+            return sprintf("<!DOCTYPE HTML>
+            <html>
+                <head><title>%s</title><style>body{margin:10px;text-align:left;}h1{color:#555}p{color:#333}%s</style></head>
+                <body><h1>%s</h1><p>%s</p></body>
+            </html>", $title, $style, $title, $content);
+        ');
         
         // load the common functions file
         require_once $this->coredir . 'Functions.php';
@@ -84,54 +109,52 @@ class Horus
         $this->boot();
     }
     
-    // --------------------------------------------------------------------
+    // ---------------------------------------
     
     /**
-     * Horus Tiny Advanced Auto[Mapper & Loader]
+     * Horus PSR Autoloader Function
      * 
      * @param string $ClassName
      * @return void
      */
-    public function XAutoloader($ClassName)
+    public function autoload($ClassName)
     {
-        $ClassName = rtrim(ltrim(str_replace( array('_', '/', '\\'), self::DS, $ClassName ), self::DS), self::DS);
-        $x = (array) explode(self::DS, $ClassName, 2);
-        @$pre = $x[0];
-        $Root = isset($this->autoloads[$pre]) ? $this->autoloads[$pre] . self::DS : dirname(dirname(__FILE__)) . self::DS;
-        $ClassName = isset($this->autoloads[$pre]) ? $x[1] : $ClassName;
-        $Root = preg_replace('/'.preg_quote(self::DS, '/').'+/', self::DS, $Root);
+        $ClassName = rtrim(ltrim(str_replace(array('\\', '/', '_'), self::DS, $ClassName), self::DS), self::DS);
+        list($prefix, $class)   =   (array) explode(self::DS, $ClassName, 2);
         
-        if( is_file( $f = realpath($Root . $ClassName . '.php') ) ) {
-            return require_once $f;
+        if(isset($this->autoloads[$prefix])) {
+            $prefix = $this->autoloads[$prefix];
+        } else {
+            $prefix = dirname($this->coredir) . self::DS . $prefix . self::DS;
         }
         
-        elseif( is_file( $f = realpath($Root . $ClassName . self::DS . basename($ClassName) . '.php') ) ) {
-            return require_once $f;
+        if(!is_file($file = $prefix . $class . '.php')) {
+            $file = $prefix . $class . self::DS . basename($class) . '.php';
         }
         
-        return $f;
+        return is_file($file) ? require_once $file : false;
     }
     
-    // --------------------------------------------------------------------
+    // ---------------------------------------
     
     /**
-     * Set an alias for an autoload path
+     * Set the real path of a prefix/namespace
      * 
-     * @param string $alias
+     * @param string $prefix
      * @param string $path
      * @return void
      */
-    public function autoloadPathAlias($alias, $path)
+    public function autoloadPrefixPath($prefix, $path)
     {
         if(!is_dir($path)) {
             return null;
         }
         
-        $alias = str_replace(array('/', '_', '\\'), '', $alias);
-        $this->autoloads[$alias] = $path;
+        $prefix = str_replace(array('/', '_', '\\'), '', $prefix);
+        $this->autoloads[$prefix] = $path;
     }
     
-    // --------------------------------------------------------------------
+    // ---------------------------------------
     
     /**
      * Get Class Instance
@@ -141,8 +164,8 @@ class Horus
     {
         return self::$instance;
     }
-
-    // --------------------------------------------------------------------
+    
+    // ---------------------------------------
     
     /**
      * Horus Config
@@ -175,7 +198,7 @@ class Horus
 
     }
     
-    // --------------------------------------------------------------------
+    // ---------------------------------------
     
     /**
      * Run
@@ -192,188 +215,52 @@ class Horus
         }
         
         $this->ran = true;
-        $output = '';
+        $this->__output = '';
         
         // don't forget that we have started 
         // an output-block in construction .
         if(ob_get_level() > 0) {
-            $output = ob_get_clean();
+            $this->__output = ob_get_clean();
             ob_end_clean();
         }
-        
-        // ------------------------------
         
         // using gzip if gzip is enabled .
         if((bool) $this->config('horus.enable_gzip') == true) {
             ob_start('ob_gzhandler');
         }
         
-        // ------------------------------
-        
         // start new buffer block to get the output then end the block
         // dispatch all routes
-        // but also dispatch events [before_dispatch, after_dispatch]
+        // but also dispatch events [before.dispatch, after.dispatch]
         // if no route dispatched, send 404 errDoc
         ob_start();
         
         if($this->config('horus.use_router') == true) {
             
-            events_dispatch('horus.before_dispatch');
-            
+            $this->events->trigger('horus.before.dispatch');
             $x = $this->router->dispatch();
-            
-            events_dispatch('horus.after_dispatch');
+            $this->events->trigger('horus.after.dispatch');
             
             if($x == false) {
-                halt(404, is_callable($z = $this->config('horus.default_404')) ? call_user_func($z) : $this->errDocs()->e404);
+                halt(404, call_user_func($this->config('horus.error_404')));
             }
-            
+
             unset($x, $z);
-            $output .= ob_get_clean();
+            $this->__output .= ob_get_clean();
         }
         
-        // ------------------------------
-        
-        // fix the output as html if needed
-        // only will work if xml-fixer disabled
-        // uses dom .
-        if
-        (
-            (bool) $this->config('horus.fix_html') == true and 
-            (bool) $this->config('horus.fix_xml') == false
-        )
-        {
-            $dom = new DomDocument;
-            libxml_use_internal_errors(true);
-            $dom->preserveWhiteSpace = false;
-            $dom->formatOutput = true;
-            $dom->recover = true;
-            $dom->loadHTML($output);
-            $output = $dom->saveHTML();
-            unset($dom);
-        }
-        
-        // ------------------------------
-        
-        // fix the output as xml if needed
-        // only will work if html-fixer disabled
-        // uses dom .
-        if
-        (
-            (bool) $this->config('horus.fix_xml') == true and 
-            (bool) $this->config('horus.fix_html') == false
-        )
-        {
-            $dom = new DomDocument;
-            libxml_use_internal_errors(true);
-            $dom->preserveWhiteSpace = false;
-            $dom->formatOutput = true;
-            $dom->recover = true;
-            $dom->loadXML($output);
-            $output = $dom->saveXML();
-            unset($dom);
-        }
-        
-        // ------------------------------
-        
-        // minify the output if needed
-        // minifier will just remove duplicated [spaces, lines ... etc]
-        if((bool) $this->config('horus.minify_output') == true)
-        {
-            $output = preg_replace('/\s+/', ' ', $output);
-        }
-        
-        // ------------------------------
-        
-        // the output hooks/events [filters]
-        // here i started new buffer block and end it
-        // then get it's result
-        // then send it to http manager
-        // then dispatch on-shutdown events
-        ob_start();
-        
-        echo events_dispatch('horus.output', array($output));
-        
-        $x = ob_get_clean();
-        $output = empty($x) ? $output : $x; unset($x);
-        
-        $this->http->send($output);
-        
-        events_dispatch('horus.shutdown');
-        
-        // ------------------------------
+        // - fire output events
+        // - send the output to http
+        // - fire en events
+        $this->events->trigger('horus.output');
+        $this->http->send($this->__output);
+        $this->events->trigger('horus.end');
         
         // clean any buffer if still exists
         if(ob_get_level() > 0) ob_end_flush();
     }
     
-    // --------------------------------------------------------------------
-    
-    /**
-     * Show An Error Document
-     * 
-     * Based On Horus::horusTemplate()
-     * 
-     * @param   string   $title
-     * @param   string   $message
-     * @param   bool     $return
-     * @return void
-     */
-    public function errDoc($title, $message, $return = false)
-    {
-        @ob_end_clean();
-        ob_start();
-        
-        $r = $this->horusTemplate($title, '<p>'.$message.'</p>', 'body{text-align: center; margin: 18%;} p{font-size: 17px}');
-        
-        if($return == true)
-            return $r;
-        else
-            exit($r);
-    }
-    
-    // --------------------------------------------------------------------
-    
-    /**
-     * List Of Error Documents
-     * 
-     * @return void
-     */
-    public function errDocs()
-    {
-        return (object)array
-        (
-            'e400'  =>  $this->errDoc('400 Bad Request', 'This is a bad request', true),
-            'e401'  =>  $this->errDoc('401 Unauthorized', 'Authorization is required to access this page', true),
-            'e402'  =>  $this->errDoc('401 Payment Required', 'You must perform the payment to continue', true),
-            'e403'  =>  $this->errDoc('403 Forbidden Page', 'This page is forbidden', true),
-            'e404'  =>  $this->errDoc('404 Page Not Found', 'The requested page not found on this server', true),
-            'e405'  =>  $this->errDoc('405 Method Not Allowed', 'The requested method is not allowed', true),
-            'e406'  =>  $this->errDoc('406 Not Acceptable', 'This request is not acceptable', true),
-            'e500'  =>  $this->errDoc('500 Internal Server Error', 'A server error happend', true),
-            'e502'  =>  $this->errDoc('502 Bad Gateway', 'Network error between servers occured', true),
-            'e503'  =>  $this->errDoc('503 Service Unavailable', 'I\'m not available now, request me at another time', true),
-            'e504'  =>  $this->errDoc('504 Gateway Timeout', 'I couldn\'t receive response from the remote server', true)
-        );
-    }
-    
-    // --------------------------------------------------------------------
-    
-    /**
-     * Horus Default Template
-     * 
-     * @param string $title
-     * @param string $body
-     * @param string $more_style
-     * @return string
-     */
-    function horusTemplate($title, $body, $more_style = '')
-    {
-        $tpl = '<!DOCTYPE HTML><html><head><meta charset="UTF-8" /><title> %s </title><style>*{virtecal-position: middle}body{margin:0; padding: 20px;}h1{color:#555}%s</style></head><body><h1> %s </h1>%s</body></html>';
-        return vsprintf($tpl, array($title, $more_style, $title, $body));
-    }
-    
-    // --------------------------------------------------------------------
+    // ---------------------------------------
     
     /**
      * More Horus Settings
@@ -384,11 +271,10 @@ class Horus
     {
         // horus.use => array(...)
         if($this->config('horus.use') == '*') {
-            $this->config('horus.use', $this->default_usage);
+            $this->config('horus.use', (array) $this->optional_libs);
         }
-        
-        foreach((array) $this->config('horus.use') as $v) {
-            $this->config(sprintf('horus.use_%s', $v), true);
+        foreach((array) $this->config('horus.use') as $l) {
+            $this->config(sprintf('horus.use_%s', $l), true);
         }
         
         // call the url_rewriter simulator
@@ -415,7 +301,7 @@ class Horus
         ini_set('session.cookie_httponly',  (boolean) $this->config('horus.session_http_only'));
         
         // call the on-boot events
-        events_dispatch('horus.boot');
+        $this->events->trigger('horus.boot');
         
         // if the router enabled, autoload it
         if($this->config('horus.use_router') == true) {
@@ -423,16 +309,9 @@ class Horus
                 $this->router   =   new Horus_Router();
             }
         }
-        
-        // using levels ?
-        if($this->config('horus.use_levels')) {
-            if(!isset($this->levels)) {
-                $this->levels = new Horus_Levels;
-            }
-        }
     }
     
-    // --------------------------------------------------------------------
+    // ---------------------------------------
     
     /**
      * Get the default horus settings
@@ -446,7 +325,7 @@ class Horus
             'horus.use'                         =>  array(),
             'horus.use_router'                  =>  false,
             'horus.timezone'                    =>  date_default_timezone_get(),
-            'horus.default_404'                 =>  create_function('', 'echo horus()->errDocs()->e404;'),
+            'horus.error_404'                   =>  create_function('', 'die(horus()->defaultErrorDoc("404 Not Found", "The Requested Page Not Found On This Server ."));'),
             'horus.auto_run'                    =>  true,
             'horus.http_version'                =>  '1.1',
             'horus.enable_simulator'            =>  false,
@@ -457,14 +336,11 @@ class Horus
             'horus.session_regenerate_id'       =>  1,
             'horus.session_save_path'           =>  session_save_path(),
             'horus.enable_gzip'                 =>  true,
-            'horus.minify_output'               =>  false,
-            'horus.fix_html'                    =>  false,
-            'horus.fix_xml'                     =>  false,
             'horus.mode'                        =>  'dev'      // [development, production]
         );
     }
     
-    // --------------------------------------------------------------------
+    // ---------------------------------------
     
     /**
      * Horus Simulator
@@ -501,56 +377,46 @@ class Horus
 
     }
     
-    // --------------------------------------------------------------------
+    // ---------------------------------------
     
     /** @ignore */
     public function __call($name, $args)
     {
-        return  (isset(self::$vars[$name]) and !empty(self::$vars[$name]))
-                ? @call_user_func_array(self::$vars[$name], $args)
+        return  (isset($this->vars->$name) and !empty($this->vars->$name))
+                ? @call_user_func_array($this->vars->$name, $args)
                 : null;
     }
     
-    // --------------------------------------------------------------------
-    
-    /** @ignore */
-    public static function __callStatic($name, $args)
-    {
-        return  (isset(self::$vars[$name]) and !empty(self::$vars[$name]))
-                ? @call_user_func_array(self::$vars[$name], $args)
-                : null;
-    }
-    
-    // --------------------------------------------------------------------
+    // ---------------------------------------
 
     /** @ignore */
     public function __set($name, $value)
     {
-        self::$vars[$name] = $value;
+        $this->vars->{$name} = $value;
     }
     
-    // --------------------------------------------------------------------
+    // ---------------------------------------
     
     /** @ignore */
     public function __get($name)
     {
-        return (isset(self::$vars[$name]) ? self::$vars[$name] : null);
+        return (isset($this->vars->$name) ? $this->vars->$name : null);
     }
     
-    // --------------------------------------------------------------------
+    // ---------------------------------------
     
     /** @ignore */
     public function __isset($name)
     {
-        return isset(self::$vars[$name]);
+        return isset($this->vars->$name);
     }
     
-    // --------------------------------------------------------------------
+    // ---------------------------------------
     
     /** @ignore */
     public function __unset($name)
     {
-        unset(self::$vars[$name]);
+        unset($this->vars->$name);
     }
     
 }

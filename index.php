@@ -2,6 +2,5 @@
 
     require_once 'Horus/Horus.php';
     
-    new Horus;
+    new Horus;//(['horus.use'=>'*']);
     
-    echo "Hi Dev";

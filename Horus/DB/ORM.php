@@ -88,45 +88,12 @@ class Horus_DB_ORM
     // -------------------------------------------------------
     
     /**
-     * multiple insert statement
-     * 
-     * @param array $cols_values    first row of array contains array of columns, others arrays of values
-     * @return object
-     */
-    function minsert(array $cols_values, $sqlite = false)
-    {
-        $this->reset();
-        
-        $into = implode(', ', $cols_values[0]);
-        array_shift($cols_values);
-        
-        if($sqlite == true) {
-            $values = implode(' UNION ', array_fill(1, count($cols_values), ' SELECT '.implode(', ', array_fill(1, count($cols_values[1]), '?'))));
-        } else {
-            $values = ' VALUES ' . implode(', ', array_fill(1, count($cols_values), '('.implode(', ', array_fill(1, count($cols_values[1]), '?')).')'));
-        }
-        
-        $inputs = array();
-
-        foreach($cols_values as &$v) {
-            $inputs = array_merge($inputs, $v);
-        }
-        
-        $this->sql = "INSERT INTO {$this->table} ({$into}) {$values}";
-        $this->inputs($inputs);
-        
-        return $this;
-    }
-    
-    // -------------------------------------------------------
-    
-    /**
      * Update statement
      * 
      * @param array $cols_values array of column => value
      * @return object
      */
-    function update(array $cols_values)
+    function update(array $cols_values, $where = null)
     {
         
         $this->reset();
@@ -138,7 +105,6 @@ class Horus_DB_ORM
         } 
         
         $tmp = implode(', ', $tmp);
-        
         $this->sql = "UPDATE {$this->table} SET {$tmp}";
         $this->inputs(array_values($cols_values));
         

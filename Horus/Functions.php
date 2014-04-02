@@ -9,6 +9,27 @@
  * @version     2.0.0
  * @package     Horus
  * @filesource
+ *
+ * MIT LICENSE
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
  
 // -------------------------------------------------------------------
@@ -422,9 +443,6 @@ if(!function_exists('array_insert'))
      */
     function array_insert(array $into, $new, $position)
     {
-        
-        //return array_splice($into, (int) $position, 0, (array) $new);
-        
         return (array) array_merge
         (
             (array) array_slice($into, 0, $position),
@@ -484,48 +502,7 @@ if(!function_exists('array_end'))
 
 // -------------------------------------------------------------------
 
-if(!function_exists('array_isset'))
-{
-    /**
-     * Check if group of keys are exists in an array
-     * 
-     * @param array     the main array to search in
-     * @param array     array of keys to search for in the main array
-     * @return
-     */
-    function array_isset(array $array, array $keys)
-    {
-        foreach($keys as &$k) {
-            if(!isset($array[$k])) {
-                return false;
-            }
-        }
-        
-        return true;
-    }
-}
-
-// -------------------------------------------------------------------
-
-if(!function_exists('array_unset'))
-{
-    /**
-     * Remove multiple keys from an array
-     * 
-     * @param array the main array
-     * @param array the keys to remove
-     * @return array
-     */
-    function array_unset(array $array, array $keys)
-    {
-        foreach($keys as &$k) unset($array[$k]);
-        return (array) $array;
-    }
-}
-
-// -------------------------------------------------------------------
-
-if(!function_exists('define_array'))
+if(!function_exists('mdefine'))
 {
     /**
      * Define multiple constants if not defined
@@ -533,7 +510,7 @@ if(!function_exists('define_array'))
      * @param array $defines    array of keys => values
      * @return void
      */
-    function define_array(array $defines)
+    function mdefine(array $defines)
     {
         foreach($defines as $k => &$v) {
             defined($k) or define($k, $v);
@@ -576,28 +553,6 @@ if(!function_exists('halt'))
     function halt($code = 200, $message = null)
     {
         horus()->http->halt((int) $code, $message);
-    }
-}
-
-// -------------------------------------------------------------------
-
-if(!function_exists('array_get'))
-{
-    /**
-     * Get elements from array or get all except some { in-line array }
-     *  
-     * @param array     $input
-     * @param mixed     $needle
-     * @param mixed     $except
-     * @return  mixed
-     */
-    function array_get(array $input, $needle, $except = null)
-    {
-        if($needle === '*') {
-            return array_diff($input, (array) $except);
-        }
-        
-        return array_intersect($input, (array) $needle);
     }
 }
 
@@ -782,35 +737,6 @@ if(!function_exists('paginate'))
 
 // -------------------------------------------------------------------
 
-if(!function_exists('array_column'))
-{
-    /**
-     * Return the values from a single column in the input array
-     * 
-     * @param array $array          A multi-dimensional array (record set) from which to pull a column of values
-     * @param mixed $column_key     The column of values to return
-     * @param mixed $index_key      The column to use as the index/keys for the returned array
-     * @return array
-     */
-    function array_column (array $array , $column_key, $index_key = null)
-    {
-        $result = array();
-        
-        foreach( $array as &$a ) {
-            if(isset( $a[$column_key] )) {
-                if(isset($a[$index_key])) {
-                    $result[$a[$index_key]] = $a[$column_key];
-                } else
-                    $result[] = $a[$column_key];
-            }
-        }
-        
-        return $result;
-    }
-}
-
-// -------------------------------------------------------------------
-
 if(!function_exists('maili'))
 {
     /**
@@ -837,71 +763,13 @@ if(!function_exists('maili'))
         $hdrs = array_merge($hdrs, $headers);
         $headers = null;
         
-        foreach($headers as $k => &$v) {
+        foreach($hdrs as $k => &$v) {
             $headers .= sprintf('%s: %s %s', $k, $v, PHP_EOL); 
         }
         
         $to = implode(', ', (array) $to);
         
         return (bool) @mail($to, $subject, $message, $headers);
-    }
-}
-
-// -------------------------------------------------------------------
-
-if(!function_exists('events_listen'))
-{
-    if( !isset($GLOBALS['horus_events']) ) $GLOBALS['horus_events'] = array();
-    
-    /**
-     * Add new event to the events list
-     * 
-     * @param string    $tag
-     * @param callback  $callback
-     * @param integer   $order
-     * @return void
-     */
-    function events_listen($tag, $callback, $order = 0)
-    {
-        if(!isset($GLOBALS['horus_events'][$tag])) {
-            $GLOBALS['horus_events'][$tag] = array();
-        }
-        
-        $GLOBALS['horus_events'][$tag] =  array_insert($GLOBALS['horus_events'][$tag], $callback, $order);
-        ksort($GLOBALS['horus_events'][$tag]);
-    }
-}
-
-// -------------------------------------------------------------------
-
-if(!function_exists('events_dispatch'))
-{
-    /**
-     * Run event(s) under certain tag
-     * 
-     * @param string    $tag
-     * @param array     $arguments
-     * @return void
-     */
-    function events_dispatch($tag, $arguments = null)
-    {
-        $arguments = (array) $arguments;
-        
-        if( !isset($GLOBALS['horus_events'][$tag]) ) {
-            $GLOBALS['horus_events'][$tag] = array();
-        }
-        
-        $x = null;
-        $index = ($c = count($arguments)) > 1 ? $c-1 : $c;
-        
-        foreach( $GLOBALS['horus_events'][$tag] as &$c ) {
-            if( is_callable($c) ) {
-                $arguments[$index] = $x;
-                $x = call_user_func_array($c, $arguments);
-            }
-        }
-        
-        return $x;
     }
 }
 
@@ -915,57 +783,3 @@ if(!function_exists('session_started'))
     }
 }
 
-// -------------------------------------------------------------------
-
-if(!function_exists('array_assoc_get'))
-{
-    /**
-     * Get elements from array or get all except some { assoc-array }
-     * 
-     * @param array     $input
-     * @param mixed     $needle
-     * @param mixed     $except
-     * @return  mixed
-     */
-    function array_assoc_get(array $input, $needle, $except = null)
-    {
-        if($needle === '*') {
-            $result = array();
-            
-            foreach( $input as $k => &$v ) {
-                if( !in_array($k, (array) $except) ) {
-                    $result[$k] = $v;
-                }
-            }
-            
-            return $result;
-        }
-        
-        $result = array();
-        
-        foreach( $input as $k => &$v ) {
-            if( in_array( $k, $needle ) ) {
-                $result[$k] = $v;
-            }
-        }
-        
-        return $result;
-    }
-}
-
-// -------------------------------------------------------------------
-
-if(!function_exists('levels_protect'))
-{
-    if(!isset($GLOBALS['levels_key'])) {
-        $GLOBALS['levels_key'] = 'ulevel';
-    }
-    
-    function levels_protect($allowed)
-    {
-        return (bool) (
-            !empty($_SESSION[$GLOBALS['levels_key']]) and
-            in_array($_SESSION[$GLOBALS['levels_key']], (array) $allowed)
-        );
-    }
-}

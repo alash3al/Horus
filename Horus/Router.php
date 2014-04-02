@@ -9,6 +9,27 @@
  * @version     2.0.0
  * @package     Horus
  * @filesource
+ *
+ * MIT LICENSE
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
  
 // -------------------------------------------------------------------
@@ -55,26 +76,25 @@ class Horus_Router
     {
         $this->dispatched = true;
         
-        if(empty($maps) or !is_array($maps)) $maps = $this->maps;
+        if(empty($maps) or !is_array($maps)) {
+            $maps = $this->maps;
+        }
         
-        @$cm = (array)$maps[strtolower($_SERVER['REQUEST_METHOD'])];
-        @$am = (array)$maps['any'];
-        
+        $cm = (array) (isset($maps[strtolower($_SERVER['REQUEST_METHOD'])]) ? $maps[strtolower($_SERVER['REQUEST_METHOD'])] : null);
+        $am = (array) (isset($maps['any']) ? $maps['any'] : null);
         $maps = (array)array_merge((array)$cm, (array)$am);
-        
-        // status [ dispatched or not ? ]
         $status = 0;
         
-        foreach($maps as $pattern => &$callback)
-        {//echo $pattern, ' & ', $this->uri, '<br />';
+        foreach($maps as $pattern => &$r)
+        {
+            list($callback, $permission) = $r;
             
             // if the callback is any type of php callbacks ... call it
             if(is_callable($callback) and preg_match('/^'.$pattern.'$/', $this->uri, $m))
             {
                 unset($m[0]);
-                
+                $m[] = (bool) $this->permission($permission);
                 call_user_func_array($callback, $m);
-                
                 ++$status;
                 
             }
@@ -85,19 +105,15 @@ class Horus_Router
                 {
                     $x = preg_replace('/^('.$pattern.')/', '', $this->uri);
                     $segments = array_values(array_filter(explode('/', $x)));
-                    
                     unset($x);
-                    
                     $class = new $callback;
                     $func = empty($segments[0]) ? 'index' : $segments[0];
                     $func = str_replace('-', '_', pathinfo($func, PATHINFO_FILENAME));
+                    $segments[] = (bool) $this->permission($permission);
                     
                     if(is_callable(array($class, $func))) {
-                    
                         array_shift($segments);
-                        
                         call_user_func_array(array($class, $func), (array)$segments);
-                        
                         ++$status;
                     }
                 }
@@ -105,18 +121,6 @@ class Horus_Router
         }
         
         return ($status > 0);
-    }
-    
-    // --------------------------------------------------------------------
-    
-    /**
-     * Check if the router has dispatched
-     * 
-     * @return bool
-     */
-    public function dispatched()
-    {
-        return $this->dispatched;
     }
     
     // --------------------------------------------------------------------
@@ -150,7 +154,7 @@ class Horus_Router
      * @param string        $method     the request method
      * @return bool
      */
-    protected function map($pattern, $callback, $method = 'any')
+    protected function map($pattern, $callback, $permission = null, $method = 'any')
     {
         // multiple methods
         if(sizeof($x = (array)array_filter(explode('|', $method))) > 1)
@@ -158,6 +162,8 @@ class Horus_Router
             foreach($x as &$m) {
                 call_user_func_array(array($this, __FUNCTION__), array($pattern, $callback, $m));
             }
+            
+            unset($x);
         }
         // multiple uris/patterns
         elseif(is_array($pattern))
@@ -169,22 +175,19 @@ class Horus_Router
         // the core
         else
         {
-            if(!is_callable($callback) and !class_exists($callback))
+            if(!is_callable($callback) and !class_exists($callback)) {
                 return false;
+            }
             
             $x = array('{num}', '{alpha}', '{alnum}', '{str}', '{any}', '{*}');
             $y = array('([0-9\.]+)', '([a-zA-Z]+)', '([a-zA-Z0-9\.]+)', '([a-zA-Z0-9-_\.]+)', '.+', '?|(.*?)');
-            
             $uri = $this->prepare_uri(str_ireplace($x, $y, $pattern), '/');
             
-            if($this->dispatched === false )
-            {
-                $this->maps[strtolower($method)][$uri] = $callback;
+            if($this->dispatched === false ) {
+                $this->maps[strtolower($method)][$uri] = array($callback, $permission);
                 return true;
-            }
-            else
-            {
-                return $this->dispatch(array($method => array($uri => $callback)));
+            } else {
+                return $this->dispatch(array($method => array($uri => array($callback, $permission))));
             }
         }
     }
@@ -195,11 +198,28 @@ class Horus_Router
     protected function prepare_uri($uri, $escape = '')
     {
         $uri = preg_replace('/\/+/', '/', ('/' . rtrim(ltrim($uri, '/'), '/') . '/'));
-        
-        if(empty($uri)) $uri = '/';
+
+        if(empty($uri)) {
+            $uri = '/';
+        }
         
         $uri = addcslashes($uri, $escape);
         
         return $uri;
+    }
+    
+    // --------------------------------------------------------------------
+    
+    /** @ignore */
+    protected function permission($allowed)
+    {
+        if(is_null($allowed) or empty($allowed) or $allowed == '*') {
+            return true;
+        }
+        
+        return (bool) (
+            isset($_SESSION['permission']) and
+            in_array($_SESSION['permission'], (array) $allowed)
+        );
     }
 }
