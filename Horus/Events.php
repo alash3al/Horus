@@ -84,17 +84,6 @@ class Horus_Events
     }
     
     /**
-     * Alias of trigger()
-     * 
-     * @see events::trigger()
-     * @return void
-     */
-    function fire()
-    {
-        return call_user_func_array(array($this, 'trigger'), func_get_args());
-    }
-    
-    /**
      * Check if an event is exists
      * 
      * @param string $event

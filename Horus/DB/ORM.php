@@ -114,7 +114,7 @@ class Horus_DB_ORM
      * @param array $cols_values array of column => value
      * @return object
      */
-    function update(array $cols_values, $where = null)
+    function update(array $cols_values)
     {
         
         $this->reset();

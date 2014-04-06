@@ -67,7 +67,7 @@ class Horus
     /** @ignore */
     protected $configs = array();
     /** @ignore */
-    protected $autoloads = array();
+    public $autoload_paths = array();
     
     /**
      * Horus Constructor
@@ -85,15 +85,16 @@ class Horus
         $this->configs  = array_merge($this->getDefaultConfigs(), $configs);
         self::$instance = $this;
         
-        // Our Smart AutoClassMapper Autoloader
+        // Our Smart Class Autoloader
         spl_autoload_register(array($this, 'autoload'));
         
-        // assign some methods
+        // assign some methods/properties
         $this->vars     =   new Horus_Container;
         $this->http     =   new Horus_Http($this->config('horus.http_version'));
         $this->events   =   new Horus_Events;
-        $this->defaultErrorDoc =   create_function('$title, $content, $style = null', '
-            return sprintf("<!DOCTYPE HTML>
+        $this->error    =   create_function('$title, $content, $style = null', '
+            return sprintf("
+            <!DOCTYPE HTML>
             <html>
                 <head><title>%s</title><style>body{margin:10px;text-align:left;}h1{color:#555}p{color:#333}%s</style></head>
                 <body><h1>%s</h1><p>%s</p></body>
@@ -104,7 +105,7 @@ class Horus
         require_once $this->coredir . 'Functions.php';
         
         // continue some-settings
-        $this->boot();
+        $this->setup();
     }
     
     // ---------------------------------------
@@ -120,8 +121,8 @@ class Horus
         $ClassName = rtrim(ltrim(str_replace(array('\\', '/', '_'), self::DS, $ClassName), self::DS), self::DS);
         list($prefix, $class)   =   (array) explode(self::DS, $ClassName, 2);
         
-        if(isset($this->autoloads[$prefix])) {
-            $prefix = $this->autoloads[$prefix];
+        if(isset($this->autoload_paths[$prefix])) {
+            $prefix = $this->autoload_paths[$prefix];
         } else {
             $prefix = dirname($this->coredir) . self::DS . $prefix . self::DS;
         }
@@ -131,25 +132,6 @@ class Horus
         }
         
         return is_file($file) ? require_once $file : false;
-    }
-    
-    // ---------------------------------------
-    
-    /**
-     * Set the real path of a prefix/namespace
-     * 
-     * @param string $prefix
-     * @param string $path
-     * @return void
-     */
-    public function autoloadPrefixPath($prefix, $path)
-    {
-        if(!is_dir($path)) {
-            return null;
-        }
-        
-        $prefix = str_replace(array('/', '_', '\\'), '', $prefix);
-        $this->autoloads[$prefix] = $path;
     }
     
     // ---------------------------------------
@@ -174,26 +156,21 @@ class Horus
      * @param string $value
      * @return mixed
      */
-    public function config($key = null, $value = null)
+    public function config($key = null)
     {
-
-        // get a configs key ?
-        if(!is_array($key) and is_null($value)) {
-            return isset($this->configs[$key]) ? $this->configs[$key] : null;
+        // set
+        if(is_array($key)) {
+            $this->configs = array_merge($this->configs, $key);
+            $this->setup();
         }
-            
-        // get all configs
-        elseif($key === '*') {
+        
+        // get all
+        elseif(empty($key)) {
             return $this->configs;
         }
         
-        // set configs ?
-        else {
-            $cnfgs = is_array($key) ? $key : array($key => $value);
-            $this->configs = array_merge($this->configs, $cnfgs); unset($cnfgs);
-            $this->more_sets();
-        }
-
+        // get one
+        else return @$this->configs[$key];
     }
     
     // ---------------------------------------
@@ -211,7 +188,6 @@ class Horus
         if($this->ran) {
             return ;
         }
-        
         $this->ran = true;
         $this->__output = '';
         
@@ -232,13 +208,8 @@ class Horus
         // but also dispatch events [before.dispatch, after.dispatch]
         // if no route dispatched, send 404 errDoc
         ob_start();
-        
         if($this->config('horus.use_router') == true) {
-            
-            $this->events->trigger('horus.before.dispatch');
-            $x = $this->router->state();
-            $this->events->trigger('horus.after.dispatch');
-            
+            $x = (bool) $this->router->state();
             if($x == false) {
                 halt(404, call_user_func($this->config('horus.error_404')));
             }
@@ -247,12 +218,12 @@ class Horus
             $this->__output .= ob_get_clean();
         }
         
-        // - fire output events
+        // - fire/trigger before.output events
         // - send the output to http
-        // - fire en events
-        $this->events->trigger('horus.output');
+        // - fire/trigger after.output events
+        $this->events->trigger('horus.before.output');
         $this->http->send($this->__output);
-        $this->events->trigger('horus.end');
+        $this->events->trigger('horus.after.output');
         
         // clean any buffer if still exists
         if(ob_get_level() > 0) ob_end_flush();
@@ -265,8 +236,11 @@ class Horus
      * 
      * @return void
      */
-    protected function boot()
+    protected function setup()
     {
+        // error reporting
+        error_reporting(($this->config('horus.mode') == 'dev') ? E_ALL : 0);
+        
         // call the url_rewriter simulator
         $this->simulator();
         
@@ -290,9 +264,6 @@ class Horus
         ini_set('session.save_path',        $this->config('horus.session_save_path'));
         ini_set('session.cookie_httponly',  (boolean) $this->config('horus.session_http_only'));
         
-        // call the on-boot events
-        $this->events->trigger('horus.boot');
-        
         // if the router enabled, autoload it
         if($this->config('horus.use_router') == true) {
             if(!isset($this->router)) {
@@ -312,10 +283,9 @@ class Horus
     {
         return array
         (
-            'horus.use'                         =>  array(),
             'horus.use_router'                  =>  false,
             'horus.timezone'                    =>  date_default_timezone_get(),
-            'horus.error_404'                   =>  create_function('', 'die(horus()->defaultErrorDoc("404 Not Found", "The Requested Page Not Found On This Server ."));'),
+            'horus.error_404'                   =>  create_function('', 'die(horus()->error("404 Not Found", "The Requested Page Not Found On This Server ."));'),
             'horus.auto_run'                    =>  true,
             'horus.http_version'                =>  '1.1',
             'horus.enable_simulator'            =>  false,
@@ -348,7 +318,7 @@ class Horus
         $_SERVER['REQUEST_URI'] = '/' . ltrim($_SERVER['REQUEST_URI'], '/');
         
         // simulate ?
-        if($this->config('horus.enable_simulator') == true or $this->config('horus.use_simulator') == true) {
+        if($this->config('horus.enable_simulator') == true) {
             $_SERVER['SCRIPT_URI'] .= basename($_SERVER['SCRIPT_NAME']) . '/';
             
             if(!isset($_SERVER['PATH_INFO'])) {
@@ -359,6 +329,7 @@ class Horus
         // start preparing for fixing server { path_info }
         $_SERVER['PATH_INFO'] = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         
+        // we want only our url not the path too ( /path/to/horus/url/url/url )
         if(stripos($_SERVER['PATH_INFO'], $_SERVER['SCRIPT_NAME']) === 0) {
             $_SERVER['PATH_INFO'] = substr($_SERVER['PATH_INFO'], strlen($_SERVER['SCRIPT_NAME']));
         } elseif(stripos($_SERVER['PATH_INFO'], dirname($_SERVER['SCRIPT_NAME'])) === 0) {

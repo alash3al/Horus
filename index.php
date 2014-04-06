@@ -1,9 +1,10 @@
 <?php
 
-    require_once 'Horus/Horus.php';
-    
-    new Horus(['horus.use_router'=>yes]);
-    
-    horus('router') -> any('/', function(){
-        echo 'index';
-    });
+// load horus
+require_once 'Horus/Horus.php';
+
+// start it
+new Horus;
+
+// hello world !!
+echo "Hello World";

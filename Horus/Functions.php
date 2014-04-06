@@ -47,8 +47,8 @@
  
 // -------------------------------------------------------------------
 
-if(!function_exists('dump'))
-{
+if(!function_exists('dump')):
+
     /**
      * Dump variable in human readable way 
      * 
@@ -68,12 +68,13 @@ if(!function_exists('dump'))
         
         echo '</pre>';
     }
-}
+
+endif;
 
 // --------------------------------------------------------------------
 
-if(!function_exists('headeri'))
-{
+if(!function_exists('headeri')):
+
     /**
      * Improved header function
      * 
@@ -87,12 +88,13 @@ if(!function_exists('headeri'))
         Horus::getInstance()->http->status((int) $http_response_code);
         Horus::getInstance()->http->header($string, $replace);
     }
-}
+
+endif;
 
 // --------------------------------------------------------------------
 
-if(!function_exists('go'))
-{
+if(!function_exists('go')):
+
     /**
      * Redirect to ...
      * 
@@ -120,47 +122,13 @@ if(!function_exists('go'))
         
         exit(0);
     }
-}
 
-// --------------------------------------------------------------------
-
-if(!function_exists('cURL'))
-{
-    /**
-     * Quick cURL Usage
-     * 
-     * @param string $url               the url 
-     * @param string $curl_options      array of curl options, default is empty
-     * @return array('content', 'info')
-     */
-    function cURL($url, array $curl_options = array())
-    {
-        if(!function_exists('curl_init'))
-            return array('content' => @file_get_contents($url, false), 'info' => array());
-        
-        $ch = curl_init($url);
-        
-        if(curl_errno($ch)) return false;
-        
-        if(empty($curl_options)) {
-            $curl_options = array(CURLOPT_RETURNTRANSFER => true);
-        }
-        
-        curl_setopt_array($ch, $curl_options);
-        
-        $r['content']  = curl_exec($ch);
-        $r['info'] = curl_getinfo($ch);
-        
-        curl_close($ch);
-        
-        return $r;
-    }
-}
+endif;
 
 // -------------------------------------------------------------------
 
-if(!function_exists('session_init'))
-{
+if(!function_exists('session_init')):
+
     /**
      * session_init()
      * 
@@ -170,14 +138,14 @@ if(!function_exists('session_init'))
      */
     function session_init($lifetime = 0)
     {
+        if(session_started()) {
+            return ;
+        }
+        
         $regenerate_id = (bool) horus()->config('session_regenerate_id');
         
         if($lifetime < 1) {
             $lifetime = 900;
-        }
-        
-        if(session_id() !== '') {  
-            return null;
         }
         
         session_set_cookie_params((int)$lifetime);
@@ -197,12 +165,29 @@ if(!function_exists('session_init'))
             session_end();
         }
     }
-}
+    
+endif;
  
 // -------------------------------------------------------------------
 
-if(!function_exists('session_end'))
-{
+if(!function_exists('session_started')):
+
+    /**
+     * Check if the session has been started
+     * 
+     * @return bool
+     */
+    function session_started()
+    {
+        return (bool) (session_id() !== '');
+    }
+    
+endif;
+ 
+// -------------------------------------------------------------------
+
+if(!function_exists('session_end')):
+
     /**
      * Destroy session
      * 
@@ -217,12 +202,13 @@ if(!function_exists('session_end'))
         session_unset();
         session_destroy();
     }
-}
+
+endif;
 
 // -------------------------------------------------------------------
 
-if(!function_exists('server'))
-{
+if(!function_exists('server')):
+
     /**
      * Deal with $_SERVER array
      * 
@@ -234,90 +220,96 @@ if(!function_exists('server'))
         $key = strtoupper(str_replace(array('.', '-', ' ', '/'), '_', $key));
         return (empty($key) ? $_SERVER : @$_SERVER[$key]);
     }
-}
+
+endif;
 
 // -------------------------------------------------------------------
 
-if(!function_exists('isHttps'))
-{
+if(!function_exists('is_https')):
+
     /**
      * Is the current request under https ?
      * 
      * @return bool
      */
-    function isHttps()
+    function is_https()
     {
         return (bool)(isset($_SERVER['HTTPS']) and strtolower($_SERVER['HTTPS']) !== 'off');
     }
-}
+
+endif;
  
 // -------------------------------------------------------------------
 
-if(!function_exists('isAjax'))
-{
+if(!function_exists('is_ajax')):
+
     /**
      * Is the current request is ajax ?
      * 
      * @return bool
      */
-    function isAjax()
+    function is_ajax()
     {
         return (bool)(
             isset($_SERVER['HTTP_X_REQUESTED_WITH']) and 
             strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest'
         );
     }
-}
+
+endif;
  
 // -------------------------------------------------------------------
 
-if(!function_exists('isApache'))
-{
+if(!function_exists('is_apache')):
+
     /**
      * Is the server is apache ?
      * 
      * @return bool
      */
-    function isApache()
+    function is_apache()
     {
         return function_exists('apache_get_version');
     }
-}
+
+endif;
  
 // -------------------------------------------------------------------
 
-if(!function_exists('isCli'))
-{
+if(!function_exists('is_cli')):
+
     /**
      * Is the script running under Command Line ?
      * 
      * @return bool
      */
-    function isCli()
+    function is_cli()
     {
         return (bool)(strtolower(php_sapi_name()) === 'cli' or defined('STDIN'));
     }
-}
+
+endif;
  
 // -------------------------------------------------------------------
 
-if(!function_exists('isCgi'))
-{
+if(!function_exists('is_cgi')):
+
     /**
      * Is the script running under Command Line ?
      * 
      * @return bool
      */
-    function isCgi()
+    function is_cgi()
     {
         return (bool)(stripos(php_sapi_name(), 'cgi', 0) !== false);
     }
-}
- 
+
+endif;
+
 // -------------------------------------------------------------------
 
-if(!function_exists('uri'))
-{
+if(!function_exists('uri')):
+
     /**
      * Generate a routed uri
      * 
@@ -328,12 +320,13 @@ if(!function_exists('uri'))
     {
         return rtrim(server('script uri'), '/') . '/' . ltrim($to, '/');
     }
-}
+
+endif;
  
 // -------------------------------------------------------------------
 
-if(!function_exists('asset'))
-{
+if(!function_exists('asset')):
+
     /**
      * Generate direct url to an asset file [css, img, ... etc]
      * 
@@ -344,12 +337,13 @@ if(!function_exists('asset'))
     {
         return rtrim(server('script url'), '/') . '/' . ltrim($asset, '/');
     }
-}
+
+endif;
 
 // -------------------------------------------------------------------
 
-if(!function_exists('random_str'))
-{
+if(!function_exists('random_str')):
+
     /**
      * Generate random string with certain length
      * 
@@ -372,12 +366,13 @@ if(!function_exists('random_str'))
         
         return (string) $length === '*' ? $rand : substr(str_shuffle($rand), 0, (int)$length);
     }
-}
+
+endif;
 
 // -------------------------------------------------------------------
 
-if(!function_exists('random_serial'))
-{
+if(!function_exists('random_serial')):
+
     /**
      * Generate random serial number
      * 
@@ -405,12 +400,13 @@ if(!function_exists('random_serial'))
         if($serials_count === 1) return $serials[0];
         else return $serials;
     }
-}
+
+endif;
 
 // -------------------------------------------------------------------
 
-if(!function_exists('limit_words'))
-{
+if(!function_exists('limit_words')):
+
     /**
      * Limit words number in a subject
      * 
@@ -424,12 +420,13 @@ if(!function_exists('limit_words'))
     {
         return implode(' ', array_slice(explode(' ', $subject),(int) $offset,(int) $limit)) . $ends;
     }
-}
+
+endif;
 
 // -------------------------------------------------------------------
 
-if(!function_exists('array_insert'))
-{
+if(!function_exists('array_insert')):
+
     /**
      * insert array into array
      * 
@@ -450,12 +447,13 @@ if(!function_exists('array_insert'))
             (array) array_slice($into, $position)
         );
     }
-}
+
+endif;
 
 // -------------------------------------------------------------------
 
-if(!function_exists('horus'))
-{
+if(!function_exists('horus')):
+
     /**
      * Get Horus instance
      * 
@@ -466,12 +464,13 @@ if(!function_exists('horus'))
     {
         return is_null($using) ? Horus::getInstance() : Horus::getInstance()->{$using};
     }
-}
+
+endif;
 
 // -------------------------------------------------------------------
 
-if(!function_exists('array_start'))
-{
+if(!function_exists('array_start')):
+
     /**
      * Get the first elemnt in the array
      * 
@@ -482,12 +481,13 @@ if(!function_exists('array_start'))
     {
         return reset($array);
     }
-}
+
+endif;
 
 // -------------------------------------------------------------------
 
-if(!function_exists('array_end'))
-{
+if(!function_exists('array_end')):
+
     /**
      * Get the last element in the array
      * 
@@ -498,12 +498,13 @@ if(!function_exists('array_end'))
     {
         return end($array);
     }
-}
+
+endif;
 
 // -------------------------------------------------------------------
 
-if(!function_exists('mdefine'))
-{
+if(!function_exists('mdefine')):
+
     /**
      * Define multiple constants if not defined
      * 
@@ -516,12 +517,13 @@ if(!function_exists('mdefine'))
             defined($k) or define($k, $v);
         }
     }
-}
+
+endif;
 
 // -------------------------------------------------------------------
 
-if(!function_exists('mempty'))
-{
+if(!function_exists('mempty')):
+
     /**
      * Check var(s) if they are empty
      * 
@@ -537,12 +539,13 @@ if(!function_exists('mempty'))
         
         return false;
     }
-}
+
+endif;
 
 // -------------------------------------------------------------------
 
-if(!function_exists('halt'))
-{
+if(!function_exists('halt')):
+
     /**
      * Shortcut to { horus('http')->halt(...) }
      * 
@@ -554,12 +557,13 @@ if(!function_exists('halt'))
     {
         horus()->http->halt((int) $code, $message);
     }
-}
+
+endif;
 
 // -------------------------------------------------------------------
 
-if(!function_exists('password_hash'))
-{
+if(!function_exists('password_hash')):
+
     defined('PASSWORD_BCRYPT') or define('PASSWORD_BCRYPT', 1);
     defined('PASSWORD_DEFAULT') or define('PASSWORD_DEFAULT', PASSWORD_BCRYPT);
     
@@ -596,12 +600,13 @@ if(!function_exists('password_hash'))
 
         return crypt($password, $format);
     }
-}
+
+endif;
 
 // -------------------------------------------------------------------
 
-if(!function_exists('password_get_info'))
-{
+if(!function_exists('password_get_info')):
+
     /**
      * Returns information about the given hash
      * 
@@ -630,12 +635,13 @@ if(!function_exists('password_get_info'))
         
         return $info;
     }
-}
+    
+endif;
 
 // -------------------------------------------------------------------
 
-if(!function_exists('password_needs_rehash'))
-{
+if(!function_exists('password_needs_rehash')):
+
     /**
      * Checks if the given hash matches the given options
      * 
@@ -660,12 +666,13 @@ if(!function_exists('password_needs_rehash'))
             $options['cost'] === $info['options']['cost']
         );
     }
-}
+
+endif;
 
 // -------------------------------------------------------------------
 
-if(!function_exists('password_verify'))
-{
+if(!function_exists('password_verify')):
+
     /**
      * Verifies that a password matches a hash
      * 
@@ -677,12 +684,13 @@ if(!function_exists('password_verify'))
     {
         return (bool) ( crypt($password, $hash) === $hash );
     }    
-}
+
+endif;
 
 // -------------------------------------------------------------------
 
-if(!function_exists('paginate'))
-{
+if(!function_exists('paginate')):
+
     /**
      * Tiny Smart Pagination Function 
      * 
@@ -733,12 +741,13 @@ if(!function_exists('paginate'))
         unset($x, $i, $prev, $nxt);
         return $r;
     }
-}
+
+endif;
 
 // -------------------------------------------------------------------
 
-if(!function_exists('maili'))
-{
+if(!function_exists('maili')):
+
     /**
      * Mail() improved function
      * 
@@ -771,15 +780,60 @@ if(!function_exists('maili'))
         
         return (bool) @mail($to, $subject, $message, $headers);
     }
-}
+    
+endif;
 
 // -------------------------------------------------------------------
 
-if(!function_exists('session_started'))
-{
-    function session_started()
-    {
-        return (bool) (session_id() !== '');
-    }
-}
+if(!function_exists('autoload_path_register')):
 
+    /**
+     * Register a path prefix/namespace with it's full path
+     * 
+     * @param string $name  the namespace/prefix that will be used in class-name
+     * @param string $path  the full path
+     * @return void
+     */
+    function autoload_path_register($name, $path)
+    {
+        $ds = DIRECTORY_SEPARATOR;
+        horus()->autoload_paths[str_replace(array('-', '_', '/', '\\'), $ds, $name)] = realpath($path) . $ds;
+    }
+
+endif;
+
+// -------------------------------------------------------------------
+
+if(!function_exists('autoload_path_unregister')):
+
+    /**
+     * Un-Register a namespace/prefix
+     * 
+     * @param mixed $name
+     * @return void
+     */
+    function autoload_path_unregister($name)
+    {
+        unset(horus()->autoload_paths[$name]);
+    }
+
+endif;
+
+// -------------------------------------------------------------------
+
+if(!function_exists('str_clean')):
+
+    /**
+     * Clean a string from non-printable chars
+     * 
+     * @param string $string
+     * @return string
+     */
+    function str_clean($string)
+    {
+        return preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $string);
+    }
+
+endif;
+
+// -------------------------------------------------------------------

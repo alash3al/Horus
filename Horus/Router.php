@@ -63,7 +63,7 @@ class Horus_Router
     function __construct()
     {
         $this->url = $this->prepareUri($_SERVER['PATH_INFO']);
-        $this->addVar(array(
+        $this->shortcut(array(
             '{num}'      =>  '([0-9\.,]+)',
             '{alpha}'    =>  '([a-zA-Z]+)',
             '{alnum}'    =>  '([a-zA-Z0-9\.]+)',
@@ -89,18 +89,33 @@ class Horus_Router
     // -------------------------------------------
     
     /**
-     * Add Router Varibale
+     * Add regex shortcut(s)
      * 
      * @param string $key
      * @param string $value
      * @return void
      */
-    function addVar($key, $value = null)
+    function shortcut($key, $value = null)
     {
         $key = !is_array($key) ? array($key => $value) : $key;
         
         foreach($key as $k => &$v) {
             $this->vars[$k] =  $v;
+        }
+    }
+    
+    // -------------------------------------------
+    
+    /**
+     * Remove regex shortcut(s)
+     * 
+     * @param string $key
+     * @return void
+     */
+    function unshortcut($key)
+    {
+        foreach( (array) $key as $k ) {
+            unset($this->vars[$k]);
         }
     }
     
@@ -154,7 +169,7 @@ class Horus_Router
         $method     =   strtolower($method);
         $pattern    =   str_ireplace(array_keys($this->vars), array_values($this->vars), $pattern);
         $pattern    =   $this->prepareUri($pattern,'/');
-        //die($pattern);
+        
         $this->dispatch(array($method => array($pattern => array($callback, $permission))));
     }
     
@@ -166,6 +181,7 @@ class Horus_Router
         $current_method = isset($map[strtolower($_SERVER['REQUEST_METHOD'])]) ? $map[strtolower($_SERVER['REQUEST_METHOD'])] : null;
         $any_method = isset($map['any']) ? $map['any'] : null;
         $methods = (array) array_merge( (array)$current_method, (array)$any_method);
+        
         unset($current_method, $any_method);
         
         foreach($methods as $p => &$i) {
@@ -179,7 +195,7 @@ class Horus_Router
             }
             // if the clbk is callback then match the url from start only .
             elseif(!is_object($clbk) and class_exists($clbk)and preg_match("/^{$p}/", $this->url)) {
-                $segments = $this->segments();
+                $segments = array_values(array_filter((array) explode('/', preg_replace("/^{$p}/i",'', $this->url))));
                 $class = new $clbk;
                 $method = empty($segments[0]) ? 'index' : $segments[0];
                 $method = str_replace('-', '_', pathinfo($method, PATHINFO_FILENAME));
