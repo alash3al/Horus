@@ -651,37 +651,41 @@ require 'Horus/Horus.php';
 new Horus;
 
 // initialize view
-// i put the view var in horus() to be global
-// the default extension for views is '.html'
-// you can change it or leave it n construct
-horus()->view = new Horus_View('html');
+// and set the views directory and views files extension
+$view = new Horus_View('/views/', 'html');
 
-// render a file '/view/header.html'
-horus()->view->render('/view/header');
+// you can only $view = new Horus_View;
+// and set the irectory and extension
+$view->setup('/views/dir/', 'html');
 
-// render multiple views
-horus()->view->render('/view/header, /view/footer');
+// render any file , e.g: header
+$view->render('header');
 
-// you can make shortcuts for paths  (2 ways)
-horus()->view->shortcut(':v:', '/view/');
-horus()->view->shortcut(array(':v:' => '/view/'));
+// render files , e.g: header, body, footer
+$view->render('header ,body, footer');
 
-// use it
-horus()->view->render(':v:header, :v:footer');
+// render and pass vars
+$vars = array('var_1' => 'val_1'); // assoc array varname => value
+$view->render('header', $vars);
 
-// remove it (2 ways)
-horus()->view->unshortcut(':v:');
-horus()->view->unshortcut(array(':v:'));
+// you can also load without renering
+// also you can pass vars
+$vars = array();
+$output = $view->load('header', $vars);
 
-// load view(s) and don't render them
-$output = horus()->view->load('/view/header, /view/footer');
+// add global var(s)
+$view->set('key', 'value');
+#or
+$view->set(array('key'=>'value'));
 
-// load view(s) and pass some vars to them
-$vars = arrayu('var1' => 'val1', 'var2' => 'val2');
-horus()->view->render('/view/header, /view/footer', $vars);
+// get a var
+echo $view->get('varname');
 
-// you can also add vars separatly
-horus()->view->addVar();
+// delete/unset var(s)
+$view->del('varname'); // or $view->del(array('varname1', 'varname2'));
+
+// has a var ?
+$view->has('varname'); // returns bool
 
 </code></pre>
                         

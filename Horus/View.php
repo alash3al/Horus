@@ -58,44 +58,25 @@ class Horus_View
      * @param string $extension
      * @return void
      */
-    function __construct($extension = 'html')
+    function __construct($dir = null, $extension = 'html')
     {
         $this->ext = '.' . ltrim($extension, '.');
+        $this->dir = realpath($dir) . DIRECTORY_SEPARATOR;
     }
     
     // --------------------------------------------------------------------
     
     /**
-     * Add View Shortcut(s)
+     * Config/Setup directory and extension
      * 
-     * @param string $shortcut
-     * @param string $path
+     * @param string $dir
+     * @param string $extension
      * @return void
      */
-    function shortcut($shortcut, $path = null)
+    function setup($dir, $extension = 'html')
     {
-        $shortcut = is_array($shortcut) ? $shortcut : array($shortcut => $path);
-        foreach($shortcut as $s => &$p) {
-            if(file_exists($p)) {
-                $this->shortcuts[$s] = realpath($p);
-            }
-        }
-    }
-    
-    // --------------------------------------------------------------------
-
-    /**
-     * Remove View Shortcut(s)
-     * 
-     * @param string $shortcut
-     * @param string $path
-     * @return void
-     */
-    function unshortcut($shortcut)
-    {
-        foreach((array) $shortcut as $s) {
-            unset($this->shortcuts[$s]);
-        }
+        $this->ext = '.' . ltrim($extension, '.');
+        $this->dir = realpath($dir) . DIRECTORY_SEPARATOR;
     }
     
     // --------------------------------------------------------------------
@@ -109,7 +90,7 @@ class Horus_View
      * @param string $value
      * @return void
      */
-    function addVar($var, $value = null)
+    function set($var, $value = null)
     {
         $var = is_array($var) ? $var : array($var => $value);
         $this->vars = array_merge((array) $this->vars, $var);
@@ -123,7 +104,7 @@ class Horus_View
      * @param string $var
      * @return mixed
      */
-    function getVar($var)
+    function get($var)
     {
         return (isset($this->vars[$var]) ? $this->vars[$var] : null);
     }
@@ -136,7 +117,7 @@ class Horus_View
      * @param string $var
      * @return void
      */
-    function unsetVar($var)
+    function del($var)
     {
         foreach((array) $var as $v) {
             unset($this->vars[$v]);
@@ -151,7 +132,7 @@ class Horus_View
      * @param string $var
      * @return bool
      */
-    function hasVar($var)
+    function has($var)
     {
         return isset($this->vars[$var]);
     }
@@ -167,14 +148,13 @@ class Horus_View
      */
     function load($view_name, array $vars = array())
     {
-        $view_name = str_ireplace(array_keys((array) $this->shortcuts), array_values((array) $this->shortcuts), $view_name);
         $view_name = (array) explode(',', $view_name);
         
         extract(array_merge((array) $this->vars,(array) $vars));
         ob_start();
         
         foreach($view_name as &$v) {
-            if(is_file($file = realpath(trim($v) . $this->ext))) {
+            if(is_file($file = realpath($this->dir . trim($v) . $this->ext))) {
                 require $file;
             }
         }
