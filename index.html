@@ -1,155 +1,833 @@
 <!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Horus is a lightwight micro php 5 framework" />
-    <meta name="author" content="Mohammed Abdullah Alashaal | Senior PHP Developer" />
+<html>
 
-    <title>Horus Framework - Smart PHP 5 Framework</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.css" rel="stylesheet" />
-    <link href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/united/bootstrap.min.css" rel="stylesheet" />
-
-    <!-- Add custom CSS here -->
-    <link href="css/horus.css" rel="stylesheet" />
+    <head>
     
-</head>
-
-<body>
-
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#home">Horus Framework</a>
-            </div>
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse navbar-ex1-collapse">
-                <ul class="nav navbar-nav">
-                    <li><a target="_blank" href="https://github.com/alash3al/Horus">Github</a></li>
-                    <li><a target="_blank" href="https://facebook.com/pharaoh.framework">Facebook</a></li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
-
-    <div class="container">
-
-        <div class="row">
-            
-            <h1 class="page-header">Horus Framework</h1>
-            <div class="lead">
-                Horus Framework is a simple yet powerful micro php framework 
-                perfect for getting programmers start .<br />
-                No more big size framework or useless libraries just strong code-base
-                and well designed skeleton for any type of app(s)
-            </div>
-            
-            <div id="features">
-                <h1 class="page-header">Features</h1>         
-                <p class="">
-                    <ul>
-                        <li>Every thing is now configurable</li>
-                        <li class="list-group">Simple yet powerful router
-                            <ul>
-                                <li>Regex Based and comes with regex shortcuts</li>
-                                <li>Any valid callback for routing </li>
-                                <li>Class Routing support <code>'pattern/method/param/param/...etc'</code></li>
-                                <li>RESTful Requests Routing</li>
-                                <li>Multi Methods Routing</li>
-                                <li>Multi Patterns Per Class or Callback</li>
-                                <li>Nested Routes Support <code>from version 1.1.1</code></li>
-                                <li>For Class Methods, Now Supports url extension Like: <code>.html</code> and <code>'-'</code> From Version <code>1.3.0</code></li>
-                            </ul>
-                        </li>
-                        <li class="list-group">Full Output Control
-                            <ul>
-                                <li>Extensible, you can assign any event/hook filter and edit it</li>
-                                <li>GZIP, you can optionaly enable or disable gzip</li>
-                                <li>HTML Tidy, you can optionaly enable or disable html fixer</li>
-                                <li>XML Tidy, you can optionaly enable or disable xml fixer</li>
-                                <li>Minifier, you can optionaly enable/disable output minifier to remove dublicated spaces,lines,tabs, .. etc</li>
-                            </ul>
-                        </li>
-                        <li>Custom views</li>
-                        <li>Supports Multi Languages Applications <code>from version 1.2.0</code></li>
-                        <li>HTTP Class <code>from version 1.1.1</code></li>
-                        <li>Good helpers for common functions</li>
-                        <li>Better events system (hooks or event listener/dispatcher)</li>
-                        <li>Fully extensible</li>
-                        <li>Very simple configurations</li>
-                        <li>Very simple database class (improves PDO)</li>
-                        <li>Smart &amp; Simple ORM <code>from version 1.3.0</code></li>
-                        <li>Assign/Unset any method on the fly</li>
-                        <li>Secure Session functions</li>
-                        <li>Works on most basic PHP hosting planes</li>
-                        <li>Fully optimized Kernel</li>
-                        <li>Fully flexible Kernel</li>
-                        <li>Fully OOP based</li>
-                    </ul>
-                </p>
-            </div>
-            
-            <div id="getting-started">
-                <h1 class="page-header">Getting started</h1>
-                <p class="label">
-                    <ul>
-                        <li><a href="./version-3.0.0.html">Version 3.0.0</a> <code>New Generation</code></li>
-                        <li><a href="./version-2.0.0.html">Version 2.0.0</a> <code>New Generation</code></li>
-                        <li><a href="./version-1.4.0.html">Version 1.4.0</a> <code>New Configuration options, More Responisve, More Lighter, New Functions, Every thing is now optional</code> </li>
-                        <li><a href="./version-1.3.0.html">Version 1.3.0</a> <code>Kernel Optimized, Added ORM, New Functions, New Core Features</code></li>
-                        <li><a href="./version-1.2.0.html">Version 1.2.0</a> <code>New Configurations options, Class, Function &amp; Code Optimization</code></li>
-                        <li><a href="./version-1.1.1.html">Version 1.1.1</a> <code>Fixed Bugs with some updates</code></li>
-                        <li><a href="./version-1.0.0.html">Version 1.0.0</a></li>
-                    </ul>
-                </p>
-            </div>
-            
-            <div id="developer">
-                <h1 class="page-header">Developer(s)</h1>
-                <ul>
-                    <li><a target="_blank" href="http://fb.com/alash3al">Mohammed Al Ashaal</a></li>
-                </ul>
-            </div>
+        <!-- basic meta -->
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="A micro PHP framework helps you to start your next application easily" />
+        <link rel="shortcut icon" href="//placehold.it/80x80/900/fff/&text=Horus" />
         
-        </div>
-
-    </div>
-    <!-- /.container -->
-
-    <div class="container">
-
-        <hr />
-
-        <footer>
-            <div class="">
-                <div class="">
-                    <p style="text-align: center;">
-                        Copyright &copy; Horus 2014 - Author <a target="_blank" title="View his profile" href="http://fb.com/alash3al">Mohammed Al Ashaal</a>
-                    </p>
+        <title>Horus framework version 4</title>
+    
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+        <link href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/united/bootstrap.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" />
+        <style>body{padding-top: 50px;}</style>
+        <style>
+            body{padding-top: 50px;}
+            .tab-pane{padding: 20px;}
+            .pln{color:#fffefe!important;}
+            pre .str{color:#f4645f;}
+            pre .kwd{color:#4bb1b1;}
+            pre .com{color:#888888;}
+            pre .typ{color:#ef7c61;}
+            pre .lit{color:#bcd42a;}
+            pre .pun,pre .opn,pre .clo{color:#ffffff;}
+            pre .tag{color:#4bb1b1;}
+            pre .atn{color:#ef7c61;}
+            pre .atv{color:#bcd42a;}
+            pre .dec,pre .var{color:#660066;}
+            pre .fun{color:#ff0000;}
+            .prettyprint{display:block;font-family:Monaco,Consolas, "Lucida Console ",monospace;background-color:#333;font-size:10px;border:0;color:#e9e4e5;line-height:1.9em;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;-moz-background-clip:padding-box;-webkit-background-clip:padding-box;background-clip:padding-box;padding:5px!important;white-space:pre;overflow:hidden;}
+            .prettyprint .pln{color:#e9e4e5;}
+            .prettyprint .com{color:#888;}
+            .prettyprint .pun,.prettyprint .opn,.prettyprint .clo{color:#fff;}
+            .prettyprint .dec,.prettyprint .var{color:#606;}
+            .prettyprint .fun{color:red;}
+            .prettyprint code{font-family:Monaco,Consolas, "Lucida Console ",monospace;font-size:12px;}
+            .prettyprint .str,.prettyprint .lit,.prettyprint .atv{color:#bcd42a;}
+            .prettyprint .kwd,.prettyprint .tag{color:#4bb1b1;}
+            .prettyprint .typ,.prettyprint .atn{color:#ef7c61;}
+            .col{margin-top: 3px;}
+        </style>
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+          <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        
+    </head>
+    
+    <body>
+    
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="./"> <span class="glyphicon glyphicon-fire"></span> Horus Framework</a>
+                </div>
+    
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a target="_blank" href="https://github.com/alash3al/Horus"> <span class="fa fa-lg fa-github"></span> Github</a></li>
+                        <li><a target="_blank" href="https://facebook.com/pharaoh.framework"> <span class="fa fa-lg fa-facebook"> </span> Facebook</a></li>
+                        <!-- TODO: <li><a href="#"> <span class="glyphicon glyphicon-arrow-up"></span> Top</a></li> -->
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container -->
+        </nav>
+    
+        <div class="container">
+    
+            <!-- logo -->
+            <div class="row center-block text-center">
+                <h1 >Horus Framework <small class="text-muted">Tiny and smart</small> </h1>
+                <br />
+                <div class="text-center center-block">
+                    <span><iframe src="http://ghbtns.com/github-btn.html?user=alash3al&repo=Horus&type=watch&count=true" height="30" width="118" frameborder="0" scrolling="0" style="width:118px; height: 30px;" allowTransparency="true"></iframe></span>
+                    <span><iframe src="http://ghbtns.com/github-btn.html?user=alash3al&repo=Horus&type=fork&count=true" height="30" width="118" frameborder="0" scrolling="0" style="width:118px; height: 30px;" allowTransparency="true"></iframe></span>
+                    <span><iframe src="http://ghbtns.com/github-btn.html?user=alash3al&type=follow&count=true" height="30" width="168" frameborder="0" scrolling="0" style="width:168px; height: 30px;" allowTransparency="true"></iframe></span>
                 </div>
             </div>
+            
+            <!-- body -->
+            <div class="container text-left">
+                <div class="row" style="max-width: 60%; margin: auto;">
+                    <h3><a data-toggle="modal" data-target="#intro" href="#">#Introduction</a> <small>what is it, why it, and how to start ?</small></h3>
+                    <h3><a data-toggle="modal" data-target="#configs" href="#">#Configuraions</a> <small>is there any configs and how to config it ?</small></h3>
+                    <h3><a data-toggle="modal" data-target="#const" href="#">#Constants</a> <small>horus constants</small> </h3>
+                    <h3><a data-toggle="modal" data-target="#response" href="#">#Response</a> <small>how horus organize your application response?</small> </h3>
+                    <h3><a data-toggle="modal" data-target="#loader" href="#">#Loader</a> <small>is there any class loader and how it works ?</small> </h3>
+                    <h3><a data-toggle="modal" data-target="#router" href="#">#Router</a> <small>what about routing and is it smart ?</small> </h3>
+                    <h3><a data-toggle="modal" data-target="#sql" href="#">#SQL</a> <small>is there any simple database class ?</small> </h3>
+                    <h3><a data-toggle="modal" data-target="#events" href="#">#Events</a> <small>can i use events/hooks ?</small> </h3>
+                    <h3><a data-toggle="modal" data-target="#extend" href="#">#Extend</a> <small>extend horus core !</small> </h3>
+                </div>
+            </div>
+
+            <!-- description(s) -->
+            <div class="row">
+
+                <!-- start.intro -->
+                <div class="modal fade" id="intro" tabindex="-1" role="dialog" aria-labelledby="intro" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3 class="modal-title" id="myModalLabel"> <span class="glyphicon glyphicon-road"></span> Introduction</h3>
+                      </div>
+                      <div class="modal-body">
+                        <h3> <span class="glyphicon glyphicon-info-sign"></span> What is Horus ?</h3>
+                        <strong>Horus</strong> is just a micro php framework helps you tos start your next web application .<br />
+                        <strong>Horus 4</strong> doesn't like to has any complex code. <br />
+                        <strong>Horus 4 Comes with</strong>:
+                        <ul>
+                            <li>SQL Class <code>Based on PDO</code></li>
+                            <li>Events/Hooks</li>
+                            <li>Simple universal class loader</li>
+                            <li>Internal HTTP organizer <code>Response manager</code></li>
+                            <li>Smart light uri router</li>
+                        </ul>
+                        <strong>Horus 4</strong> is ready to work under any design pattern such as <code>MVC/HMVC</code> and it's router
+                        is ready for internal requests <code>Sub Requests</code> . <br />
+                        <hr />
+                        <h3> <span class="glyphicon glyphicon-download"></span> Download </h3>
+                        <ul>
+                            <li>From <a target="_blank" href="//webscripts.softpedia.com/script/Frameworks/Horus-Framework-82303.html">Softpedia</a></li>
+                            <li>From <a href="//github.com/alash3al/Horus/releases/latest" target="_blank">Github Archive</a></li>
+                        </ul>
+                        <hr />
+                        <h3> <span class="glyphicon glyphicon-flash"></span> Hello World</h3>
+                        After downloading horus, and extracting it in your server, just open <code>index.php</code> <br />
+                        you will see something like this: <br /><br />
+<pre class="prettyprint"><code>
+    // load horus kernel
+    require_once 'Horus/Horus.php';
+
+    // sart it
+    $app = new Horus;
+    
+    // print hello world
+    echo 'Hello world';
+    
+    //run it 
+    $app->run();
+    
+</code></pre>
+                         That is the simplest way to use horus . <br />
+                         <strong>But there is no routing ?!!! i need it !!</strong> <br />
+                         Ok, don't worry , you can just <strong>enable routing :D</strong> .<br /><br />
+<pre class="prettyprint"><code>
+    // load horus kernel
+    require_once 'Horus/Horus.php';
+
+    // sart it
+    // and tell horus to use router !
+    // know more about this configs in #Configurations section .
+    $app = new Horus(array( 'horus.use_router' => true ));
+    
+    // print hello world 
+    // only when the index page is requested
+    // through any request method (GET, POST, PUT, ... etc) .
+    $app->router->any('/', function(){
+        echo "Hello world";
+    });
+    
+    //run it 
+    $app->run();
+    
+</code></pre>
+                         
+                         Now close this dialog and see horus <a href="#">#Configuraions</a> dialog .
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-success" data-dismiss="modal">Ok</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- end.intro -->
+                
+                <!-- start.configs -->
+                <div class="modal fade" id="configs" tabindex="-1" role="dialog" aria-labelledby="configs" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3 class="modal-title" id="myModalLabel"> <span class="glyphicon glyphicon-cog"></span> Configurations</h3>
+                      </div>
+                      <div class="modal-body">
+                        Horus 4 nearly has zero configurations , just mini to do better .
+                        <h3> <span class="glyphicon glyphicon-question-sign"></span> How to config ? </h3>
+                        Ok, there is 2 way:
+                        <ul>
+                            <li>On construction <code>like what we did with using router</code></li>
+                            <li>After construction, any where in your code</li>
+                        </ul>
+                        <strong>On construction</strong>
+<pre class="prettyprint"><code> new Horus(array('key' => 'value', 'key2' => 'value2')); </code></pre>
+                        <strong>After construction</strong><br />
+<pre class="prettyprint"><code> 
+// start horus
+$app = new Horus; 
+// configs
+$app->config(array('key' => 'value', 'key2' => 'value2'));
+// to get a config
+echo $app->config('key');
+// to get all
+var_dump($app->config());
+
+</code></pre>
+                        <hr />
+                        <h3> <span class="glyphicon glyphicon-ok-sign"></span> Available Configurations </h3>
+                        <table class="table table-responsive table-bordered table-striped">
+                            <tr>
+                                <td>Config name</td>
+                                <td>Config description</td>
+                                <td>Config value</td>
+                            </tr>
+                            <tr>
+                                <td> <code>horus.use_router</code> </td>
+                                <td> Do you want horus to load router ? </td>
+                                <td> <code>Bool</code> true/false </td>
+                            </tr>
+                            <tr>
+                                <td> <code>horus.use_sql</code> </td>
+                                <td> Do you want horus to load sql db manager ? </td>
+                                <td> <code>Bool</code> true/false </td>
+                            </tr>
+                            <tr>
+                                <td> <code>horus.use</code> </td>
+                                <td> one line to load <code>SQL/Router</code> </td>
+                                <td> <code>'*'</code> will load all <code>(SQL and Router)</code>, <br />
+                                <code>array('SQL', 'Router')</code> to load <code>SQL and Router</code> 
+                                or just choose one to load</td>
+                            </tr>
+                            <tr>
+                                <td> <code>horus.error_404</code> </td>
+                                <td> A callback to handle 404 error docs </td>
+                                <td> must be a valid <code>Callback</code> </td>
+                            </tr>
+                            <tr>
+                                <td> <code>horus.http_version</code> </td>
+                                <td> what is your http interface version ? </td>
+                                <td> <code>String</code> default <code>1.1</code>  </td>
+                            </tr>
+                            <tr>
+                                <td> <code>horus.enable_simulator</code> </td>
+                                <td> Simulate <code>url_rewrite</code> ? (if your server doesn't suuport it) </td>
+                                <td> <code>Bool</code> true/false </td>
+                            </tr>
+                        </table>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-success" data-dismiss="modal">Ok</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- end.configs -->
+                
+                <!-- start.const -->
+                <div class="modal fade" id="const" tabindex="-1" role="dialog" aria-labelledby="intro" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3 class="modal-title" id="myModalLabel"> <span class="glyphicon glyphicon-flag"></span> Constants</h3>
+                      </div>
+                      <div class="modal-body">
+                        <table class="table table-responsive table-bordered table-striped">
+                            <tr>
+                                <td>Constant name</td>
+                                <td>Constant description</td>
+                            </tr>
+                            <tr>
+                                <td><code>horus_version</code></td>
+                                <td>gets horus framework version number <code>float</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>is_ajax</code></td>
+                                <td>is current request thrugh ajax ? <code>bool</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>ds</code></td>
+                                <td>gets system <code>DIRECTORY_SEPARATOR</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>corepath</code></td>
+                                <td>gets horus kernel folder path</td>
+                            </tr>
+                            <tr>
+                                <td><code>basepath</code></td>
+                                <td>gets horus installation folder</td>
+                            </tr>
+                            <tr>
+                                <td><code>horus_start</code></td>
+                                <td>gets horus microtime start</td>
+                            </tr>
+                            <tr>
+                                <td><code>url</code></td>
+                                <td>gets full and direct url to horus (good for assets)</td>
+                            </tr>
+                            <tr>
+                                <td><code>route</code></td>
+                                <td>gets full routed url to any route</td>
+                            </tr>
+                        </table>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-success" data-dismiss="modal">Ok</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- end.const -->
+                
+                <!-- start.response -->
+                <div class="modal fade" id="response" tabindex="-1" role="dialog" aria-labelledby="intro" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3 class="modal-title" id="myModalLabel"> <span class="glyphicon glyphicon-upload"></span> Response</h3>
+                      </div>
+                      <div class="modal-body">
+                        <strong>The response</strong> manager is a http response manager that organize 
+                        your application headers and output . <br />
+                        After organizing it sends headers then it sends the output, so there will be  
+                        no errors like <code>headers already sent</code> . <br />
+                        <strong>But</strong> to use it, you should know: <br /><br />
+<pre class="prettyprint"><code>
+// start horus
+$app = new Horus;
+
+// send a header like header()
+$app->response->header($header_string, $replace = false, $status = 200);
+
+// set status code
+$app->response->status(200);
+
+// get the status code
+echo $app->response->status();
+
+// stop the application and send message with status code
+$app->response->halt($code, $message = null);
+
+// redirect
+$app->response->redirect($to, $http_code = 302);
+
+// cache wep page over http for some time
+$app->response->cache($ttl);
+
+// send all headers then the output
+// this method by default called in Horus::run() method
+// so you don't need to use it .
+$app->response->send($output, $return = false); // $return (true) or echo (false) 
+
+// run it
+$app->run();
+
+</code></pre>
+
+
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-success" data-dismiss="modal">Ok</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- end.response -->
+                
+                <!-- start.loader -->
+                <div class="modal fade" id="loader" tabindex="-1" role="dialog" aria-labelledby="intro" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3 class="modal-title" id="myModalLabel"> <span class="glyphicon glyphicon-arrow-up"></span> Loader</h3>
+                      </div>
+                      <div class="modal-body">
+                        <strong>Horus</strong> Loader is a universal classes loader that works with
+                        prefixes and namespaces . <br />
+                        <strong>Horus Loader</strong> uses the class name to map to it's own path<br />
+<pre class="prettyprint"><code>
+// start horus
+$app = new Horus;
+
+// register namespace or prefix
+$app->loader->register('Name', 'full/path');
+
+// or register an array
+$app->loader->register(array( 
+    'Name'  =>  'full/path', 
+    'Blog'  =>  'path/to/Blog/' 
+)); 
+
+// unregister a namespace/prefix
+$app->loader->unregister('Name');
+
+// get all registered
+var_dump($app->loader->get());
+
+// by default horus registered it's own core directory
+// as namespace/prefix "Horus"
+
+
+// run it
+$app->run();
+
+</code></pre>
+                        
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-success" data-dismiss="modal">OK</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- end.loader -->
+                
+                <!-- start.router -->
+                <div class="modal fade" id="router" tabindex="-1" role="dialog" aria-labelledby="intro" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3 class="modal-title" id="myModalLabel"> <span class="glyphicon glyphicon-globe"></span> Routing system</h3>
+                      </div>
+                      <div class="modal-body">
+                        <strong>Horus Router</strong> is a lightweight smart url router that can be used in any 
+                        application also ready for <strong>HMVC / MVC</strong> . <br />
+                        It's event driven, you list a callback with it's uri-pattern, so when the uri hit in the browser <br />
+                        the callback will be executed . <br />
+                        <strong>Horus Router</strong> also supports any http method <br />
+                        Also it supports class routing that helps you make a class to handle a uri with it's childs . <br />
+<br />
+<pre class="prettyprint"><code>
+// start horus
+// use the router
+$app = new Horus(array( 'horus.use_router' => true ));
+
+// let's handle the root '/' in a get request
+$app->router->get('/', function(){
+    echo "Hi";
+});
+
+// let's handle the root '/' in a post request
+$app->router->post('/', function(){
+    echo "Hi";
+});
+
+// let's handle the root '/' in a put request
+$app->router->put('/', function(){
+    echo "Hi";
+});
+
+// let's handle the root '/' in a xx request
+$app->router->xx('/', function(){
+    echo "Hi";
+});
+
+// let's handle the root '/' in a get and post request
+$app->router->get_post('/', function(){
+    echo "Hi";
+});
+
+// let's handle the root '/' in a get,post and put request
+$app->router->get_post_put('/', function(){
+    echo "Hi";
+});
+
+// let's handle the root '/' in any request
+$app->router->any('/', function(){
+    echo "Hi";
+});
+
+// to handle multiple patterns with one callback
+// let's handle the root '/' and 'index' in a get request
+$app->router->any(array('/', 'index'), function(){
+    echo "Hi";
+});
+
+// named params
+$app->router->any('/hi/{num}', function($num){
+    echo "Hi $num";
+});
+
+// named params
+$app->router->any('/hi/{num}/{alpha}', function($num, $alpha){
+    echo "Hi $num and $alpha";
+});
+
+// handle a path with it's all childs
+$app->router->any('/hi/{*}', function(){
+    echo "Hi i'll be here for all";
+});
+
+// nested routes
+$app->router->any('/hi/{*}', function(){
+    echo "Hi i'll be here for all";
+    $app->router->any('/hi/page-1', function(){
+        echo "i'll be here only for 'page-1'";
+        // and so ...
+    }, true); // ---> notecie the 3rd param ! set to true in this case
+});
+
+
+// all available shortcuts:
+/*
+'{num}'      =>  '([0-9\.,]+)',
+'{alpha}'    =>  '([a-zA-Z]+)',
+'{alnum}'    =>  '([a-zA-Z0-9\.]+)',
+'{str}'      =>  '([a-zA-Z0-9-_\.]+)',
+'{any}'      =>  '(.+)',
+'{*}'        =>  '?|(.*?)'
+*/
+
+// you can add tour own shortcut
+$app->router->shortcut(':my:', '(.*?)');
+
+// you can remove a shortcut
+$app->router->unshortcut(':my:');
+
+// do you know that you can call another route from
+// any route
+// say we have this login router
+$app->router->post('/login', function(){
+    var_dump($_POST);
+});
+
+// say that we have this index router
+// and we want to call login router without redirect !
+$app->router->any('/', function(){
+    // get horus instance
+    $app = Horus::instance;
+    
+    // call login handler over HTTP POST
+    // also you can pass array of params to it
+    // and show it's response
+    echo $app->router->request('/login', 'POST', array('user'=>'mohammed', 'pass'=>'test'));
+});
+
+// instead of functions/anonymous functions, you can route 
+// a full class
+// make this class
+class test
+{
+    // must be exists
+    function index()
+    {
+        echo 'hi we are in the index';
+    }
+    
+    function page_1()
+    {
+        echo "page_1";
+    }
+}
+
+// make it handle '/'
+$app->router->any('/', 'test');
+
+// now when you call '/' in your browser
+// test::index() will be called
+
+// and when you call '/page_1' in your browser
+// test::page_1() will be called
+
+// and when you call '/page-1' in your browser
+// test::page_1() will be called
+
+// and when you call '/page-1.extension' in your browser
+// test::page_1() will be called
+
+
+// run it
+$app->run();
+
+</code></pre>
+                        
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-success" data-dismiss="modal">Ok</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- end.router -->
+                
+                <!-- start.sql -->
+                <div class="modal fade" id="sql" tabindex="-1" role="dialog" aria-labelledby="intro" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3 class="modal-title" id="myModalLabel"> <span class="glyphicon glyphicon-cloud"></span> SQL system </h3>
+                      </div>
+                      <div class="modal-body">
+                        <strong>Horus</strong> comes with its own SQL class that is extends <strong>PDO</strong> and adds some new methods .<br />
+<br />
+<pre class="prettyprint"><code>
+// start horus
+$app = new Horus(array( 'horus.use_sql' => true ));
+
+// basic connection ( just like pdo )
+$app->sql->connect($dns, $user, $pass, $array_options);
+
+// or connect to any driver of the following
+$app->sql->mysql($host, $db, $user, $pass);
+$app->sql->mariaDB($host, $db, $user, $pass);
+$app->sql->mssql($host, $db, $user, $pass);
+$app->sql->oracle($host, $db, $user, $pass);
+$app->sql->pgsql($host, $db, $user, $pass);
+$app->sql->sqlite($file, $prsistent = false);
+
+// to get the current used driver
+echo $app->sql->driver();
+
+// to do a query
+// returns false if not-done or $app->sql object if ok .
+$app->sql->query($sql_statment, $inputs_array);
+// example:
+$app->sql->query('select * from tablename where mycolumn = ? and my2column  = ?', array('value1', value2));
+
+// it comes with some basic shortcut methods
+// insert
+$app->sql->insert('tablename', array(
+    // 1)- array of columns
+    array('name', 'email', 'password'),
+    
+    // 2)- array(s) of inserts ! in just one query !!
+    array('myname-1', 'mymail-1', 'mypass-1'),
+    array('myname-2', 'mymail-2', 'mypass-2') // more inserts
+));
+
+// replace
+$app->sql->insert('tablename', array(
+    // 1)- array of columns
+    array('name', 'email', 'password'),
+    
+    // 2)- array(s) of inserts ! in just one query !!
+    array('myname-1', 'mymail-1', 'mypass-1'),
+    array('myname-2', 'mymail-2', 'mypass-2') // more inserts
+), true); // 3rd param set to true in replace
+
+// do you need simple insert/replace for single insert ?
+$app->sql->insert('tablename', array(
+    'name'  =>  'myname',
+    'email' =>  'my@em.ail',
+    'password' => 'my secret word'
+)); 
+// that is an insert, but for replace
+// but for replace set the last param to true or 1, like mltiple inserts
+
+// update
+// update tablename set name = ? , email = ? where id = ?
+$app->sql->update('tablename', array(
+    'name'  =>  'newname',
+    'email' => 'newmail'
+), 'id = ?', 5);
+
+// delete
+// delete from tablename where id = ?
+$app->sql->delete('tablename', 'id = ?', 5);
+
+// run it
+$app->run();
+
+</code></pre>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-success" data-dismiss="modal">Ok</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- end.sql -->
+                
+                <!-- start.events -->
+                <div class="modal fade" id="events" tabindex="-1" role="dialog" aria-labelledby="intro" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3 class="modal-title" id="myModalLabel"> <span class="glyphicon glyphicon-flash"></span> Evetns/Hooks </h3>
+                      </div>
+                      <div class="modal-body">
+                        <strong>Horus</strong> comes with simple <strong>events/hooks</strong> system to help you extend your application . <br />
+<pre class="prettyprint"><code>
+// start horus
+$app = new Horus;
+
+// listen listener(s) to an event
+$app->events->listen('tag.1', function(){
+    echo 'event-1';
+});
+
+$app->events->listen('tag.1', function($x){
+    echo 'event-'.$x;
+});
+
+// disptch / trigger event and pass args
+$app->events->trigger('tag.1', array(5));
+
+// do you know that the last argument will contain 
+// the value of last executed event !
+// this is useful for filters
+
+// run it
+$app->run();
+
+</code></pre>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-success" data-dismiss="modal">Ok</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- end.evetns -->
+                
+                <!-- start.extend -->
+                <div class="modal fade" id="extend" tabindex="-1" role="dialog" aria-labelledby="intro" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3 class="modal-title" id="myModalLabel"> <span class="glyphicon glyphicon-pushpin"></span> Extend Horus </h3>
+                      </div>
+                      <div class="modal-body">
+<pre class="prettyprint"><code>
+// start horus
+$app = new Horus;
+
+// assign a var
+$app->var = 'value';
+// get it
+echo $app->var;
+
+// assign method
+$app->method = function(){
+    echo "hi";
+};
+// call it
+$app->method();
+
+// unset
+unset($app->var);
+
+// isset
+isset($app->var);
+
+
+// you can also listen events to extend horus
+// just use those
+// horus.before.dispatch
+// horus.after.dispatch
+// horus.before.output
+// horus.after.output
+// the output is stored in $app->__output
+
+
+// run it
+$app->run();
+
+</code></pre>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-success" data-dismiss="modal">Ok</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- end.extend -->
+                
+            </div>
+            
+        </div>
+        <!-- /.container -->
+        
+        <footer class="page-footer text-center center block text-danger" style="padding: 15px; margin-top: 20px; border-top: #ccc; background: #f9f9f9;">
+            Copyright &copy; 2014 Horus Framework <br />
+            Built using <a href="//getbootstrap.com" target="_blank">Twitter Bootstrap</a> <br />
+            Author <a href="//fb.com/hawy.code" target="_blank">Hawy Code</a>
         </footer>
-
-    </div>
-    <!-- /.container -->
-
-    <!-- JavaScript -->
-    <script src="js/jquery-1.10.2.js"></script>
-    <script src="js/bootstrap.js"></script>
-    <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js?skin=sunburst"></script>    
-
-</body>
+        
+        <!-- JavaScript -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <script src="http://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+        <script type="text/javascript">
+                $('[role="dialog"]').modal('hide');
+                $('[data-dismiss="modal"]').click(function(){
+                    $('[role="dialog"]').modal('hide');
+                });
+            });
+        </script>
+    
+    </body>
 
 </html>
+
+                <!-- 
+                <div class="modal fade" id="intro" tabindex="-1" role="dialog" aria-labelledby="intro" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3 class="modal-title" id="myModalLabel">Modal title</h3>
+                      </div>
+                      <div class="modal-body">
+                        ...
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-success" data-dismiss="modal">Ok</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                -->
