@@ -7,13 +7,11 @@
         <!-- basic meta -->
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="description" content="A micro PHP framework helps you to start your next application easily" />
-        <link rel="shortcut icon" href="//placehold.it/80x80/900/fff/&text=Horus" />
+        <meta name="description" content="A micro PHP framework helps you to start your next application easily, Also you can build and redistribute your own framework on top of horus" />
         
-        <title>Horus framework version 4</title>
+        <title>Horus framework version 4.1</title>
     
         <!-- Bootstrap -->
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
         <link href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/united/bootstrap.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" />
         <style>body{padding-top: 50px;}</style>
@@ -83,7 +81,7 @@
     
             <!-- logo -->
             <div class="row center-block text-center">
-                <h1 >Horus Framework <small class="text-muted">Tiny and smart</small> </h1>
+                <h1 >Horus Framework <small class="text-muted">Minimal and Lightest</small> </h1>
                 <br />
                 <div class="text-center center-block">
                     <span><iframe src="http://ghbtns.com/github-btn.html?user=alash3al&repo=Horus&type=watch&count=true" height="30" width="118" frameborder="0" scrolling="0" style="width:118px; height: 30px;" allowTransparency="true"></iframe></span>
@@ -99,7 +97,6 @@
                     <h3><a data-toggle="modal" data-target="#configs" href="#">#Configuraions</a> <small>is there any configs and how to config it ?</small></h3>
                     <h3><a data-toggle="modal" data-target="#const" href="#">#Constants</a> <small>horus constants</small> </h3>
                     <h3><a data-toggle="modal" data-target="#response" href="#">#Response</a> <small>how horus organize your application response?</small> </h3>
-                    <h3><a data-toggle="modal" data-target="#loader" href="#">#Loader</a> <small>is there any class loader and how it works ?</small> </h3>
                     <h3><a data-toggle="modal" data-target="#router" href="#">#Router</a> <small>what about routing and is it smart ?</small> </h3>
                     <h3><a data-toggle="modal" data-target="#sql" href="#">#SQL</a> <small>is there any simple database class ?</small> </h3>
                     <h3><a data-toggle="modal" data-target="#events" href="#">#Events</a> <small>can i use events/hooks ?</small> </h3>
@@ -122,9 +119,11 @@
                         <h3> <span class="glyphicon glyphicon-info-sign"></span> What is Horus ?</h3>
                         <strong>Horus</strong> is just a micro php framework helps you tos start your next web application .<br />
                         <strong>Horus 4</strong> doesn't like to has any complex code. <br />
+                        <strong>Using this version of horus <code>4.x.x</code></strong> you can build you own distribution on top of horus . <br />
                         <strong>Horus 4 Comes with</strong>:
                         <ul>
                             <li>SQL Class <code>Based on PDO</code></li>
+                            <li>SQL-Table Class, For <code>CRUD</code></li>
                             <li>Events/Hooks</li>
                             <li>Simple universal class loader</li>
                             <li>Internal HTTP organizer <code>Response manager</code></li>
@@ -148,13 +147,13 @@
 
     // sart it
     $app = new Horus;
-    
+
     // print hello world
     echo 'Hello world';
-    
+
     //run it 
     $app->run();
-    
+
 </code></pre>
                          That is the simplest way to use horus . <br />
                          <strong>But there is no routing ?!!! i need it !!</strong> <br />
@@ -167,19 +166,18 @@
     // and tell horus to use router !
     // know more about this configs in #Configurations section .
     $app = new Horus(array( 'horus.use_router' => true ));
-    
+
     // print hello world 
     // only when the index page is requested
     // through any request method (GET, POST, PUT, ... etc) .
     $app->router->any('/', function(){
         echo "Hello world";
     });
-    
+
     //run it 
     $app->run();
     
 </code></pre>
-                         
                          Now close this dialog and see horus <a href="#">#Configuraions</a> dialog .
                       </div>
                       <div class="modal-footer">
@@ -189,7 +187,7 @@
                   </div>
                 </div>
                 <!-- end.intro -->
-                
+
                 <!-- start.configs -->
                 <div class="modal fade" id="configs" tabindex="-1" role="dialog" aria-labelledby="configs" aria-hidden="true">
                   <div class="modal-dialog">
@@ -260,6 +258,11 @@ var_dump($app->config());
                                 <td> Simulate <code>url_rewrite</code> ? (if your server doesn't suuport it) </td>
                                 <td> <code>Bool</code> true/false </td>
                             </tr>
+                            <tr>
+                                <td> <code>horus.controllers_dir</code> </td>
+                                <td> if you  want horus to autoload the class that handles a routed uri </td>
+                                <td> <code>string</code> </td>
+                            </tr>
                         </table>
                       </div>
                       <div class="modal-footer">
@@ -269,7 +272,7 @@ var_dump($app->config());
                   </div>
                 </div>
                 <!-- end.configs -->
-                
+
                 <!-- start.const -->
                 <div class="modal fade" id="const" tabindex="-1" role="dialog" aria-labelledby="intro" aria-hidden="true">
                   <div class="modal-dialog">
@@ -325,7 +328,7 @@ var_dump($app->config());
                   </div>
                 </div>
                 <!-- end.const -->
-                
+
                 <!-- start.response -->
                 <div class="modal fade" id="response" tabindex="-1" role="dialog" aria-labelledby="intro" aria-hidden="true">
                   <div class="modal-dialog">
@@ -381,56 +384,7 @@ $app->run();
                   </div>
                 </div>
                 <!-- end.response -->
-                
-                <!-- start.loader -->
-                <div class="modal fade" id="loader" tabindex="-1" role="dialog" aria-labelledby="intro" aria-hidden="true">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h3 class="modal-title" id="myModalLabel"> <span class="glyphicon glyphicon-arrow-up"></span> Loader</h3>
-                      </div>
-                      <div class="modal-body">
-                        <strong>Horus</strong> Loader is a universal classes loader that works with
-                        prefixes and namespaces . <br />
-                        <strong>Horus Loader</strong> uses the class name to map to it's own path<br />
-<pre class="prettyprint"><code>
-// start horus
-$app = new Horus;
 
-// register namespace or prefix
-$app->loader->register('Name', 'full/path');
-
-// or register an array
-$app->loader->register(array( 
-    'Name'  =>  'full/path', 
-    'Blog'  =>  'path/to/Blog/' 
-)); 
-
-// unregister a namespace/prefix
-$app->loader->unregister('Name');
-
-// get all registered
-var_dump($app->loader->get());
-
-// by default horus registered it's own core directory
-// as namespace/prefix "Horus"
-
-
-// run it
-$app->run();
-
-</code></pre>
-                        
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-success" data-dismiss="modal">OK</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- end.loader -->
-                
                 <!-- start.router -->
                 <div class="modal fade" id="router" tabindex="-1" role="dialog" aria-labelledby="intro" aria-hidden="true">
                   <div class="modal-dialog">
@@ -550,7 +504,15 @@ $app->router->any('/', function(){
     // call login handler over HTTP POST
     // also you can pass array of params to it
     // and show it's response
-    echo $app->router->request('/login', 'POST', array('user'=>'mohammed', 'pass'=>'test'));
+    echo $app->router->request
+    (
+        // first param is the request uri
+        '/login', 
+        // second param is request method
+        'POST', 
+        // third param is array of request params (optional)
+        array('user'=>'mohammed', 'pass'=>'test')
+    );
 });
 
 // instead of functions/anonymous functions, you can route 
@@ -568,9 +530,19 @@ class test
     {
         echo "page_1";
     }
+    
+    function _page()
+    {
+        // cannot be accessed from the router
+        // as the router ignores any methods starts 
+        // with '_'  (underscore)
+    }
 }
 
-// make it handle '/'
+// make the 'test class' handles '/' uri
+// if you set the 'horus.controllers_dir' 
+// you don't need to load the class manually, just
+// type its name and will be loaded ( class filename = class name )
 $app->router->any('/', 'test');
 
 // now when you call '/' in your browser
@@ -585,6 +557,33 @@ $app->router->any('/', 'test');
 // and when you call '/page-1.extension' in your browser
 // test::page_1() will be called
 
+// do you know that you can use horus controller
+// just extends Horus_Controller class
+// then you have full access to Horus object
+class test extends Horus_Conroller
+{
+    // must be exists
+    function index()
+    {
+        // now you could access any thing in Horus class using '$this'
+        // example:
+        // $this->config(....)
+        echo 'hi we are in the index';
+    }
+}
+
+// do you want to get segments of current uri ?
+$segments = $app->router->segments();
+
+// or get only the first segments ?
+echo $app->router->segments(0);
+
+// more advanced ?
+// ok, say that we are in '/page1/page2/page3'
+// and you want to get segments starting from '/page2'
+// it uses regex, so you must escape regex chars
+// so
+$segments = $app->router->segments('', '\/page1\/page2');
 
 // run it
 $app->run();
@@ -628,6 +627,9 @@ $app->sql->sqlite($file, $prsistent = false);
 
 // to get the current used driver
 echo $app->sql->driver();
+
+// to get the current used database
+echo $app->sql->database();
 
 // to do a query
 // returns false if not-done or $app->sql object if ok .
@@ -675,6 +677,130 @@ $app->sql->update('tablename', array(
 // delete
 // delete from tablename where id = ?
 $app->sql->delete('tablename', 'id = ?', 5);
+
+// set name (charset)
+$app->sql->charset('utf8');
+
+// get current database tables array 
+$tables = $app->sql->tables();
+
+// or for another db
+$tables = $app->sql->tables('mysql');
+
+// if table_exists of current used database ?
+$app->sql->table_exists('my_table');
+
+// if table_exists of another used database ?
+$app->sql->table_exists('my_table', 'mydatabase');
+
+// you can check if multiple tables exists or not
+// just replace 'my_table' with array of tables to check
+
+// get current database table columns array 
+$columns = $app->sql->columns('my_table');
+
+// get another database table columns array 
+$columns = $app->sql->columns('my_table', 'my_database');
+
+// a column exists (current_database) ?
+$app->sql->column_exists('my_table', 'my_column');
+
+// or another database
+$app->sql->column_exists('my_table', 'my_column', 'mydatabase');
+
+// you can check if multiple columns exists or not
+// just replace 'my_columns' with array of columns to check
+
+# -------------------------------------------------
+
+// Do you know that there is another way and simple ?
+// example, work on a teble called 'posts'
+// this will create a new full object of Horus_SQL_Table class
+$posts = $app->sql_table->using('posts');
+
+// now add entries
+$posts->add(array(
+    'post_title'    =>  'title here',
+    'post_time'     =>  time(),
+    'post_content'  =>  'content here'
+));
+
+// or multiple entries
+$posts->add(array(
+    array('post_title',     'post_time',    'post_content'),
+    array('title 1',        time(),         'content 1'),
+    array('title 2',        time(),         'content 2'),
+    array('title 3',        time(),         'content 3')
+));
+
+// replace entries (same as add single and multiple support, just change add to rep)
+$posts->rep(array(
+    'post_title'    =>  'title here',
+    'post_time'     =>  time(),
+    'post_content'  =>  'content here'
+));
+$posts->rep(array(
+    array('post_title',     'post_time',    'post_content'),
+    array('title 1',        time(),         'content 1'),
+    array('title 2',        time(),         'content 2'),
+    array('title 3',        time(),         'content 3')
+));
+
+// delete entries
+// $posts->del($where, $inputs);
+// $where : without 'WHERE' keyword
+$posts->del('post_id = ?',                      5);
+$posts->del('post_title = ? and post_id = ?',   array('title',  5));
+
+// edit entries
+// $posts->edit(array $edits,   $where, $inputs);
+// $where : without 'WHERE' keyword
+$posts->edit(array(
+    'post_title'    =>  'new title'
+),  'post_id = ?',  5);
+
+// fetch one
+// $posts->get_one($where, $inputs, $fetch = PDO::FETCH_ASSOC)
+// $where : without 'WHERE' keyword
+$posts->get_one('post_id = ?',  5);
+
+// fetch all
+// $posts->get_all($where = null, $inputs = null, $more_sql = null, $more_inputs = null)
+// $where : without 'WHERE' keyword
+// $more_sql: if you want to add more sql statement
+// $more_inputs: inputs for $more_sql
+all = $posts->get_all('post_id = ?',  5)->fetchAll(PDO::FETCH_ASSOC);
+
+// count rows
+// $posts->count($where = null, $inputs = null)
+// $where : without 'WHERE' keyword
+// returns float number
+$number = $posts->count('post_title like ?', '%title%');
+
+// optimize
+$posts->optimize();
+
+// drop
+$posts->drop();
+
+// truncate
+$posts->truncate();
+
+// is the table exists
+$posts->exists();
+
+// get table columns
+$cols = $posts->cols();
+
+// if column exists ?
+$posts->exists('my_col');
+
+// or array of columns
+$posts->exists(array('col1', 'col2'));
+
+// you can access any $sql method easily
+$posts->rowCount();
+$posts->lastInsertId();
 
 // run it
 $app->run();
@@ -794,7 +920,7 @@ $app->run();
         <footer class="page-footer text-center center block text-danger" style="padding: 15px; margin-top: 20px; border-top: #ccc; background: #f9f9f9;">
             Copyright &copy; 2014 Horus Framework <br />
             Built using <a href="//getbootstrap.com" target="_blank">Twitter Bootstrap</a> <br />
-            Author <a href="//fb.com/hawy.code" target="_blank">Hawy Code</a>
+            Author <a href="//fb.com/alash3al" target="_blank">Mohammed Al Ashaal</a>
         </footer>
         
         <!-- JavaScript -->
