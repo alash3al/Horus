@@ -344,7 +344,7 @@ $horus->router->post('/login', function(){
 // and we want to call login router without redirect !
 $horus->router->any('/', function(){
     // get horus instance
-    $horus = Horus::instance;
+    $horus = Horus::instance();
     
     // call login handler over HTTP POST
     // also you can pass array of params to it
