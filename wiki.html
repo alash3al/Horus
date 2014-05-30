@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+    
+        <!-- basic meta -->
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="A micro and portable PHP framework helps you to start your next application easily, Also you can build and redistribute your own framework on top of horus" />
+        
+        <title>Horus framework version 5 - portable php framework</title>
+    
+        <!-- Bootstrap -->
+        <link href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/united/bootstrap.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" />
+        <style>body{padding-top: 50px;}</style>
+        <style>
+            body{padding-top: 50px;}
+            .tab-pane{padding: 20px;}
+            .pln{color:#fffefe!important;}
+            pre .str{color:#f4645f;}
+            pre .kwd{color:#4bb1b1;}
+            pre .com{color:#888888;}
+            pre .typ{color:#ef7c61;}
+            pre .lit{color:#bcd42a;}
+            pre .pun,pre .opn,pre .clo{color:#ffffff;}
+            pre .tag{color:#4bb1b1;}
+            pre .atn{color:#ef7c61;}
+            pre .atv{color:#bcd42a;}
+            pre .dec,pre .var{color:#660066;}
+            pre .fun{color:#ff0000;}
+            .prettyprint{display:block;font-family:Monaco,Consolas, "Lucida Console ",monospace;background-color:#333;font-size:10px;border:0;color:#e9e4e5;line-height:1.9em;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;-moz-background-clip:padding-box;-webkit-background-clip:padding-box;background-clip:padding-box;padding:5px!important;white-space:pre;overflow:hidden;}
+            .prettyprint .pln{color:#e9e4e5;}
+            .prettyprint .com{color:#888;}
+            .prettyprint .pun,.prettyprint .opn,.prettyprint .clo{color:#fff;}
+            .prettyprint .dec,.prettyprint .var{color:#606;}
+            .prettyprint .fun{color:red;}
+            .prettyprint code{font-family:Monaco,Consolas, "Lucida Console ",monospace;font-size:12px;}
+            .prettyprint .str,.prettyprint .lit,.prettyprint .atv{color:#bcd42a;}
+            .prettyprint .kwd,.prettyprint .tag{color:#4bb1b1;}
+            .prettyprint .typ,.prettyprint .atn{color:#ef7c61;}
+            .col{margin-top: 3px;}
+            .prettyprint{font-size: 12px;}
+        </style>
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+          <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        
+    </head>
+    
+    <body>
+    
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="./"> <span class="glyphicon glyphicon-flash"></span> Horus Framework</a>
+                </div>
+    
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a target="_blank" href="https://github.com/alash3al/Horus"> <span class="fa fa-lg fa-github"></span> Github</a></li>
+                        <li><a target="_blank" href="https://facebook.com/pharaoh.framework"> <span class="fa fa-lg fa-facebook"> </span> Facebook</a></li>
+                        <!-- TODO: <li><a href="#"> <span class="glyphicon glyphicon-arrow-up"></span> Top</a></li> -->
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container -->
+        </nav>
+    
+        <div class="container">
+    
+            <!-- logo -->
+            <div class="row center-block text-center">
+
+                <br />
+                <div class="text-center center-block">
+                    <span><iframe src="http://ghbtns.com/github-btn.html?user=alash3al&repo=Horus&type=watch&count=true" height="30" width="118" frameborder="0" scrolling="0" style="width:118px; height: 30px;" allowTransparency="true"></iframe></span>
+                    <span><iframe src="http://ghbtns.com/github-btn.html?user=alash3al&repo=Horus&type=fork&count=true" height="30" width="118" frameborder="0" scrolling="0" style="width:118px; height: 30px;" allowTransparency="true"></iframe></span>
+                    <span><iframe src="http://ghbtns.com/github-btn.html?user=alash3al&type=follow&count=true" height="30" width="168" frameborder="0" scrolling="0" style="width:168px; height: 30px;" allowTransparency="true"></iframe></span>
+                </div>
+            </div>
+            
+            
+            <!-- body -->
+            <div class="container text-left">
+<pre class="prettyprint"><code>
+    // load horus kernel
+    require_once 'Horus/Horus.php';
+
+    // start it
+    $horus = new Horus;
+
+    // print hello world on the '/' path when the request method is GET
+    $horus->router->get('/', create_function('', ' echo "Hello world"; '));
+
+    //run it 
+    $horus->run();
+</code></pre>
+            
+                <div class="row" style="max-width: 60%; margin: auto;">
+                    <h3><a data-toggle="modal" data-target="#intro" href="#">#Introduction</a> <small>what is it, why it, and how to start ?</small></h3>
+                    <h3><a data-toggle="modal" data-target="#tour" href="#">#Tour</a> <small>Take a tour</small> </h3>
+                    <h3><a data-toggle="modal" data-target="#blog" href="#">#SimpleBlog</a> <small>very simple blog</small> </h3>
+                </div>
+            </div>
+
+            <!-- description(s) -->
+            <div class="row">
+
+                <!-- start.intro -->
+                <div class="modal fade" id="intro" tabindex="-1" role="dialog" aria-labelledby="intro" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3 class="modal-title" id="myModalLabel"> <span class="glyphicon glyphicon-road"></span> Introduction</h3>
+                      </div>
+                      <div class="modal-body">
+                        <h3> <span class="glyphicon glyphicon-info-sign"></span> What is Horus ?</h3>
+                        <strong>Horus</strong> is just a micro php framework helps you to start your next web application .<br />
+                        <strong>Horus 5</strong> doesn't like to has any complex code. <br />
+                        <strong>Horus 5 Comes with</strong>:
+                        <ul>
+                            <li>SQL Class <code>Based on PDO</code></li>
+                            <li>Events/Hooks</li>
+                            <li>Simple universal class loader</li>
+                            <li>Smart light uri router</li>
+                            <li>Output control</li>
+                        </ul>
+                        <hr />
+                        <h3> <span class="glyphicon glyphicon-download"></span> Download </h3>
+                        <ul>
+                            <li>From <a target="_blank" href="//webscripts.softpedia.com/script/Frameworks/Horus-Framework-82303.html">Softpedia</a></li>
+                            <li>From <a href="//github.com/alash3al/Horus/releases/latest" target="_blank">Github Archive</a></li>
+                        </ul>
+                        <hr />
+                        <h3> <span class="glyphicon glyphicon-flash"></span> Hello World</h3>
+                        After downloading horus, and extracting it in your server, just open <code>index.php</code> <br />
+                        you will see something like this: <br /><br />
+<pre class="prettyprint"><code>
+    // load horus kernel
+    require_once 'Horus/Horus.php';
+
+    // start it
+    $horus = new Horus;
+
+    // print hello world on the '/' path when the request method is GET
+    $horus->router->get('/', create_function('', ' echo "Hello world"; '));
+
+    //run it 
+    $horus->run();
+</code></pre>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-success" data-dismiss="modal">Ok</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- end.intro -->
+
+                <!-- start.tour -->
+                <div class="modal fade" id="tour" tabindex="-1" role="dialog" aria-labelledby="intro" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3 class="modal-title" id="myModalLabel"> <span class="glyphicon glyphicon-retweet"></span> Tour </h3>
+                      </div>
+                      <div class="modal-body">
+
+<pre class="prettyprint"><code>
+// load horus
+require 'Horus.php';
+
+// start it
+$horus = new Horus;
+
+// handle the index in a get request
+$horus->router->get('/', function(){
+    print 'hello world';
+});
+
+// run it
+$horus->run();
+</code></pre>
+
+<h3> <span class="glyphicon glyphicon-glob"></span> Routes</h3>
+<p>
+    A Route is a <code>{HTTP-Method} + {URL pattern} + {Handler}</code>  . <br />
+    <ul>
+        <li> <code>HTTP Method</code>: a thing like <code>GET, POST, PUT, DELETE, ... etc</code> </li>
+        <li> <code>URL pattern</code>: the pattern that match a url under assocated http method and the <strong>handler</strong> </li>
+        <li> <code>Handler</code>: any valid php callback that will handle the pattern . </li>
+    </ul>
+    <b>Examples:</b>
+</p>
+<pre class="prettyprint"><code>
+// load horus
+require 'Horus.php';
+
+// start it
+$horus = new Horus;
+
+// handle the pattern '/'
+// under GET method
+// using the anonymous function [or any php valid callback]
+$horus->router->get('/', function(){
+    print 'hello world';
+});
+
+// handle the pattern '/'
+// under POST method
+// using the anonymous function [or any php valid callback]
+$horus->router->post('/', function(){
+    print 'hello world';
+});
+
+// handle the pattern '/'
+// under PUT method
+// using the anonymous function [or any php valid callback]
+$horus->router->put('/', function(){
+    print 'hello world';
+});
+
+// handle the pattern '/'
+// under DELETE method
+// using the anonymous function [or any php valid callback]
+$horus->router->delete('/', function(){
+    print 'hello world';
+});
+
+// handle the pattern '/'
+// under XYZ method [ any custom method ]
+// using the anonymous function [or any php valid callback]
+$horus->router->xyz('/', function(){
+    print 'hello world';
+});
+
+// handle the pattern '/'
+// under GET & POST method
+// using the anonymous function [or any php valid callback]
+$horus->router->get_post('/', function(){
+    print 'hello world';
+});
+
+// handle the pattern '/'
+// under GET, PUT & POST method
+// using the anonymous function [or any php valid callback]
+$horus->router->get_put_post('/', function(){
+    print 'hello world';
+});
+
+// handle the pattern '/'
+// under any method [get,post,put,..... all]
+// using the anonymous function [or any php valid callback]
+$horus->router->any('/', function(){
+    print 'hello world';
+});
+
+# Route patterns may include regex parameters
+$horus->router->any('/hello/([a-zA-Z0-9-_\.]+)', function($name){
+    print "hello $name";
+});
+
+# instead of writing regex, there are some regex shortcuts in horus router
+/*
+'{num}'      =>  '([0-9\.,]+)',
+'{alpha}'    =>  '([a-zA-Z]+)',
+'{alnum}'    =>  '([a-zA-Z0-9\.]+)',
+'{str}'      =>  '([a-zA-Z0-9-_\.]+)',
+'{any}'      =>  '(.+)',
+'{*}'        =>  '?|(.*?)'
+*/
+
+# You can add your own custom shortcuts
+$horus->router->shortcut(':my:', '(.*?)');
+# Or
+    $this->shortcut(array(
+        '{num}'      =>  '([0-9\.,]+)',
+        '{alpha}'    =>  '([a-zA-Z]+)',
+        '{alnum}'    =>  '([a-zA-Z0-9\.]+)',
+        '{str}'      =>  '([a-zA-Z0-9-_\.]+)',
+        '{any}'      =>  '(.+)',
+        '{*}'        =>  '?|(.*?)'
+    ));
+
+// you can remove a shortcut
+$horus->router->unshortcut(':my:');
+
+# You can group some routes under one pattern
+$horus->router->with('/admin', function() use($horus) {
+
+	// route the 'admin/setting'
+	$horus->router->any('/setting', function() {
+		echo 'admin/setting';
+	});
+
+	// route the 'admin/posts'
+	$horus->router->any('/posts', function() {
+		echo 'admin/posts';
+	});
+	
+});
+
+# route multiple patterns at one
+$horus->router->get( array( '/', 'index.php', 'home.py' ) , function(){
+    echo "Home";
+});
+
+# check wether the current uri matches a pattern or not ?
+if($horus->router->is('/admin/posts')) {
+	// do something here
+}
+
+# if the url has any extension, it will be at end of the argument list
+$horus->router->get('/i.php', function($ext){
+    echo $ext; // php
+});
+$horus->router->get('/{str}/i.xml', function($string, $ext){
+    echo "We are in /$string/i.xml , and ", "the extension is $ext";
+    // ext: xml
+});
+
+// do you know that you can call another route from
+// any route
+// say we have this login router
+$horus->router->post('/login', function(){
+    var_dump($_POST);
+});
+
+// and we have this index router
+// and we want to call login router without redirect !
+$horus->router->any('/', function(){
+    // get horus instance
+    $horus = Horus::instance;
+    
+    // call login handler over HTTP POST
+    // also you can pass array of params to it
+    // and show it's response
+    echo $horus->router->request
+    (
+        // first param is the request uri
+        '/login', 
+        // second param is request method (optional , default it 'GET') 
+        'POST', 
+        // third param is array of request params (optional)
+        array('user'=>'mohammed', 'pass'=>'test')
+    );
+});
+
+# get params
+# e.g: /index.jsp?k1=v1&k2=v2
+$horus->router->get('/index.jsp', function(){
+    // get horus instance
+    $horus = Horus::instance();
+    
+    // Horus::inputs() will fetch all application
+    // inputs through any http methods
+    // it will merge _POST + _GET + {any othe such as 'PUT, PATCH, ... etc'}
+    
+    // dump all inputs
+    var_dump($horus->input());
+    
+    // get the k1
+    echo $horus->input('k1');
+    // get the k2
+    echo $horus->input('k2');
+    
+    // by default if the requested key is not set 
+    // it will return FALSE
+    // you can choose what to return
+    // returns 'not_set' if there is no k3
+    echo $horus->input('k3', 'not_set');
+
+});
+
+// run it
+$horus->run();
+</code></pre>
+
+<h3>Helpers</h3>
+<pre class="prettyprint"><code>
+
+// load horus
+require 'Horus.php';
+
+// start it
+$horus = new Horus;
+
+// make any class/interface/namespace in any directory
+// loaded on demand
+# $horus->autoload($dir, $ext = 'php');
+# example:
+// make the '\vendor\' directory be autoloaded with it's 
+// files' extesnion 'php'
+$horus->auoload('\vendor');
+// or with extionsion '.class.php'
+$horus->autoload('\vendor', 'class.php');
+
+// hide errors 'error_reporting = 0' ?
+$horus->debug(FALSE);
+
+// show it again
+$horus->debug(TRUE);
+
+// listen listener(s) to an event
+$horus->listen('tag.1', function(){
+    echo 'event-1';
+});
+
+$horus->listen('tag.1', function($x){
+    echo 'event-'.$x;
+});
+
+// disptch / trigger event and pass args
+$horus->trigger('tag.1', array(5));
+
+// do you know that the last argument will contain 
+// the value of last executed event !
+// this is useful for filters
+
+# get the direct full url to horus
+echo URL;
+
+# get the full route to horus [will contains /index.php/ or not 'auto detected']
+echo ROUTE;
+
+# horus version
+echo HORUS_VERSION;
+
+# When horus started ? [in float 'microtime']
+echo HRUS_START;
+
+# directory separator
+echo DS;
+
+# override 404 page ?
+$horus->e404 = function(){
+    echo 'error 404';
+};
+
+// run it
+$horus->run();
+
+</code></pre>
+
+<h3> <span class="glyphicon glyphicon-cloud"></span> Database</h3>
+<pre class="prettyprint"><code>
+// start horus
+$horus = new Horus;
+
+// basic connection ( just like pdo )
+$horus->sql->connect($dns, $user, $pass, $array_options);
+
+// or connect to any driver of the following
+$horus->sql->mysql($host, $db, $user, $pass);
+$horus->sql->mariaDB($host, $db, $user, $pass);
+$horus->sql->mssql($host, $db, $user, $pass);
+$horus->sql->oracle($host, $db, $user, $pass);
+$horus->sql->pgsql($host, $db, $user, $pass);
+$horus->sql->sqlite($file, $prsistent = false);
+
+// to get the current used driver
+echo $horus->sql->driver();
+
+// to get the current used database
+echo $horus->sql->database();
+
+// to do a query
+// returns false if not-done or $horus->sql object if ok .
+$horus->sql->query($sql_statment, $inputs_array);
+// example:
+$horus->sql->query('select * from tablename where mycolumn = ? and my2column  = ?', array('value1', value2));
+
+// it comes with some basic shortcut methods
+// insert
+$horus->sql->insert('tablename', array(
+    // 1)- array of columns
+    array('name', 'email', 'password'),
+    
+    // 2)- array(s) of inserts ! in just one query !!
+    array('myname-1', 'mymail-1', 'mypass-1'),
+    array('myname-2', 'mymail-2', 'mypass-2') // more inserts
+));
+
+// replace
+$horus->sql->insert('tablename', array(
+    // 1)- array of columns
+    array('name', 'email', 'password'),
+    
+    // 2)- array(s) of inserts ! in just one query !!
+    array('myname-1', 'mymail-1', 'mypass-1'),
+    array('myname-2', 'mymail-2', 'mypass-2') // more inserts
+), true); // 3rd param set to true in replace
+
+// do you need simple insert/replace for single insert ?
+$horus->sql->insert('tablename', array(
+    'name'  =>  'myname',
+    'email' =>  'my@em.ail',
+    'password' => 'my secret word'
+)); 
+// that is an insert, but for replace
+// but for replace set the last param to true or 1, like mltiple inserts
+
+// update
+// update tablename set name = ? , email = ? where id = ?
+$horus->sql->update('tablename', array(
+    'name'  =>  'newname',
+    'email' => 'newmail'
+), 'id = ?', 5);
+
+// delete
+// delete from tablename where id = ?
+$horus->sql->delete('tablename', 'id = ?', 5);
+
+// set name (charset)
+$horus->sql->charset('utf8');
+
+// get current database tables array 
+$tables = $horus->sql->tables();
+
+// or for another db
+$tables = $horus->sql->tables('mysql');
+
+// if table_exists of current used database ?
+$horus->sql->table_exists('my_table');
+
+// if table_exists of another used database ?
+$horus->sql->table_exists('my_table', 'mydatabase');
+
+// you can check if multiple tables exists or not
+// just replace 'my_table' with array of tables to check
+
+// get current database table columns array 
+$columns = $horus->sql->columns('my_table');
+
+// get another database table columns array 
+$columns = $horus->sql->columns('my_table', 'my_database');
+
+// a column exists (current_database) ?
+$horus->sql->column_exists('my_table', 'my_column');
+
+// or another database
+$horus->sql->column_exists('my_table', 'my_column', 'mydatabase');
+
+// you can check if multiple columns exists or not
+// just replace 'my_columns' with array of columns to check
+
+# -------------------------------------------------
+
+// Do you know that there is another way and simple ?
+// example, work on a teble called 'posts'
+// this will create a new full object of Horus_SQL_Table class
+$posts = $horus->sql_table->using('posts');
+
+// now add entries
+$posts->add(array(
+    'post_title'    =>  'title here',
+    'post_time'     =>  time(),
+    'post_content'  =>  'content here'
+));
+
+// or multiple entries
+$posts->add(array(
+    array('post_title',     'post_time',    'post_content'),
+    array('title 1',        time(),         'content 1'),
+    array('title 2',        time(),         'content 2'),
+    array('title 3',        time(),         'content 3')
+));
+
+// replace entries (same as add single and multiple support, just change add to rep)
+$posts->rep(array(
+    'post_title'    =>  'title here',
+    'post_time'     =>  time(),
+    'post_content'  =>  'content here'
+));
+$posts->rep(array(
+    array('post_title',     'post_time',    'post_content'),
+    array('title 1',        time(),         'content 1'),
+    array('title 2',        time(),         'content 2'),
+    array('title 3',        time(),         'content 3')
+));
+
+// delete entries
+// $posts->del($where, $inputs);
+// $where : without 'WHERE' keyword
+$posts->del('post_id = ?',                      5);
+$posts->del('post_title = ? and post_id = ?',   array('title',  5));
+
+// edit entries
+// $posts->edit(array $edits,   $where, $inputs);
+// $where : without 'WHERE' keyword
+$posts->edit(array(
+    'post_title'    =>  'new title'
+),  'post_id = ?',  5);
+
+// fetch one
+// $posts->get_one($where, $inputs, $fetch = PDO::FETCH_ASSOC)
+// $where : without 'WHERE' keyword
+$posts->get_one('post_id = ?',  5);
+
+// fetch all
+// $posts->get_all($where = null, $inputs = null, $more_sql = null, $more_inputs = null)
+// $where : without 'WHERE' keyword
+// $more_sql: if you want to add more sql statement
+// $more_inputs: inputs for $more_sql
+$all = $posts->get_all('post_id = ?',  5)->fetchAll(PDO::FETCH_ASSOC);
+foreach( $all->fetchAll() as $row ) {
+    // ...
+}
+// or
+while( $row = $all->fetch() ) {
+    // ...   
+}
+
+// count rows
+// $posts->count($where = null, $inputs = null)
+// $where : without 'WHERE' keyword
+// returns float number
+$count_all = $posts->count();
+$number = $posts->count('post_title like ?', '%title%');
+
+// optimize
+$posts->optimize();
+
+// drop
+$posts->drop();
+
+// truncate
+$posts->truncate();
+
+// is the table exists
+$posts->exists();
+
+// get table columns
+$cols = $posts->cols();
+
+// if column exists ?
+$posts->exists('my_col');
+
+// or array of columns
+$posts->exists(array('col1', 'col2'));
+
+// you can access any $sql method easily
+$posts->rowCount();
+$posts->lastInsertId();
+
+// run it
+$horus->run();
+
+</code></pre>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-success" data-dismiss="modal">Ok</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- end.tour -->
+
+                <!-- start.blog -->    
+                <div class="modal fade" id="blog" tabindex="-1" role="dialog" aria-labelledby="intro" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3 class="modal-title" id="myModalLabel">Simple blog</h3>
+                      </div>
+                      <div class="modal-body">
+                        
+<b>Directory structure</b>
+<ul>
+    <li><code>\</code></li>
+    <li><code>\Horus.php</code></li>
+    <li><code>\index.php</code></li>
+    <li><code>\.htaccess</code></li>
+</ul>
+<b>Mysql tables</b>
+<pre class="prettyprint"><code>
+-- posts table
+CREATE TABLE IF NOT EXISTS `posts`
+(
+    ID      INT NOT NULL AUTO_INCREMENT,
+    title   CHAR(200),
+    content TEXT,
+    PRIMARY KEY(ID)
+) ENGINE innoDB DEFAULT CHARSET UTF8;
+
+-- Now insert some data into it then continue with me
+</code></pre>
+<b>Routes</b>
+<pre class="prettyprint"><code>
+
+// gzhandler
+ob_start('ob_gzhandler');
+
+// load horus
+require 'Horus.php';
+
+// start it
+$horus = new Horus;
+
+// connect to mysql db
+$horus->sql->mysql('localhost', 'mydb', 'username', 'password');
+
+// make url matching case-insensitive
+$_SERVER['PATH_INFO'] = strtolower($_SERVER['PATH_INFO']);
+
+// assign the table object
+$horus->posts = $horus->sql_table->using('posts');
+
+// handle the index [GET only] and view all posts
+$horus->router->get('/', function() use($horus) {
+    // fetch all posts
+    $posts = $horus->posts;
+    $posts->get_all();
+    while( $row = $posts->fetch(PDO::FETCH_ASSOC) ):
+        echo sprintf(' %d)- %s ', $row['ID'], $row['title']);
+    endwhile;
+});
+
+// handle the post [GET only] and view one post
+$horus->router->get('/pst/{num}', function($ID) use($horus) {
+    // fetch all posts
+    $post = $horus->posts->get_one('ID = ?', $ID);
+    // must be found
+    $post or exit('post id not found in db');
+    // view it
+    echo $post['title'], ' - ';
+    echo $post['content'];
+});
+
+// minify the output
+$horus->listen('horus.output.before', function($horus) {
+    $horus->output = preg_replace('/\s+/', ' ', $horus->output);
+});
+
+// run it
+$horus->run();
+</code></pre>
+                        
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-success" data-dismiss="modal">Ok</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+               <!-- end.blog --> 
+
+            
+        </div>
+        <!-- /.container -->
+        
+        <footer class="page-footer text-center center block text-danger" style="padding: 15px; margin-top: 20px; border-top: #ccc; background: #f9f9f9;">
+            Copyright &copy; 2014 Horus Framework <br />
+            Template using <a href="//getbootstrap.com" target="_blank">Twitter Bootstrap</a> <br />
+            BY <a href="//fb.com/alash3al" target="_blank">Mohammed Al Ashaal</a>
+        </footer>
+        
+        <!-- JavaScript -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <script src="http://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+        <script type="text/javascript">
+                $('[role="dialog"]').modal('hide');
+                $('[data-dismiss="modal"]').click(function(){
+                    $('[role="dialog"]').modal('hide');
+                });
+            });
+        </script>
+    
+    </body>
+
+</html>
+
+                <!-- 
+                <div class="modal fade" id="intro" tabindex="-1" role="dialog" aria-labelledby="intro" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3 class="modal-title" id="myModalLabel">Modal title</h3>
+                      </div>
+                      <div class="modal-body">
+                        ...
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-success" data-dismiss="modal">Ok</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                -->
