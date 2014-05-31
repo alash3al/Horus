@@ -322,6 +322,7 @@ class Horus_SQL extends PDO
         try 
         {
             $this->stmnt = $this->prepare($statement);
+            if(!$this->stmnt) return FALSE;
             return ((bool) ( $this->stmnt->execute((array) $inputs) ) ? $this : false);
         } catch(PDOException $e) {
             throw new Exception($e->getMessage());
