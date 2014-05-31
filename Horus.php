@@ -982,10 +982,6 @@ Class Horus extends Horus_Container
         $this->output = ob_get_clean();
         ob_start();
 
-        // our error handler
-        set_error_handler(array($this, 'errhandler'));
-        set_exception_handler(array($this, 'errhandler'));
-
         // some core methods
         $this->router       =   new Horus_Router($simulate);
         $this->sql          =   new Horus_SQL;
@@ -1151,35 +1147,6 @@ Class Horus extends Horus_Container
         else
             error_reporting(0);
     }
-
-    /**
-     * Error & exception Handler
-     * @param   integer $errno
-     * @param   string  $errstr
-     * @param   string  $errfile
-     * @param   integer $errline
-     * @return  void
-     */
-    function errhandler($errno = null, $errstr = null, $errfile = null, $errline = null)
-    {
-        // Error[s] count
-         $ec = @++$GLOBALS['horus_ecount'];
-        
-        // is exception, prepare it
-        if(is_a($errno, 'Exception')) {
-            $errline  =   $errno->getLine();
-            $errfile  =   $errno->getFile();
-            $errstr   =   $errno->getMessage();
-            $errno    =   $errno->getCode();
-        }
-
-        // print the error
-        echo " <div style='padding: 10px; box-shadow: 0 0 0 1px #eee; border: 1px solid #eee; margin: auto; max-width: 500px; margin-bottom: 5px; background: #f9f9f9; color:#555'>
-                    <span> $errstr in '$errfile' on line '$errline' </span>
-               </div> ";
-        
-    }
-
 }
 
 // -------------------------------
