@@ -220,7 +220,9 @@ class Horus_SQL extends PDO
      */
     function mysql($host, $dbname, $username = null, $password = null)
     {
-        return $this->connect("mysql:host={$host}; dbname={$dbname}", $username, $password);
+        $r = $this->connect("mysql:host={$host}; dbname={$dbname}", $username, $password);
+		$this->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+		return $r;
     }
 
     /**
@@ -233,7 +235,7 @@ class Horus_SQL extends PDO
      */
     function mariaDB($host, $dbname, $username = null, $password = null)
     {
-        $c = $this->connect("mysql:host={$host}; dbname={$dbname}", $username, $password);
+        $c = $this->mysql($host, $dbname, $username, $password);
         $this->driver = 'mariaDB';
         return $c;
     }
@@ -322,7 +324,6 @@ class Horus_SQL extends PDO
         try 
         {
             $this->stmnt = $this->prepare($statement);
-            if(!$this->stmnt) return FALSE;
             return ((bool) ( $this->stmnt->execute((array) $inputs) ) ? $this : false);
         } catch(PDOException $e) {
             throw new Exception($e->getMessage());
@@ -691,18 +692,19 @@ Class Horus_Router
         $simultor = $simultor == 2 ?  !isset($_SERVER['STOP_SIMULATOR']) : (bool) $simultor;
 
         // setting some vars
-        $_SERVER['SERVER_URL'] = (isset($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . rtrim($_SERVER['SERVER_NAME'], '/') . '/' ;
-        $_SERVER['SCRIPT_URL'] = $_SERVER['SERVER_URL'].ltrim(rtrim(dirname($_SERVER['SCRIPT_NAME']), '/') . '/', '/');
-        $_SERVER['SCRIPT_URI'] = $_SERVER['SCRIPT_URL'];
-        $_SERVER['SCRIPT_NAME'] = '/' . ltrim($_SERVER['SCRIPT_NAME'], '/');
-        $_SERVER['REQUEST_URI'] = '/' . ltrim($_SERVER['REQUEST_URI'], '/');
+		$_SERVER['SERVER_URL'] 	= 	(isset($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . rtrim($_SERVER['SERVER_NAME'], '/') . '/' ;
+        $_SERVER['SCRIPT_URL'] 	= 	$_SERVER['SERVER_URL'].dirname($_SERVER['SCRIPT_NAME']);
+        $_SERVER['SCRIPT_URL']	=	str_replace(DIRECTORY_SEPARATOR, '/', $_SERVER['SCRIPT_URL']);
+		$_SERVER['SCRIPT_URL']  =  	preg_replace('/([^:])(\/+)/', '$1/', $_SERVER['SCRIPT_URL']);
+        $_SERVER['SCRIPT_URI'] 	= 	$_SERVER['SCRIPT_URL'];
+        $_SERVER['SCRIPT_NAME'] = 	'/' . ltrim($_SERVER['SCRIPT_NAME'], '/');
+        $_SERVER['REQUEST_URI'] = 	'/' . ltrim($_SERVER['REQUEST_URI'], '/');
 
         // simulate ?
         if($simultor == true) {
             $_SERVER['SCRIPT_URI'] .= basename($_SERVER['SCRIPT_NAME']) . '/';
-            
             if(!isset($_SERVER['PATH_INFO'])) {
-                header("Location: {$_SERVER['SCRIPT_URI']}", TRUE, 302);
+				exit(header("Location: {$_SERVER['SCRIPT_URI']}", TRUE, 302));
             }
         }
 
