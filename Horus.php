@@ -220,9 +220,7 @@ class Horus_SQL extends PDO
      */
     function mysql($host, $dbname, $username = null, $password = null)
     {
-        $r = $this->connect("mysql:host={$host}; dbname={$dbname}", $username, $password);
-		$this->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-		return $r;
+        return $this->connect("mysql:host={$host}; dbname={$dbname}", $username, $password);
     }
 
     /**
@@ -235,7 +233,7 @@ class Horus_SQL extends PDO
      */
     function mariaDB($host, $dbname, $username = null, $password = null)
     {
-        $c = $this->mysql($host, $dbname, $username, $password);
+        $c = $this->connect("mysql:host={$host}; dbname={$dbname}", $username, $password);
         $this->driver = 'mariaDB';
         return $c;
     }
@@ -349,7 +347,7 @@ class Horus_SQL extends PDO
             $vals   =   implode(', ', array_fill(1, count($inserts), '('.implode(', ', array_fill(1, count($inserts[0]), '?')).')'));
             
             foreach($inserts as &$i) {
-                $inputs = ($inputs) + ($i);
+                $inputs = array_merge($inputs, $i);
             }
             
             return $this->query("$s INTO $table($cols) VALUES $vals", $inputs);
@@ -383,7 +381,7 @@ class Horus_SQL extends PDO
         }
         
         $vals = implode(', ', $vals);
-        $inputs = (($i) + ((array) $inputs));
+        $inputs = array_merge($i, (array) $inputs);
         $where = empty($where) ? null : "WHERE $where ";
         
         return $this->query("UPDATE $table SET $vals $where", $inputs);
@@ -692,19 +690,18 @@ Class Horus_Router
         $simultor = $simultor == 2 ?  !isset($_SERVER['STOP_SIMULATOR']) : (bool) $simultor;
 
         // setting some vars
-		$_SERVER['SERVER_URL'] 	= 	(isset($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . rtrim($_SERVER['SERVER_NAME'], '/') . '/' ;
-        $_SERVER['SCRIPT_URL'] 	= 	$_SERVER['SERVER_URL'].dirname($_SERVER['SCRIPT_NAME']);
-        $_SERVER['SCRIPT_URL']	=	str_replace(DIRECTORY_SEPARATOR, '/', $_SERVER['SCRIPT_URL']);
-		$_SERVER['SCRIPT_URL']  =  	preg_replace('/([^:])(\/+)/', '$1/', $_SERVER['SCRIPT_URL']);
-        $_SERVER['SCRIPT_URI'] 	= 	$_SERVER['SCRIPT_URL'];
-        $_SERVER['SCRIPT_NAME'] = 	'/' . ltrim($_SERVER['SCRIPT_NAME'], '/');
-        $_SERVER['REQUEST_URI'] = 	'/' . ltrim($_SERVER['REQUEST_URI'], '/');
+        $_SERVER['SERVER_URL'] = (isset($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . rtrim($_SERVER['SERVER_NAME'], '/') . '/' ;
+        $_SERVER['SCRIPT_URL'] = $_SERVER['SERVER_URL'].ltrim(rtrim(dirname($_SERVER['SCRIPT_NAME']), '/') . '/', '/');
+        $_SERVER['SCRIPT_URI'] = $_SERVER['SCRIPT_URL'];
+        $_SERVER['SCRIPT_NAME'] = '/' . ltrim($_SERVER['SCRIPT_NAME'], '/');
+        $_SERVER['REQUEST_URI'] = '/' . ltrim($_SERVER['REQUEST_URI'], '/');
 
         // simulate ?
         if($simultor == true) {
             $_SERVER['SCRIPT_URI'] .= basename($_SERVER['SCRIPT_NAME']) . '/';
+            
             if(!isset($_SERVER['PATH_INFO'])) {
-				exit(header("Location: {$_SERVER['SCRIPT_URI']}", TRUE, 302));
+                header("Location: {$_SERVER['SCRIPT_URI']}", TRUE, 302);
             }
         }
 
@@ -999,7 +996,7 @@ Class Horus extends Horus_Container
         // set some constants
         defined('ROUTE')    or define('ROUTE', rtrim($_SERVER['SCRIPT_URI'], '/') . '/', true);
         defined('URL')      or define('URL', rtrim($_SERVER['SCRIPT_URL'], '/') . '/', true);
-        define('DS', DIRECTORY_SEPARATOR, true);
+        defined('DS') 		or define('DS', DIRECTORY_SEPARATOR, true);
         define('HORUS_START', microtime(1), true);
 		define('Horus_Version', (float) '5.0', true);
 
