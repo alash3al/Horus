@@ -404,9 +404,9 @@ $horus = new Horus;
 # $horus->autoload($dir, $ext = 'php');
 # example:
 // make the '\vendor\' directory be autoloaded with it's 
-// files' extesnion 'php'
-$horus->auoload('\vendor');
-// or with extionsion '.class.php'
+// files' extension 'php'
+$horus->autoload('\vendor');
+// or with extension '.class.php'
 $horus->autoload('\vendor', 'class.php');
 
 // hide errors 'error_reporting = 0' ?
@@ -424,7 +424,7 @@ $horus->listen('tag.1', function($x){
     echo 'event-'.$x;
 });
 
-// disptch / trigger event and pass args
+// dispatch / trigger event and pass args
 $horus->trigger('tag.1', array(5));
 
 // do you know that the last argument will contain 
@@ -482,7 +482,7 @@ echo $horus->sql->database();
 // returns false if not-done or $horus->sql object if ok .
 $horus->sql->query($sql_statment, $inputs_array);
 // example:
-$horus->sql->query('select * from tablename where mycolumn = ? and my2column  = ?', array('value1', value2));
+$horus->sql->query('select * from tablename where mycolumn = ? and my2column  = ?', array('value1', 'value2'));
 
 // it comes with some basic shortcut methods
 // insert
@@ -561,7 +561,7 @@ $horus->sql->column_exists('my_table', 'my_column', 'mydatabase');
 # -------------------------------------------------
 
 // Do you know that there is another way and simple ?
-// example, work on a teble called 'posts'
+// example, work on a table called 'posts'
 // this will create a new full object of Horus_SQL_Table class
 $posts = $horus->sql_table->using('posts');
 
