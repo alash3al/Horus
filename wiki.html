@@ -201,7 +201,7 @@ $horus->run();
     A Route is a <code>{HTTP-Method} + {URL pattern} + {Handler}</code>  . <br />
     <ul>
         <li> <code>HTTP Method</code>: a thing like <code>GET, POST, PUT, DELETE, ... etc</code> </li>
-        <li> <code>URL pattern</code>: the pattern that match a url under assocated http method and the <strong>handler</strong> </li>
+        <li> <code>URL pattern</code>: the pattern that match a url under associated http method and the <strong>handler</strong> </li>
         <li> <code>Handler</code>: any valid php callback that will handle the pattern . </li>
     </ul>
     <b>Examples:</b>
@@ -319,7 +319,7 @@ $horus->router->get( array( '/', 'index.php', 'home.py' ) , function(){
     echo "Home";
 });
 
-# check wether the current uri matches a pattern or not ?
+# check whether the current uri matches a pattern or not ?
 if($horus->router->is('/admin/posts')) {
 	// do something here
 }
