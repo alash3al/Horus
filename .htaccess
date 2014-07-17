@@ -1,0 +1,17 @@
+ServerSignature off
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # On some web hosts this code may not work because of the 'RewriteBase' 
+    # so you should use `RewriteBase`
+    # And set it to the real absolute path of horus installation directory
+    # example: 
+    # RewriteBase /path/to/current_directory
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ index.php [QSA,L]
+    setEnv SIMULATOR_STATE 0
+</IfModule>
+
