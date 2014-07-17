@@ -6,12 +6,10 @@ php framework that does most of operations in simple steps, no more configs, <br
 no more complex actions, no more complex files, no more comples structure, <br />
 just define your own structure . <br />
 
-Horus is just **1.5k** of lines in one file, organized and well commented, <br />
+Horus is just **1.8k** of lines in one file, organized and well commented, <br />
 just include **Horus.php** and start writing codes . <br />
 
 Horus is micro framework just like **web.py** in python, or **sinatra** in ruby . <br />
-
-*********************
 
 Changes
 ========
@@ -23,7 +21,8 @@ Changes
 - Optimized some codes . <br />
 - New simulator method **using <code>/?</code> or <code>index.php/</code>** . <br />
 - Zero (Really Zero) configurations . <br />
+- 60 kb and 1.8k of lines . <br />
 
-*********************
-
-**Do much more with much more less code ^^**
+Developers
+===========
+[Mohammed Al Ashaal](http://fb.com/alash3al) "from version 1 till now" . <br />
