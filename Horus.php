@@ -1589,6 +1589,7 @@ Class Horus extends Horus_Container
         $this->sql_table    =   new Horus_SQL_Table($this->sql);
         $this->sql_kv       =   new Horus_SQL_KV($this->sql);
         $this->sql_docstore =   new Horus_SQL_DocStore($this->sql);
+        $this->session      =   $this->session();
 
         // some php ini settings
         ini_set('session.hash_function',    1);
