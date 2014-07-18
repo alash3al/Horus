@@ -7,8 +7,8 @@ no more complex actions, no more complex files, no more comples structure, <br /
 just define your own structure . <br />
 
 Horus is just **1.8k** of lines in one file, organized and well commented, <br />
-But Horus Light version is just "36 kb",<br />
-just include **Horus.php** and start writing codes . <br />
+But Horus Light version is just **36 kb**,<br />
+just include **Horus.php** or **Horus.light.php** and start writing codes . <br />
 
 Horus is micro framework just like **web.py** in python, or **sinatra** in ruby . <br />
 
