@@ -1343,6 +1343,11 @@ Class Horus_Router
                                 call_user_func_array($callable, $args);
                                 ++ $status;
                                 break;
+                            Case "file":
+                                $f = create_function('$file, $args', 'include $file;');
+                                call_user_func_array($f, array($callable, $args));
+                                ++ $status;
+                                break;
                             Case "class_name":
                             Case "used_class":
                                 $class  = ($type == 'used_class') ? $callable : new $callable;
@@ -1485,9 +1490,8 @@ Class Horus_Router
         elseif(is_string($callable) and class_exists($callable)):
             $ctype = 'class_name';
         elseif(is_file($callable)):
-            $GLOBALS['_router_callback'] = $callable;
-            $callable = create_function('', '$args = (array) func_get_args(); require_once $GLOBALS[\'_router_callback\'];');
-            $ctype = 'callback';
+            $callable = $callable;
+            $ctype = 'file';
         else:
             foreach($method as &$x)
             {
