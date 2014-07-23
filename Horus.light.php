@@ -845,12 +845,6 @@ Class Horus extends Horus_Container
     protected $output = null;
 
     /**
-     * Run from CLI ?
-     * @var string
-     */
-    public $cli    = false;
-
-    /**
      * events/hooks array
      * @var array
      */
@@ -884,7 +878,7 @@ Class Horus extends Horus_Container
         ob_start();
 
         // some core methods
-        $this->router       =   new Horus_Router();
+        $this->router       =   new Horus_Router;
         $this->sql          =   new Horus_SQL;
         $this->session      =   $this->session();
 
@@ -932,9 +926,6 @@ Class Horus extends Horus_Container
      */
     public function run()
     {
-        // only run if not .
-        (!$this->ok) or ($this->ok = true);
-
         // dispatch all routes [between events]
         $this->trigger('horus.dispatch.before');
         if(($o = $this->router->exec()) !== false) echo $o;
@@ -1031,11 +1022,10 @@ Class Horus extends Horus_Container
      */
     public function autoload($path, $extension = 'php')
     {
-        $GLOBALS['__ext']   =   '.' . ltrim($extension, '.');
-        $GLOBALS['__path']  =   realpath($path) . DS;
-        spl_autoload_register($func = create_function('$class', '
-            $path = $GLOBALS["__path"];
-            $extension = $GLOBALS["__ext"];
+        $params = '$class, $g = '.var_export(array( realpath($path) . DS, "." . ltrim($extension, '.') ), true);
+        spl_autoload_register($func = create_function($params,
+        '
+            list($path, $extension) = $g;
             $class = rtrim(ltrim(str_replace(array("\\\\", "/", "_"), DS, $class), DS), DS);
             if(!is_file($file = $path . $class . $extension)) {
                 $file = $path . $class . DS . basename($class) . $extension;
