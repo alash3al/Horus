@@ -1447,7 +1447,7 @@ Class Horus_Router
             $_SERVER['QUERY_STRING'] = parse_url($_SERVER['PATH_INFO'], PHP_URL_QUERY);
             parse_str($_SERVER['QUERY_STRING'], $_GET);
             $_SERVER['PATH_INFO'] = parse_url($_SERVER['PATH_INFO'], PHP_URL_PATH);
-       
+
         // if using routing method (1)
         // let's use 'index.php/' based routing
         elseif($_SERVER['SIMULATOR_METHOD'] == 1):
@@ -1549,12 +1549,6 @@ Class Horus extends Horus_Container
     protected $output = null;
 
     /**
-     * Run from CLI ?
-     * @var string
-     */
-    public $cli    = false;
-
-    /**
      * events/hooks array
      * @var array
      */
@@ -1592,7 +1586,7 @@ Class Horus extends Horus_Container
         $this->sql          =   new Horus_SQL;
         $this->sql_table    =   new Horus_SQL_Table($this->sql);
         $this->sql_kv       =   new Horus_SQL_KV($this->sql);
-        $this->sql_docstore =   new Horus_SQL_DocStore($this->sql);
+        $this->sql_docstore     new Horus_SQL_DocStore($this->sql);
         $this->session      =   $this->session();
 
         // some php ini settings
@@ -1639,9 +1633,6 @@ Class Horus extends Horus_Container
      */
     public function run()
     {
-        // only run if not .
-        (!$this->ok) or ($this->ok = true);
-
         // dispatch all routes [between events]
         $this->trigger('horus.dispatch.before');
         if(($o = $this->router->exec()) !== false) echo $o;
@@ -1738,11 +1729,10 @@ Class Horus extends Horus_Container
      */
     public function autoload($path, $extension = 'php')
     {
-        $GLOBALS['__ext']   =   '.' . ltrim($extension, '.');
-        $GLOBALS['__path']  =   realpath($path) . DS;
-        spl_autoload_register($func = create_function('$class', '
-            $path = $GLOBALS["__path"];
-            $extension = $GLOBALS["__ext"];
+        $params = '$class, $g = '.var_export(array( realpath($path) . DS, "." . ltrim($extension, '.') ), true);
+        spl_autoload_register($func = create_function($params,
+        '
+            list($path, $extension) = $g;
             $class = rtrim(ltrim(str_replace(array("\\\\", "/", "_"), DS, $class), DS), DS);
             if(!is_file($file = $path . $class . $extension)) {
                 $file = $path . $class . DS . basename($class) . $extension;
