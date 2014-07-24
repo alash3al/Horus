@@ -730,7 +730,7 @@ Class Horus_Router
         }
 
         // state is yes ?
-        if($state != true) return ($_SERVER['PATH_INFO'] = $ruri); 
+        if($state != true) return ($_SERVER['PATH_INFO'] = parse_url($ruri, PHP_URL_PATH)); 
 
         // if using routing method (2)
         // let's use '?/' based routing
