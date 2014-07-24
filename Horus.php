@@ -1434,7 +1434,7 @@ Class Horus_Router
         }
 
         // state is yes ?
-        if($state != true) return ($_SERVER['PATH_INFO'] = $ruri); 
+        if($state != true) return ($_SERVER['PATH_INFO'] = parse_url($ruri, PHP_URL_PATH));
 
         // if using routing method (2)
         // let's use '?/' based routing
@@ -1586,7 +1586,7 @@ Class Horus extends Horus_Container
         $this->sql          =   new Horus_SQL;
         $this->sql_table    =   new Horus_SQL_Table($this->sql);
         $this->sql_kv       =   new Horus_SQL_KV($this->sql);
-        $this->sql_docstore     new Horus_SQL_DocStore($this->sql);
+        $this->sql_docstore =   new Horus_SQL_DocStore($this->sql);
         $this->session      =   $this->session();
 
         // some php ini settings
