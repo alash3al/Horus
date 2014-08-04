@@ -1267,7 +1267,7 @@ Class Horus_Router
         else $_SERVER['PATH_INFO'] = '/';
 
         // set REQUEST_ROUTE
-        $_SERVER['REQUEST_ROUTE'] = $_SERVER['SCRIPT_ROUTE'] . ltrim($_SERVER['PATH_INFO'], '/');
+        $_SERVER['REQUEST_ROUTE'] = $_SERVER['SCRIPT_ROUTE'] . ltrim(rtrim($_SERVER['PATH_INFO'], '/'), '/') . '/';
 
         // REGEXP shortcuts
         $this->shortcut(array
