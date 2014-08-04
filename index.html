@@ -352,6 +352,11 @@
             echo 'HI';
         });
 
+        // handle a path and pass default arg(s)
+        $app->router->any('hi', function($fname, $lname){
+                echo "hi $fname $lname";
+        }, array('Mohammed', 'Al Ashaal'));
+
         // handle group of routes based on a path ?
         $app->router->with('/x', function() use($app) {
             
