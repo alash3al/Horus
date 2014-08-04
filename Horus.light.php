@@ -563,7 +563,7 @@ Class Horus_Router
         else $_SERVER['PATH_INFO'] = '/';
 
         // set REQUEST_ROUTE
-        $_SERVER['REQUEST_ROUTE'] = $_SERVER['SCRIPT_ROUTE'] . ltrim($_SERVER['PATH_INFO'], '/');
+        $_SERVER['REQUEST_ROUTE'] = $_SERVER['SCRIPT_ROUTE'] . ltrim(rtrim($_SERVER['PATH_INFO'], '/'), '/') . '/';
 
         // REGEXP shortcuts
         $this->shortcut(array
@@ -729,7 +729,7 @@ Class Horus_Router
             $ruri = substr($ruri, strlen(dirname($_SERVER['SCRIPT_NAME'])));
         }
 
-        // state is yes ?
+        // state is 'don not start' ?
         if($state != true) return ($_SERVER['PATH_INFO'] = parse_url($ruri, PHP_URL_PATH)); 
 
         // if using routing method (2)
