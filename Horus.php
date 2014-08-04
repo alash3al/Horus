@@ -1290,7 +1290,8 @@ Class Horus_Router
      */
     public function __call($a, $b)
     {
-        return $this->route(str_replace('_', '|', $a), $b[0], $b[1]);
+        $b[2] = empty($b[2]) ? array() : (array) $b[2]; 
+        return $this->route(str_replace('_', '|', $a), $b[0], $b[1], $b[2]);
     }
 
     /**
@@ -1333,19 +1334,19 @@ Class Horus_Router
         foreach( new ArrayIterator($this->routes) as $m => $patterns ):
             if( in_array($m, array('ANY', $method)) ):
                 foreach( new ArrayIterator($patterns) as $pattern => $callable ):
-                    list( $callable, $type ) = $callable;
+                    list( $callable, $type, $more_args ) = $callable;
                     $is_class = in_array($type, array('class_name', 'used_class'), false);
                     $pattern  = "/^{$pattern}" . (!$is_class ? "$" : "") . "/";
                     if( preg_match($pattern, $path, $args) ):
                         array_shift($args);
                         switch($type):
                             Case "callback":
-                                call_user_func_array($callable, $args);
+                                call_user_func_array($callable, array_merge($args, $more_args));
                                 ++ $status;
                                 break;
                             Case "file":
                                 $f = create_function('$file, $args', 'include $file;');
-                                call_user_func_array($f, array($callable, $args));
+                                call_user_func_array($f, array($callable, array_merge($args, $more_args)));
                                 ++ $status;
                                 break;
                             Case "class_name":
@@ -1359,7 +1360,7 @@ Class Horus_Router
                                 $method = str_replace(array('-', '.'), '_', $method);
                                 $args   = (array) array_slice($parts, 1);
                                 if(is_callable(array($callable, $method)) and method_exists($callable, $method) and $method[0] !== '_'):
-                                    call_user_func_array(array($class, $method), $args);
+                                    call_user_func_array(array($class, $method), array_merge($args, $more_args));
                                     ++$status;
                                 endif;
                                 break;
@@ -1433,8 +1434,8 @@ Class Horus_Router
             $ruri = substr($ruri, strlen(dirname($_SERVER['SCRIPT_NAME'])));
         }
 
-        // state is yes ?
-        if($state != true) return ($_SERVER['PATH_INFO'] = parse_url($ruri, PHP_URL_PATH));
+        // state is 'don not start' ?
+        if($state != true) return ($_SERVER['PATH_INFO'] = parse_url($ruri, PHP_URL_PATH)); 
 
         // if using routing method (2)
         // let's use '?/' based routing
@@ -1447,7 +1448,7 @@ Class Horus_Router
             $_SERVER['QUERY_STRING'] = parse_url($_SERVER['PATH_INFO'], PHP_URL_QUERY);
             parse_str($_SERVER['QUERY_STRING'], $_GET);
             $_SERVER['PATH_INFO'] = parse_url($_SERVER['PATH_INFO'], PHP_URL_PATH);
-
+       
         // if using routing method (1)
         // let's use 'index.php/' based routing
         elseif($_SERVER['SIMULATOR_METHOD'] == 1):
@@ -1466,9 +1467,10 @@ Class Horus_Router
      * @param   string      $method
      * @param   string      $pattern
      * @param   callback    $callback
+     * @param   mixed       $args
      * @return  void
      */
-    protected function route($method, $pattern, $callable)
+    protected function route($method, $pattern, $callable, $args = array())
     {
         // allow multiple methods / patterns per callback
         $method     =   (array) explode('|', strtoupper($method));
@@ -1503,16 +1505,20 @@ Class Horus_Router
                 }
             }
             if($tmp < 1) throw new InvalidArgumentException('Invalid callbale');
-            else return $this->route(implode('|', $method), $pattern, $callable);
+            else return $this->route(implode('|', $method), $pattern, $callable, $args);
         endif;
 
         // store routes into $routes
         foreach( $method as &$m )
+        {
             foreach($pattern as &$ptt)
-                $this->routes[$m][$this->prepare($ptt)] = array($callable, $ctype);
+            {
+                $this->routes[$m][$this->prepare($ptt)] = array($callable, $ctype, $args);
+            }
+        }
 
         // free some memry
-        unset($method, $pattern, $ctype, $callable, $ctype, $ptt, $m, $x, $tmp);
+        unset($method, $pattern, $ctype, $callable, $ctype, $ptt, $m, $x, $tmp, $args);
     }
 
     /**
