@@ -1720,7 +1720,7 @@ Class Horus extends Horus_Container
         else parse_str($winputs, $_SERVER['__INPUT__']);
 
         // merge all
-        $inputs = array_merge($_GE, $_POST, $_SERVER['__INPUT__']);
+        $inputs = array_merge($_GET, $_POST, $_SERVER['__INPUT__']);
 
         if($needle == '*') return $inputs;
         else return isset($inputs[$needle]) ? $inputs[$needle] : $default;
