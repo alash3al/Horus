@@ -550,7 +550,8 @@ Class Horus_Router
 
         // set default server vars
         !empty($_SERVER['SCRIPT_PROTOCOL']) or ($_SERVER['SCRIPT_PROTOCOL'] =   isset($_SERVER['HTTPS']) ? 'https' : 'http');
-        $_SERVER['SCRIPT_URL']      =   $_SERVER['SCRIPT_PROTOCOL'] . '://' . rtrim($_SERVER['SERVER_NAME'],'/') . '/' . ltrim(rtrim(dirname($_SERVER['SCRIPT_NAME']),'/'),'/') . '/';
+        $_SERVER['SCRIPT_URL']      =   rtrim($_SERVER['SERVER_NAME'],'/') . '/' . ltrim(rtrim(dirname($_SERVER['SCRIPT_NAME']),'/'),'/') . '/';
+        $_SERVER['SCRIPT_URL']      =   $_SERVER['SCRIPT_PROTOCOL'] . '://' . preg_replace('/\/+/', '/', $_SERVER['SCRIPT_URL']);
         $_SERVER['SCRIPT_ROUTE']    =   $_SERVER['SCRIPT_URL'];
 
         // starting simulator
