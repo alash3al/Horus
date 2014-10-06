@@ -1,30 +1,26 @@
-Horus 6.0 "cc 1.0"
-==================
+What is Horus.php ?
+=======
+> Horus.php is a tiny portable php tiny framework that focused on strong code-base and better performance, it is just one file ~ 30kb with ~ 1k of lines
+> Horus.php is just a strong tiny code-base and will still as it not more .
 
-Horus is a php framework, but not a traditional framework, it is a micro and portable <br />
-php framework that does most of operations in simple steps, no more configs, <br />
-no more complex actions, no more complex files, no more comples structure, <br />
-just define your own structure . <br />
+Why Horus.php ?
+=======
+I don't like to tell you some words, but just download and test yourself .
 
-Horus is just **1.8k** of lines in one file, organized and well commented, <br />
-But Horus Light version is just **36 kb**,<br />
-just include **Horus.php** or **Horus.light.php** and start writing codes . <br />
+What is new ?
+=======
+- New high-performance routing mechanism .
+- Added support for sub-domain routing .
+- New simple modular controller class .
+- New environment variables .
+- New Constants .
+- New function `Horus()` to get the horus object .
+- New method 'Horus()->statics()' to an object of current memory-peak, memory-usage & cpu load avg.
+- Horus.php is now more faster and could be compared to any plain php code .
+- Removed useless codes .
+- Optimized some parts of the code .
+- Router & SQL Classes are now lazy-initialzed [constructed just on demand] .
+- Horus 7 now merges any input vars from any request methods [ HEAD,POST,PUT,GET, ... etc ] in just one array `$_REQUEST`
+- Horus 7 accepts any input format "json/xml/query-string" .
+- Horus 7 is very powerful for web-services like RESTful, XMLRPC, ... etc
 
-Horus is micro framework just like **web.py** in python, or **sinatra** in ruby . <br />
-
-Changes
-========
-- Rewrote Horus Router with new powerful ideas . <br />
-- New Horus methods . <br />
-- Upgraded Horus Container . <br />
-- New class **Document store** based on sql dbms . <br />
-- New class **key => value store** based on sql dbms . <br />
-- Optimized some codes . <br />
-- New simulator method **using <code>/?</code> or <code>index.php/</code>** . <br />
-- Zero (Really Zero) configurations . <br />
-- 60 kb and 1.8k of lines . <br />
-- new light version "just contains main sql class, router, container and the main horus" "36 kb" .  
-
-Developers
-===========
-[Mohammed Al Ashaal](http://fb.com/alash3al) "from version 1 till now" . <br />
