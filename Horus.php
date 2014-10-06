@@ -372,7 +372,7 @@ Class Horus_Router
         if ( is_callable($callable) )
             $callback_type = 'normal';
         elseif ( is_string($callable) && is_file($callable) && is_readable($callable) )
-            ($callback_type = 'normal') && ($callable = create_function('', "\$args = func_get_args(); include {$callable};"));
+            ($callback_type = 'normal') && ($callable = create_function('', "\$args = func_get_args(); include '{$callable}';"));
         elseif (is_string($callable) && class_exists($callable))
             $callback_type = 'class:name';
         elseif ( is_object($callable) && class_exists(get_class($callable)) )
