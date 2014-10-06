@@ -15,7 +15,7 @@ What is new ?
 - New environment variables .
 - New Constants .
 - New function `Horus()` to get the horus object .
-- New method 'Horus()->statics()' to an object of current memory-peak, memory-usage & cpu load avg.
+- New method `Horus()->statics()` to an object of current memory-peak, memory-usage & cpu load avg.
 - Horus.php is now more faster and could be compared to any plain php code .
 - Removed useless codes .
 - Optimized some parts of the code .
