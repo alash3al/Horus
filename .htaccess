@@ -1,4 +1,4 @@
-ServerSignature off
+ ServerSignature Off
 
 <IfModule mod_rewrite.c>
     RewriteEngine On
@@ -9,9 +9,16 @@ ServerSignature off
     # example: 
     # RewriteBase /path/to/current_directory
 
+    # the next line tells apache to handle the requested file if exists
+    # or it will pass it to horus url_rewrite
     RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^ index.php [QSA,L]
-    setEnv SIMULATOR_STATE 0
-</IfModule>
 
+    # the next line just like the above, but it check for folders not files
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # rewrite /xxx to index.php/xxx
+    RewriteRule ^(.*)$ index.php/$1 [QSA,L]
+
+    # tell horus don't use index.php/ in urls
+    setEnv SIMULATOR  off
+</IfModule>
