@@ -321,7 +321,7 @@ Class Horus_Router
      */
     protected function callRouteCallback($haystack, $pattern, $type, $callable, $args)
     {
-        // the status [sccueed or failed]
+        // the status [successed or failed]
         $status = false;
 
         // is it a class
