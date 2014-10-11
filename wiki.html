@@ -16,7 +16,7 @@
         <style>
             body{padding-top: 60px;}
             .tab-pane{padding: 5px;}
-            .pln{color:#fffefe!important;}
+            .pln{color:#fffefe!important;}su
             pre .str{color:#f4645f;}
             pre .kwd{color:#4bb1b1;}
             pre .com{color:#888888;}
@@ -529,6 +529,26 @@
     // > Virtual hosts .
     // > Wildcard DNS support .
 
+    // run it
+    $app->run();
+
+</code></pre>
+
+<b> Direct regex routing :</b><br /><br />
+<pre class="prettyprint"><code>&lt;?php
+
+    //load horus
+    include 'Horus.php';
+
+    // start horus
+    $app = new Horus;
+
+	// Example url: http://localhost/123
+	// Return: This is number 123
+	$app->router->get('/([0-9]+)', function($number) {
+		echo 'This is number ', $number;
+	});
+	
     // run it
     $app->run();
 
