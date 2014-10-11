@@ -223,10 +223,10 @@
     // start it
     $horus = new Horus;
 
-        // when the borwser enter the 'GET /' show it 'hi index';
-        $horus->router->get('/', function(){
-            echo 'hi index';
-        });
+    // when the browser requests 'GET /' show it 'hi index';
+    $horus->router->get('/', function(){
+        echo 'hi index';
+    });
 
     // run
     echo $horus;
