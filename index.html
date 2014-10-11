@@ -698,6 +698,9 @@ print $app; // o.O
     // if the current request don't has key called 'nokey'
     // it will return -1
 
+    // filter the value of a key ? [trim spaces]
+    $app->input('key', 'trim');
+
     // to get all inputs array
     var_dump($app->input());
 </code></pre>
