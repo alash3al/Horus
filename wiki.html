@@ -340,7 +340,7 @@
         }, array('Mohammed', 'Al Ashaal'));
 
         // handle group of routes based on a path ?
-        $app->router->with('/x', function() use($app) {
+        $app->router->group('/x', function() use($app) {
             
             // '/x/page1'
             $app->router->any('/page1', function(){
