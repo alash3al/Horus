@@ -1,6 +1,7 @@
 What is Horus.php ?
 =======
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/alash3al/Horus?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build Status](https://scrutinizer-ci.com/g/alash3al/Horus/badges/build.png?b=master)](https://scrutinizer-ci.com/g/alash3al/Horus/build-status/master)
 > Horus.php is a tiny portable php tiny framework that focused on strong code-base and better performance, it is just one file ~ 30kb with ~ 1k of lines
 > Horus.php is just a strong tiny code-base and will still as it not more .
 
