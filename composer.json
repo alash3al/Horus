@@ -1,0 +1,17 @@
+{
+    "name": "alash3al/Horus",
+    "description": "Light & tiny miccro PHP framework scales from small to big applications",
+    "keywords": ["horus", "pdo", "rest", "http", "framework", "portable", "router"],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mohammed Al Ashaal",
+            "email": "m7medalash3al@gmail.com",
+            "role": "Software Engineer"
+        }
+    ],
+    "require": {
+        "php": ">=5.4"
+    }
+}
