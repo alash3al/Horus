@@ -1,5 +1,5 @@
 {
-    "name": "alash3al/Horus",
+    "name": "alash3al/horus",
     "description": "Light & tiny miccro PHP framework scales from small to big applications",
     "keywords": ["horus", "pdo", "rest", "http", "framework", "portable", "router"],
     "type": "library",
