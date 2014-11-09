@@ -2,6 +2,8 @@ What is Horus.php ?
 =======
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/alash3al/Horus?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://scrutinizer-ci.com/g/alash3al/Horus/badges/build.png?b=master)](https://scrutinizer-ci.com/g/alash3al/Horus/build-status/master)
+[![Latest Stable Version](https://poser.pugx.org/alash3al/horus/v/stable.svg)](https://packagist.org/packages/alash3al/horus) [![Total Downloads](https://poser.pugx.org/alash3al/horus/downloads.svg)](https://packagist.org/packages/alash3al/horus) [![Latest Version](https://poser.pugx.org/alash3al/horus/v/stable.svg)](https://packagist.org/packages/alash3al/horus) [![License](https://poser.pugx.org/alash3al/horus/license.svg)](https://packagist.org/packages/alash3al/horus)
+
 > Horus.php is a tiny portable php tiny framework that focused on strong code-base and better performance, it is just one file ~ 30kb with ~ 1k of lines
 > Horus.php is just a strong tiny code-base and will still as it not more .
 
