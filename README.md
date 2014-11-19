@@ -12,7 +12,7 @@ What is new in version 8 ?
 - More power with less code .
 - More smaller .
 - Method override from post-form .
-- Full Procedural .
+- Full Procedural ( No OOP but Ready For OOP Apps !  ) .
 - More helpers .
 - Run one or many routes with no loop ! .
 
