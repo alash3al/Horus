@@ -1,774 +1,694 @@
-<?php while(ob_get_status()) ob_end_clean();
+<?php (strtolower(basename($_SERVER['SCRIPT_NAME'])) == strtolower(basename(__FILE__))) && exit('No direct access allowed');
+
 /**
- * Horus - a tiny & portable PHP 5 framework
+ * Horus Framework
  *
- * @author      Mohammed Al Ashaal <m7medalash3al@gmail.com|fb.com/alash3al>
- * @copyright   2014 Mohammed Al Ashaal
- * @link        http://alash3al.github.io/Horus
- * @license     MIT LICENSE
- * @version     7.0.0
- * @package     Horus
+ * @package		Horus Framework
+ * @author		HorusLiteDev Team,
+ * @copyright	        Copyright (c) 2014, Horus Framework.
+ * @license		GPL-v3
+ * @link		http://alash3al.github.io/Horus
+ * @since		Version 2.0
+ * @filesource
  */
 
-// ------------------------------------------
+// -------------------------------------
 
-/**
- * Container
- * @package  Horus
- * @author   Mohammed Al-Ashaal
- * @since    5.0.0
- * @copyright 2014 Mohammed Al-Ashaal
- */
-Class Horus_Container implements ArrayAccess, Countable, IteratorAggregate, Serializable
+if ( ! function_exists('vd') )
 {
     /**
-     * @var array
+     * Alias of var_dump
+     * @return void
      */
-    public $data = array();
-
-    /**
-     * Construct
-     * @param   array $data
-     * @return  void
-     */
-    public function __construct(array $data = array())
+    function vd($expression)
     {
-        $this->data = &$data;
+        return call_user_func_array('var_dump', func_get_args());
     }
+}
 
+// -------------------------------------
+
+if ( ! function_exists('pr') )
+{
     /**
-     * Export as an array
-     * @return  array
+     * Alias of print_r
+     * @return  bool
      */
-    public function export()
+    function pr($expression, $return = false)
     {
-        return $this->data;
+       $pr = ("<pre>" . print_r($expression, true) . "</pre>");
+       return $return ? $pr : print $pr;
     }
+}
 
-    /**
-     * Import an array
-     * @param   array $data
-     * @return  void
-     */
-    public function import(array $data)
-    {
-        $this->data = $data;
-    }
+// -------------------------------------
 
+if ( ! function_exists('using') )
+{
     /**
-     * Get stored value
-     * @param   string  $key
-     * @param   string  $default
+     * Useful for something like this using(new Class)->xxx()
+     * @param   mixed $var
      * @return  mixed
      */
-    public function _get($key, $default = null)
+    function using($var)
     {
-        if(isset($this->data[$key])) return $this->data[$key];
-        else return $default;
-    }
-
-    /**
-     * Store a key's value
-     * @param   string  $key
-     * @param   mixed   $value
-     * @return  void
-     */
-    public function _set($key, $value)
-    {
-        $this->data[$key] = $value;
-    }
-
-    /**
-     * Check if the store has a certain key
-     * @param   string $key
-     * @return  bool
-     */
-    public function has($key)
-    {
-        return isset($this->data[$key]);
-    }
-
-    /**
-     * Remove a key from the store
-     * @param mixed $key
-     * @return
-     */
-    function remove($key)
-    {
-        unset($this->data[$key]);
-    }
-
-    /** @ignore */
-    public function __call($name, $args)
-    {
-        if(!isset($this->data[$name]) or !is_callable($this->data[$name])) {
-            throw new InvalidArgumentException('Call to undefined method '.__CLASS__.'::'.$name.'()');
-        } else return call_user_func_array($this->data[$name], $args);
-    }
-
-    /** @ignore */
-    public function __get($key)
-    {
-        return $this->_get($key);
-    }
-
-    /** @ignore */
-    public function __set($key, $value)
-    {
-        $this->_set($key, $value);
-    }
-
-    /** @ignore */
-    public function __isset($key)
-    {
-        return $this->has($key);
-    }
-
-    /** @ignore */
-    public function __unset($key)
-    {
-        return $this->remove($key);
-    }
-
-    /** @ignore */
-    public function offsetExists($offset)
-    {
-        return $this->has($offset);
-    }
-
-    /** @ignore */
-    public function offsetGet($offset)
-    {
-        return $this->_get($offset);
-    }
-
-    /** @ignore */
-    public function offsetSet($offset, $value)
-    {
-        $this->_set($offset, $value);
-    }
-
-    /** @ignore */
-    public function offsetUnset($offset)
-    {
-        $this->remove($offset);
-    }
-
-    /** @ignore */
-    public function count()
-    {
-        return count($this->data);
-    }
-
-    /** @ignore */
-    public function getIterator()
-    {
-        return new ArrayIterator($this->data);
-    }
-
-    /** @ignore */
-    public function serialize()
-    {
-        return json_encode($this->data);
-    }
-
-    /** @ignore */
-    public function unserialize($serialized)
-    {
-        return json_decode($serialized, true);
-    }
-
-    /** @ignore */
-    public function &__toString()
-    {
-        return $this->data;
+        return $var;
     }
 }
 
-// -------------------------------
+// -------------------------------------
 
-/**
- * Horus Router
- * @package  Horus
- * @author   Mohammed Al Ashaal
- * @since    7.0.0
- */
-Class Horus_Router
+if ( ! function_exists('errors') )
 {
     /**
-     * The current assigned group .
-     * @var string
+     * errors (show errors) or not ?
+     * @param   bool $state
+     * @return  int
      */
-    protected $group = '';
-
-    /**
-     * The routes array & regex-vars.
-     * @var array
-     */
-    public $routes, $vars = array();
-
-    /**
-     * Current request state & output
-     * @var bool
-     */
-    public $state, $output = false;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
+    function errors($state = TRUE)
     {
-		$this->vars = array (
-            '@num'      =>  '([0-9\.,]+)',
-            '@alpha'    =>  '([a-zA-Z]+)',
-            '@alnum'    =>  '([a-zA-Z0-9\.\w]+)',
-            '@str'      =>  '([a-zA-Z0-9-_\.\w]+)',
-            '@any'      =>  '([^\/]+)',
-            '@*'        =>  '?(.*)',
-            '@date'     =>  '(([0-9]+)\/([0-9]{2,2}+)\/([0-9]{2,2}+))',
-            '@null'     =>  '^',
-            '@domain'   =>  sprintf('(%s)', addcslashes($_SERVER['DEFAULT_DOMAIN'], './'))
-        );
-        $this->group = sprintf('//%s/', $_SERVER['DEFAULT_DOMAIN']);
-    }
-
-    /**
-     * Group routes under a parent pattern
-     * @param   string      $group
-     * @param   callable    $callable
-     * @return  Horus_Router
-     */
-    public function group($group, $callable = null)
-    {
-        // trim '/' from left and right
-        $trimed = rtrim(ltrim($group, '/'), '/');
-
-        // detect whether domain/path routing group
-        // and force it to be domain routing if not .
-        if ( strpos($group, '//') === 0 )
-            $this->group = sprintf('//%s/', $trimed);
-        else
-            $this->group = '//' . $_SERVER['DEFAULT_DOMAIN'] . '/' . $trimed . '/';
-
-        // if the callable is file create a callable, then call it anyway .
-        $callable = (!is_callable($callable) && is_file($callable)) ? create_function('$f = ' . var_export($callable,1), 'include "$f";') : $callable;
-        call_user_func($callable);
-
-        // reset the group to default
-        $this->group = sprintf('//%s/', $_SERVER['DEFAULT_DOMAIN']);
-
-        // return this object again [for method chaining]
-        return $this;
-    }
-
-	/**
-	 * Serve a new route
-	 * @param  string      $method
-	 * @param  string      $pattern
-	 * @param  callable    $callable
-	 * @return bool
-	 */
-	public function on($method, $pattern, $callable)
-    {
-        // do not do anything in case of the $state is true
-        if ( $this->state ) return ;
-
-        // allow multiple methods routing
-        if ( is_array($method) ) {
-            foreach ( $method as &$m )
-                call_user_func(array($this, __FUNCTION__), $m, $pattern, $callable);
-            return $this;
-        }
-        else $method = strtoupper($method);
-
-        // the method [any] means dispatched on any request-method
-        // so it means run on the curent request method
-        $method = ($method === 'ANY') ? ($_SERVER['REQUEST_METHOD'] = strtoupper($_SERVER['REQUEST_METHOD'])) : $method;
-
-        // must has valid callable
-        if ( ! (list($callable, $callback_type) = $this->getCallable($callable)) )
-            throw new Exception("Callable of ' {$method} -> {$pattern} ' is not valid");
-
-        // the pattern
-        $trimed = rtrim(ltrim($pattern, '/'), '/');
-        if ( strpos($pattern, '//') === 0 )
-            $pattern = '//' . $trimed . '/';
-        else
-            $pattern = rtrim($this->group . $trimed, '/') . '/';
-
-        // escape regex-chars
-        $pattern = str_replace('\\\\', '\\', addcslashes(str_ireplace(array_keys($this->vars), array_values($this->vars), $pattern), './'));
-        $patternR = "/^{$pattern}".($callback_type == 'normal' ? '$' : '')."/";
-
-        // the haystack of current request
-        $haystack = '//' . $_SERVER['SERVER_NAME'] . $_SERVER['PATH_INFO'];
-        //(var_dump($pattern, $haystack));
-
-        // apply it if matched current request
-        if ( ($method == $_SERVER['REQUEST_METHOD']) && preg_match($patternR, $haystack, $args) ) {
-            $this->state = true;
-            array_shift($args); ob_start();
-            $x = $this->callRouteCallback($haystack, $pattern, $callback_type, $callable, $args);
-            $this->output = ob_get_clean();
-            return !($x === false);
-        }
-        else return false;
-    }
-
-    /**
-     * Call a route callable
-     * @return  bool
-     */
-    protected function callRouteCallback($haystack, $pattern, $type, $callable, $args)
-    {
-        // the status [successed or failed]
-        $status = false;
-
-        // is it a class
-        if ( ($_1 = ($type == 'class:name')) || ($_2 = ($type == 'class:object')) )
-        {
-            // create/get the class object
-            $callable = ($_1 ? (new $callable) : $callable);
-
-            // the default method [home]
-            $method = 'index';
-
-            // get request method with args
-            $path = preg_replace("/^{$pattern}/i", '', $haystack);
-            $path = rtrim(ltrim($path, '/'), '/');
-            $parts = (array) explode('/', $path);
-            $method = empty($parts[0]) ? 'index' : $parts[0];
-            $method = str_replace('-', '_', $method);
-            $args = array_slice($parts, 1);
-
-            // set the calling status
-            if ( is_callable(array($callable, $method)) && $method[0] !== '_' ) {
-                call_user_func_array(array($callable, $method), $args);
-                $status = true;
-            }
-
-            // end
-            return $status;
-        }
-
-        // or a basic callable
-        elseif ($type == 'normal')
-        {
-            call_user_func_array($callable, (array) $args);
-            $status = true;
-        }
-
-        // end
-        return $status;
-    }
-
-    /**
-     * Returns callable and its type {class, class_object, normal}
-     * @param   mixed $callable
-     * @return  false | array
-     */
-    protected function getCallable($callable)
-    {
-        if ( is_callable($callable) )
-            $callback_type = 'normal';
-        elseif ( is_string($callable) && is_file($callable) && is_readable($callable) )
-            ($callback_type = 'normal') && ($callable = create_function('', "\$args = func_get_args(); include '{$callable}';"));
-        elseif (is_string($callable) && class_exists($callable))
-            $callback_type = 'class:name';
-        elseif ( is_object($callable) && class_exists(get_class($callable)) )
-            $callback_type = 'class:object';
-        else
-            return false;
-
-        return array($callable, $callback_type);
-    }
-
-    /**
-     * Magic method used to trigger any required route easily
-     * @ignore
-     */
-    public function __call($method, $args)
-    {
-        // convert _ to array
-        $method = strpos($method, '_') !== false ? array_filter(explode('_', $method)) : $method;
-
-        // add the method name to start
-        array_unshift($args, $method);
-
-        // call on() method
-        return call_user_func_array (
-            array($this, 'on'),
-            $args
-        );
+        if($state) {error_reporting(E_ALL);@ini_set('display_errors', 1);}
+        else error_reporting(0);
+        return error_reporting();
     }
 }
 
-// -------------------------------
+// -------------------------------------
 
-/**
- * SQL Manager
- * A simple yet powerful sql framework that extends PDO
- * and adds some new features to make code simple .
- * @package  Horus
- * @author   Mohammed Al-Ashaal
- * @since    4.0.0
- * @copyright 2014 Mohammed Al-Ashaal
- */
-class Horus_SQL extends PDO
+if ( ! function_exists('settings') )
 {
-    /** @ignore */
-    protected $stmnt, $driver, $database, $connected;
-
-    /** @ignore */
-    public function __construct(){}
-
     /**
-     * Construtor
-     * @param string    $dns
-     * @param string    $username
-     * @param string    $password
-     * @param array     $driver_options
-     * @return Object
+     * Application Settings manager
+     * @param   [string  $key]
+     * @param   [mixed   $value]
+     * @return  mixed
      */
-    public function connect($dns, $username = null, $password = null, array $driver_options = array())
+    function settings($key = null, $value = null)
     {
-        parent::__construct($dns, $username, $password, $driver_options);
-        $this->_setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        return $this;
-    }
+        static $sets = array();
+        !empty($sets) or ($sets = &$GLOBALS['$horus.settings']);
 
-    /**
-     * Create a new instance of the class
-     * @return  Horus_SQL
-     */
-    public function newInstance()
-    {
-        return new self();
-    }
-
-    /**
-     * Execute sql statement
-     * This is prepare + execute
-     * @param   string    $statement
-     * @param   mixed     $inputs
-     * @return  False | object
-     */
-    public function query($statement, $inputs = null)
-    {
-        $this->stmnt = $this->prepare($statement);
-        if(!is_object($this->stmnt) && ! $this->stmnt instanceof PDOStatement) return false;
-        return ((bool) ( $this->stmnt->execute((array) $inputs) ) ? $this : false);
-    }
-
-    /** @ignore */
-    public function __call($name, $args)
-    {
-        if(is_callable(array($this->stmnt, $name))) {
-            return call_user_func_array(array($this->stmnt, $name), $args);
-        }
+        // set-one
+        if ( ! empty($key) && !is_array($key) && ! empty($value) )
+            return $sets[$key] = $value;
+        elseif ( is_array($key) )
+            return $sets = array_merge($sets, $key);
+        // get-one
+        elseif ( ! empty($key) && is_null($value) )
+            return isset($sets[$key]) ? $sets[$key] : null;
+        // get-all
+        elseif ( empty($key) && empty($value) )
+            return $sets;
+        // del
+        elseif ( ! empty($key) && $value === "" )
+            unset($sets[$key]);
     }
 }
 
-// -------------------------------
+// -------------------------------------
 
-/**
- * Advanced Extensible Horus Controller
- * @package     Horus 7
- * @author      Mohammed Al Ashaal
- * @copyright   2014
- * @version     1.0
- */
-Abstract Class Horus_Controller extends Horus_Container
+if ( ! function_exists('server') )
 {
     /**
-     * Controller Constructor
-     * @return Horus_Controller
+     * $_SERVER array manager
+     * @param   [mixed $k]
+     * @param   [mixed $v]
+     * @return  mixed
      */
-    final public function __construct()
+    function server($k = null, $v = null)
     {
-        parent::__construct();
-        $this->horus = horus();
-        $this->__init();
-    }
-
-    /**
-     * Works just like an constructor
-     * @return void
-     */
-    public function __init(){}
-
-    /**
-     * Works just like __call()
-     * @return void
-     */
-    public function __caller($name, $args){}
-
-    /**
-     * Here is the magic of extensible controllers
-     * @ignore
-     */
-    public function __call($n, $a)
-    {
-        $this->__caller($n, $a);
-        if ( ! isset($this->data[$n]) ) {
-            $this->horus->e404();
+        // a reference to $_SERVER array
+        static $s = array();
+        // assign the _SERVER array if not assigned yet
+        !empty($s) or ($s = &$_SERVER);
+        // set-many
+        if ( ! empty($k) && is_array($k) ) {
+            foreach ( $k as $x => &$y )
+                call_user_func_array(__FUNCTION__, array($x, $y));
             return ;
         }
-        parent::__call($n, $a);
+        // prepare the key
+        $k = strtoupper(str_replace(array(' ', '.', '-', '/'), '_', $k));
+        // set-one
+        if ( !empty($k) && !empty($v) )
+            return $s[$k] = $v;
+        // get-one
+        elseif ( !empty($k) && is_null($v) )
+            return (isset($s[$k]) ? $s[$k] : null);
+        // get-all
+        elseif ( empty($k) )
+            return $s;
+        // del
+        elseif ( !empty($k) && $v === "" )
+             unset($s[$k]);
     }
-
-    /**
-     * Destructor
-     * @return void
-     */
-    public function __destruct()
-    {
-        $this->data = array();
-    }
-
-    /**
-     * Abstracted index method
-     * @return void
-     */
-    abstract public function index();
 }
 
-// -------------------------------
+// -------------------------------------
 
-/**
- * Horus kernel
- * @package  Horus
- * @author   Mohammed Al-Ashaal
- * @since    1.0.0
- * @copyright 2014 Mohammed Al-Ashaal
- */
-Class Horus extends Horus_Container
+if ( ! function_exists('scope') )
 {
     /**
-     * The output stored here
-     * @var string
-     */
-    protected $output = null;
-
-    /**
-     * events/hooks array
-     * @var array
-     */
-    public $events = array();
-
-    /**
-     * Horus instance stored here
-     * @var object
-     */
-    protected static $instance;
-
-    /**
-     * @const string
-     */
-    const VERSION = '7.0.0';
-
-    /**
-     * Constructor
-     * @return  void
-     */
-    public function __construct()
-    {
-        // is PHP 5 >= PHP 5.2.17
-        if(!version_compare(phpversion(), '5.2.17', '>=')) die('Sorrty i need PHP at least 5.2.17');
-
-        // starting horus timer
-        define('HORUS_START_TIME', microtime(1), true);
-        define('HORUS_START_PEAK_MEM', memory_get_peak_usage(true));
-        define('HORUS_VERSION', self::VERSION);
-
-        // unset some global vars
-        unset 
-        (
-            $HTTP_COOKIE_VARS, $HTTP_SESSION_VARS, $HTTP_SERVER_VARS, 
-            $HTTP_POST_VARS, $HTTP_POST_FILES, $HTTP_GET_VARS, $HTTP_ENV_VARS
-        );
-
-        // construct the container
-        parent::__construct();
-
-        // get the any output buffer
-        // add it to our output, then clean & start new
-        ob_start();
-
-        // environment vars
-        $this->setEnv();
-
-        // some php ini settings
-        ini_set('session.hash_function',    1);
-        ini_set('session.use_only_cookies', 1);
-        session_name('HORUSSESID');
-
-        // set some constants
-        defined('ROUTE')    or define('ROUTE', $_SERVER['ROUTE'], true);
-        defined('URL')      or define('URL', $_SERVER['URL'], true);
-        defined('DS') 		or define('DS', DIRECTORY_SEPARATOR, true);
-        defined('BASEPATH') or define('BASEPATH', realpath(dirname($_SERVER['SCRIPT_FILENAME'])) . DS, true);
-        defined('COREPATH') or define('COREPATH', realpath(dirname(__FILE__)) . DS, false);
-
-        // some other methods
-        $this->e404 = create_function
-        ('', 
-        '
-            @ob_get_clean();
-            die
-            ("
-                <!DOCTYPE HTML>
-                <html>
-                    <head><title>404 not found</title></head>
-                    <body style=\'margin: auto; padding: 15px; max-width: 400px; text-align: center; margin-top: 15%\'>
-                        <h1>404 not found</h1>
-                        <p> The requested URL was not found on this server . </p>
-                    </body>
-                </html>
-            ");
-        ');
-
-        // store the instance
-        self::$instance = $this;
-    }
-
-    /**
-     * Run the horus application
-     * @return void
-     */
-    public function run()
-    {
-        // dispatch all routes [between events]
-        $this->trigger('horus.dispatch.before');
-
-        // execute/disptach all routes relates to current request
-        if ( isset($this->router) && $this->router instanceof Horus_Router )
-        {
-            if($this->router->state == false)
-                $this->e404();
-            else
-                $this->output .= $this->router->output;
-        }
-
-        // trigger after router exec events
-        $this->trigger('horus.dispatch.after');
-
-        // get the output
-        // prepare then only send if the request is not head
-        $this->output .= ob_get_clean();
-
-        // trigger before output events
-        $this->trigger('horus.output.before', array($this));
-
-        // trigger output filters
-        $this->output  = $this->trigger('horus.output.filter', $this->output, $this->output);
-
-        // only send output if not HEAD request
-        (strtoupper($_SERVER['REQUEST_METHOD']) == 'HEAD') || (print $this->output);
-
-        // trigger after output events
-        $this->trigger('horus.output.after', array($this));
-
-        // end
-        @ob_end_flush(); exit;
-    }
-
-    /**
-     * Get horus instance
-     * @return  object
-     */
-    public static function &instance()
-    {
-        (! empty(self::$instance)) or (self::$instance = new self());
-        return self::$instance;
-    }
-
-    /**
-     * Listen an event
-     * @param   string      $tag
-     * @param   callback    $callback
-     * @param   integer     $prority
-     * @return  void
-     */
-    public function listen($tag, $callback, $prority = 0)
-    {
-        $this->events[$tag][$prority][] = $callback;
-        ksort($this->events[$tag]);
-    }
-
-    /**
-     * Trigger event(s)
-     * @param   string  $tag
-     * @param   mixed   $params
+     * Global Frame Scope
+     * @param   [string  $key]
+     * @param   [mixed   $value]
      * @return  mixed
      */
-    public function trigger($tag, $params = null, $default = null)
+    function scope($key = null, $value = null)
     {
-        if(isset($this->events[$tag])) 
+        // global scope handler
+        static $scope = array();
+        // assign the GLOBALS SCOPE array if not assigned yet
+        !empty($scope) or ($scope = &$GLOBALS['$horus.scope']);
+        // set-one
+        if ( ! empty($key) && !is_array($key) && ! empty($value) )
+            return $scope[$key] = &$value;
+        elseif ( is_array($key) )
+            return $scope = array_merge($scope, $key);
+        // get-one
+        elseif ( ! empty($key) && is_null($value) )
+            return isset($scope[$key]) ? $scope[$key] : null;
+        // get-all
+        elseif ( empty($key) && empty($value) )
+            return $scope;
+        // del
+        elseif ( ! empty($key) && $value === "" )
+            unset($scope[$key]);
+    }
+}
+
+// -------------------------------------
+
+if ( ! function_exists('call') )
+{
+    /**
+     * AutoMap to call_user_func & call_user_func_array
+     * @param   callable $callable
+     * @param   [mixed    $args]
+     * @return  mixed
+     */
+    function call($callable, $args = null)
+    {
+        $args = (func_num_args() > 2) ? array_slice(func_get_args(), 1) : (array) $args;
+        return call_user_func_array($callable, $args);
+    }
+}
+
+// -------------------------------------
+
+if ( ! function_exists('tpls') )
+{
+    /**
+     * Load template file
+     * @param   string $filename
+     * @return  void
+     */
+    function tpls($filename, array $vars = array())
+    {
+        extract($vars, EXTR_SKIP|EXTR_REFS);
+        foreach ( explode(',', $filename) as $file )
+            if ( is_file($file = settings('tpls.base') . DS . trim($file) . '.' . ltrim(settings('tpls.ext'))) )
+                 include( $file );
+            else
+                trigger_error("the template file '{$file}' not found");
+    }
+}
+
+// -------------------------------------
+
+if ( class_exists('PDO') )
+{
+    if ( ! function_exists('pdo_connect') )
+    {
+        /**
+         * Connect to any PDO supported driver
+         * @param   string  $dsn
+         * @param   [string  $username]
+         * @param   [string  $password]
+         * @param   [array   $driver_options]
+         * @return  PDO
+         */
+        function pdo_connect($dsn, $username = null, $password = null, array $driver_options = array())
         {
-            $filtered = null;
-
-            foreach(new ArrayIterator($this->events[$tag]) as $p => $callbacks) 
-            {
-                  foreach($callbacks as $id => &$callback)
-                        if(is_callable($callback)) 
-                            $filtered = call_user_func_array($callback, array_merge((array) $params, array($filtered)));
-            }
-
-            return empty($filtered) ? $default : $filtered;
+            return new PDO($dsn, $username, $password, $driver_options);
         }
-
-        return $default;
     }
 
+    // ----------------------------
+
+    if ( ! function_exists('pdo_connect_mysql') )
+    {
+        /**
+         * Connect to mysql server
+         * @param   string  $host
+         * @param   string  $dbname
+         * @param   string  $username
+         * @param   string  $password
+         * @param   array   $driver_options
+         * @return  PDO
+         */
+        function pdo_connect_mysql($host, $dbname, $username = null, $password = null, array $driver_options = array())
+        {
+            return pdo_connect("mysql:host={$host};dbname={$dbname}", $username, $password, $driver_options);
+        }
+    }
+
+    // ----------------------------
+
+    if ( ! function_exists('pdo_connect_pgsql') )
+    {
+        /**
+         * Connect to postgre server
+         * @param   string  $host
+         * @param   string  $dbname
+         * @param   string  $username
+         * @param   string  $password
+         * @param   array   $driver_options
+         * @return  PDO
+         */
+        function pdo_connect_pgsql($host, $dbname, $username = null, $password = null, array $driver_options = array())
+        {
+            return pdo_connect("pgsql:host={$host};dbname={$dbname};user={$username};password={$password}", $driver_options);
+        }
+    }
+
+    // ----------------------------
+
+    if ( ! function_exists('pdo_connect_sqlite') )
+    {
+        /**
+         * Connect to sqlite db
+         * @param   string  $db
+         * @param   array   $driver_options
+         * @return  PDO
+         */
+        function pdo_connect_sqlite($db, array $driver_options = array())
+        {
+            return pdo_connect("sqlite:{$db}", $driver_options);
+        }
+    }
+
+    // ----------------------------
+
+    if ( ! function_exists('pdo_query') )
+    {
+        /**
+         * Runs a PDO Query
+         * @param   PDO     $pdo
+         * @param   string  $query_string
+         * @param   [mixed   $query_inputs]
+         * @return  bool
+         */
+        function pdo_query(PDO $pdo, $query_string, $query_inputs = null)
+        {
+            $query_inputs = is_array($query_inputs) ? $query_inputs : array_slice(func_get_args(), 2);
+            $prep = $pdo->prepare($query_string);
+            $prep->execute((array) $query_inputs);
+            return $prep;
+        }
+    }
+
+    // ----------------------------
+
+    if ( ! function_exists('pdo_num_rows') )
+    {
+        /**
+         * Returns number of rows affetcted by last SQL statement
+         * @param   PDOStatement $pdo_statement
+         * @return  int
+         */
+        function pdo_num_rows(PDOStatement $pdo_statement)
+        {
+            return $pdo_statement->rowCount();
+        }
+    }
+
+    // ----------------------------
+
+    if ( ! function_exists('pdo_insert_id') )
+    {
+        /**
+         * Returns the ID of last inserted row
+         * @param   PDO $pdo
+         * @return  string
+         */
+        function pdo_insert_id(PDO $pdo)
+        {
+            return $pdo->lastInsertId();
+        }
+    }
+
+    // ----------------------------
+
+    if ( ! function_exists('pdo_fetch') )
+    {
+        /**
+         * Fetch the next row of a result set
+         * @param   PDOStatement    $pdo_statement
+         * @param   [integer         $fetch_style]
+         * @return  mixed
+         */
+        function pdo_fetch(PDOStatement $pdo_statement, $fetch_style = PDO::FETCH_ASSOC)
+        {
+            return $pdo_statement->fetch($fetch_style);
+        }
+    }
+
+    // ----------------------------
+
+    if ( ! function_exists('pdo_fetch_all') )
+    {
+        /**
+         * Returns an array containing all of result set rows
+         * @param   PDOStatement    $pdo_statement
+         * @param   [integer         $fetch_style]
+         * @return  mixed
+         */
+        function pdo_fetch_all(PDOStatement $pdo_statement, $fetch_style = PDO::FETCH_ASSOC)
+        {
+            return $pdo_statement->fetchAll($fetch_style);
+        }
+    }
+}
+
+// -------------------------------------
+
+if ( ! function_exists('hdr') )
+{
     /**
-     * Access any input key from any request method
-     * @param   mixed       $needle
-     * @param   mixed       $default
+     * header() alternative
+     * @param   [string  $k]
+     * @param   [string  $v]
+     * @param   [bool    $replace]
+     * @param   [integer $code]
+     * @return  void
+     */
+    function hdrs($k = null, $v = null, $replace = true, $code = 200)
+    {
+        static $hdrs = array();
+        !empty($hdrs) or ($hdrs = &$GLOBALS['$horus.headers']);
+
+        // prepare the key
+        $k = str_replace(array(' ', '.', '_'), '-', ucwords(str_replace('-', ' ', strtolower(trim($k)))));
+
+        // set
+        if ( (!empty($k) && !empty($v) && !isset($hdrs[$k])) || (!empty($k) && !empty($v) && $replace) )
+            $hdrs[$k] = array($v, $replace, $code);
+        // get
+        elseif ( !empty($k) && is_null($v) )
+            return isset($hdrs[$k]) ? $hdrs[$k] : null;
+        // all
+        elseif ( empty($k) )
+            return $hdrs;
+        // del
+        elseif ( !empty($k) && $v === "" )
+            {$hdrs[$k] = array("", true, $code); unset($hdrs[$k]);}
+    }
+}
+
+// -------------------------------------
+
+if ( ! function_exists('status') )
+{
+    /**
+     * SET/GET Current http status code
+     * @param   [integer $new]
+     * @return  integer
+     */
+    function status($new = null)
+    {
+        static $code = 200;
+        if ( ! empty($new) )
+            ($code = $new) && hdrs('x-horus-status', 'a horus response', true, $new);
+        return $code;
+    }
+}
+
+// -------------------------------------
+
+if ( ! function_exists('out') )
+{
+    /**
+     * Write output to the output frame
+     * @param   [mixed $args]
+     * @return  mixed
+     */
+    function out($args = null)
+    {
+        static $out = "";
+        !empty($out) or ($out = &$GLOBALS['$horus.output']);
+
+        $args = func_get_args();
+
+        // set [override - append]
+        // get
+        if ( ! empty($args) ) {
+            if ( $args[sizeof($args) - 1] === true ) {
+                array_pop($args);
+                $out = implode('', $args);
+            } else $out .= implode('', $args);
+        } else return $out;
+    }
+}
+
+// -------------------------------------
+
+if ( ! function_exists('respond') )
+{
+    /**
+     * Respond to a browser request
+     * @param   string      $method
+     * @param   string      $pattern
      * @param   callable    $callable
      * @return  mixed
      */
-    public function input($needle = '', $default = FALSE, $filter = null)
+    function respond($method, $pattern, $callable)
     {
-        $needle = ( empty($needle) ? $_REQUEST : (isset($_REQUEST[$needle]) ? $_REQUEST[$needle] : $default) );
-        return is_callable($filter) ? (is_array($needle) ? array_walk_recursive($needle, $filter) : $filter($needle)) : $needle;
-    }
+        // tell horus that router has been used
+        server('router.used', 1);
 
+        // the array used in the router to know the callable
+        // and the type of it .
+        $exec       =   array( 'callable' => null, 'type' => 'default' );
+
+        // a class name ?
+        if ( is_string($callable) && class_exists($callable) )
+            ($exec['callable'] = $callable) && ($exec['type'] = 'class.str');
+        // a class instance ?
+        elseif ( ! is_callable($callable) && is_object($callable) && is_a($callable, get_class($callable)) )
+            ($exec['callable'] = $callable) && ($exec['type'] = 'class.obj');
+        // a file path ?
+        elseif ( ! is_callable($callable) && is_file($callable) )
+            $exec['callable'] = create_function('', "\$argv = func_get_args(); include({$callable})");
+        // a normal php callback ?
+        elseif ( is_callable($callable) )
+            $exec['callable'] = $callable;
+        // Ooops !, i cannont detect more :\
+        elseif ( ! is_callable($callable) )
+            trigger_error('Wait, invalid callable for "'.$method.'" for "'.$pattern.'"');
+
+        // force method(s) be separated with ',',
+        // also prepare the pattern for our operations,
+        // then create array with the needles,
+        // at end check if current method is allowed in the route .
+        $method     =   implode(',', (array) $method);
+        $pattern    =   implode('|', (array) $pattern);
+        $pattern    =   rtrim(server('router.pattern.group'), '/\\').'/'.ltrim($pattern, '\\/');
+        $pattern    =   addcslashes(call(scope('$horus.slashes'), preg_replace('/\/+/', '/', $pattern)), './');
+        $pattern    =   str_ireplace(array_keys($GLOBALS['$horus.patterns']), array_values($GLOBALS['$horus.patterns']), $pattern);
+        $pattern    =   ($exec['type'] == 'default') ? "^{$pattern}$" : "^{$pattern}";
+        $ok         =   (stripos($method, 'any') !== false) || (stripos($method, server('request.method')) !== false);
+
+        if ( ($ok !== false) && preg_match("/{$pattern}/", server('router.haystack'), $m) ):
+
+            // remove the first value
+            // and start new output buffer
+            array_shift($m);
+            ob_start();
+
+            // what the callable returns ? [default true]
+            // this will help us to optionally end the application
+            // when this callable ended or wait for another .
+            // only false will make the app continue
+            $end = true;
+
+            // apply the callable if it a default one
+            // then set the router status to 1 'ok'
+            if ( $exec['type'] == 'default' ):
+
+                $end = call_user_func_array($exec['callable'], $m);
+                server('router.status', 1);
+
+            // it must be a class, get/construct(pass the regex result) it,
+            // then get the haystack parts and remove the route-pattern,
+            // then set the default method 'index' if not set,
+            // then extract the method arguments,
+            // applay an event to the method [extensible],
+            // then only run the callback if it is ok and don't start with '_',
+            // and set the router status to ok or no .
+            else:
+
+                $class  =   ($exec['type'] == 'class.obj') ? $exec['callable'] : new $exec['callable']($m);
+                $parts  =   (explode('/', rtrim(ltrim(preg_replace("/{$pattern}/", '', server('router.haystack')), '/'), '/')));
+                $method =   empty($parts[0]) ? 'index' : $parts[0];
+                $method =   trigger('horus.router.method', $method, $method);
+                $parts  =   array_slice($parts, 1);
+
+                if ( $method{0} !== '_' && is_callable(array($class, $method)) ):
+                    $end = call_user_func_array(array($class, $method), $parts);
+                    server('router.status', 1);
+                else:
+                    server('router.status', 0);
+                endif;
+
+            endif;
+
+            // catch the output --> send it to the output frame,
+            // and [[optionally]] finish the php script execution
+            out(ob_get_clean());
+            (((bool) $end) === false) or finish(false);
+
+        endif;
+    }
+}
+
+// -------------------------------------
+
+if ( ! function_exists('group') )
+{
     /**
-     * Register a driectory [and extension] to be autoloaded .
+     * Route group of routes
+     * @param   string   $pattern
+     * @param   callable $callable
+     * @return  void
+     */
+    function group($pattern, $callable)
+    {
+        $old        =   server('router.pattern.group');
+        $pattern    =   str_ireplace(array_keys($GLOBALS['$horus.patterns']), array_values($GLOBALS['$horus.patterns']), $pattern);
+
+        server('router.pattern.group', call(scope('$horus.slashes'), rtrim($old, '/\\').'/'.ltrim($pattern, '/\\')));
+        call($callable);
+        server('router.pattern.group', $old);
+    }
+}
+
+// -------------------------------------
+
+if ( ! function_exists('bind') )
+{
+    /**
+     * Bind an action to an event
+     * @param   string      $event
+     * @param   callable    $action
+     * @param   integer     $priority
+     * @return  void
+     */
+    function bind($event = null, $action = null, $priority = 0)
+    {
+        static $events = array();
+        !empty($events) or ($events = &$GLOBALS['$horus.events']);
+
+        if ( empty($event) ) return $events;
+        elseif ( ! empty($event) && !empty($action) ) {
+            $events[$event][$priority][] = $action;
+            ksort($events[$event]);
+        }
+    }
+}
+
+// -------------------------------------
+
+if ( ! function_exists('trigger') )
+{
+    /**
+     * trigger an event an applay all of its actions
+     * @param   string  $event
+     * @param   [mixed   $args]
+     * @param   [mixed   $default]
+     * @return  mixed
+     */
+    function trigger($event, $args = null, $default = null)
+    {
+        $args = array_merge((array) $args, array($default));
+
+        foreach ( bind() as $e => $priorities )
+            foreach ( $priorities as $p => &$events )
+                foreach ( $events as $i => &$e )
+                    $default = call_user_func_array($e, $args);
+        return $default;
+    }
+}
+
+// -------------------------------------
+
+if ( ! function_exists('fire') )
+{
+    /**
+     * Fire an action/event from event queue
+     * @param   string      $event
+     * @param   [callable   $action]
+     * @return  void
+     */
+    function fire($event, $action = null)
+    {
+        if ( empty($action) )
+            unset($GLOBALS['$horus.events'][$event]);
+
+        foreach ( bind() as $e => $priorities )
+                foreach ( $priorities as $p => &$events )
+                    foreach ( $events as $i => &$a )
+                        if ( $action == $a )
+                            unset($GLOBALS['$horus.events'][$e][$p][$i]);
+    }
+}
+
+// -------------------------------------
+
+if ( ! function_exists('autoload') )
+{
+    /**
+     * Register given path as spl_autoload_register() implementation
      * @param   string $path
      * @param   string $extension
      * @return  lambada
      */
-    public function &autoload($path, $extension = 'php')
+    function &autoload($path, $extension = 'php')
     {
         $params = '$class, $g = '.var_export(array( realpath($path) . DS, "." . ltrim($extension, '.') ), true);
 
         spl_autoload_register($func = create_function($params, '
             list($path, $extension) = $g;
             $class = rtrim(ltrim(str_replace(array("\\\\", "/", "_"), DS, $class), DS), DS);
-            if(!is_file($file = $path . $class . $extension)) {
+
+            if(!is_file($file = $path . $class . $extension))
                 $file = $path . $class . DS . basename($class) . $extension;
-            }
-            if(is_file($file)) include_once $file;
+            if(is_file($file))
+                include_once $file;
         '));
 
         return $func;
     }
+}
 
+// -------------------------------------
+
+if ( ! function_exists('go') )
+{
     /**
-     * Smart redirect method
+     * Multi redirect method
      * @since   version 1.0
      * @param   string  $to
      * @param   integer $using
      * @return  void
      */
-    public function go($to, $using = 302)
+    function go($to, $using = 302)
     {
-        $scheme = parse_url($to, PHP_URL_SCHEME);
-        $to = (!empty($scheme) ? $to : (ROUTE . ltrim($to, '/')));
+        $scheme =   parse_url($to, PHP_URL_SCHEME);
+        $to     =   $scheme ? $to : url('@route/%s', $to);
 
-        if(headers_sent()) return call_user_func_array(__FUNCTION__, array($to, 'html'));
+        if(headers_sent()) 
+            return call_user_func_array(__FUNCTION__, array($to, 'html'));
 
         @list($using, $after) = (array) explode(':', $using);
 
@@ -780,200 +700,214 @@ Class Horus extends Horus_Container
                 echo('<script type="text/javascript">setTimeout(function(){window.location="'.$to.'";}, '.(((int) $after)*1000).');</script>');
                 break;
             default:
-                exit(header("Location: {$to}", true, $using));
+                hdrs("Location", $to, true, $using);
+                finish(false);
+                break;
         endswitch;
-    }
-
-    /**
-     * Debug (show errors) or not ?
-     * @param   bool $state
-     * @return  void
-     */
-    public function debug($state = TRUE)
-    {
-        if($state) error_reporting(E_ALL);
-        else error_reporting(0);
-    }
-
-    /**
-     * Returns some statics
-     * @return  object[float]
-     */
-    public function statics()
-    {
-        $statics = array();
-        $statics['time']    =   (float) round(microtime(1) - HORUS_START_TIME, 4);
-        $statics['mem']     =   (float) (memory_get_usage(1) / 1024);
-        $statics['pmem']    =   (float) (memory_get_peak_usage(1) - HORUS_START_PEAK_MEM);
-
-        // the next cpu code from here
-        // <http://php.net/manual/en/function.sys-getloadavg.php#107243>
-        if (stristr(PHP_OS, 'win'))
-        {
-            $wmi = new COM("Winmgmts://");
-            $server = $wmi->execquery("SELECT LoadPercentage FROM Win32_Processor");
-            $cpu_num = 0;
-            $load_total = 0;
-
-            foreach($server as $cpu){
-                ++$cpu_num;
-                $load_total += $cpu->loadpercentage;
-            }
-            $statics['cpu'] = round($load_total/$cpu_num);
-        }
-        else
-        {
-            $sys_load = sys_getloadavg();
-            $statics['cpu'] = $sys_load[0];
-        }
-
-        return (object) $statics;
-    }
-
-
-    /**
-     * Set Some of environment vars
-     * @return Horus
-     */
-    protected function setEnv()
-    {
-        // this function called before ?
-        static $called = false;
-
-        // prevent for calling multiple times
-        if ( $called ) return; $called = true;
-
-        // Create a ref. of _SERVER array
-        // to simplify coding ^_*
-        $s = &$_SERVER;
-
-        // Set some environment vars
-        $s['DEFAULT_SCHEME']    =   empty($s['DEFAULT_SCHEME']) ? 'http' : $s['DEFAULT_SCHEME'];        
-        $s['DEFAULT_DOMAIN']    =   (empty($s['DEFAULT_DOMAIN']) ? $s['SERVER_NAME'] : $s['DEFAULT_DOMAIN']);
-        $s['SIMULATOR']         =   (empty($s['SIMULATOR']) ? ($s['SIMULATOR'] = 'on') : strtolower($s['SIMULATOR']));
-        $s['SIMULATED']         =   isset($s['PATH_INFO']);
-        $s['URL']               =   $s['DEFAULT_SCHEME'] . '://' . $s['DEFAULT_DOMAIN'] . '/' . rtrim(ltrim(dirname($s['SCRIPT_NAME']), '/\\'), '\\/') . '/';
-        $s['ROUTE']             =   $s['URL'] . (($s['SIMULATOR'] == 'on') ? 'index.php/' : '');
-        $s['QUERY_STRING']      =   str_replace(array("\0", chr(0), '%00'), '', ($s['QUERY_STRING']));
-        $s['REQUEST_METHOD']    =   strtoupper($s['REQUEST_METHOD']);
-
-        // simulator started ?
-        if ( $s['SIMULATOR'] == 'on' )
-            $s['SIMULATED'] || header("Location: {$s['ROUTE']}", TRUE, 302);
-
-        // update the path_info
-        $s['PATH_INFO'] = empty($s['PATH_INFO']) ? '/' : preg_replace('/\/+/', '/', ('/'.(rtrim(ltrim($s['PATH_INFO'], '/'), '/')).'/'));
-        $s['PATH_INFO'] = str_replace(array("\0", chr(0), '%00'), '', ($s['PATH_INFO']));
-
-        // disable libxml errors
-        libxml_use_internal_errors(TRUE);
-
-        // Read header_inputs
-        $_INPUT = array();
-        $i =    str_replace(array("\0", chr(0), '%00'), '', rawurldecode(file_get_contents('php://input')));
-
-        // then parse it and detect whether it is
-        // basic_string, json or xml
-        if ( is_array($t = json_decode($i, true)) && $t != FALSE )
-            $_INPUT = &$t;
-        elseif ( ($t = simplexml_load_string($i)) && $t != FALSE )
-             $_INPUT = &$t;
-        else 
-            parse_str($i, $_INPUT);
-
-        // _POST ?
-        $_POST = &$_INPUT;
-
-        // Read query_string
-        // then parse it and detect whether it is
-        // basic_string, json or xml
-        $decoded = rawurldecode($s['QUERY_STRING']);
-        if (is_array($x = json_decode($decoded, true)) && $x != FALSE )
-            $_GET = &$x;
-        elseif ( ($x = simplexml_load_string($decoded)) && $x != FALSE  )
-             $_GET = &$x;
-        else 
-            parse_str($s['QUERY_STRING'], $_GET);
-
-        // enable libxml errors again
-        libxml_use_internal_errors(FALSE);
-
-        // Set the requests arrays [get, post, request]
-        $_GET       =   (array) $_GET;
-        $_POST      =   (array) $_POST;
-        $_REQUEST   =   (array) array_merge($_GET, $_POST, (array) $_INPUT);
-
-        // Set environment headers
-        header('Content-Type: text/html; charset=UTF-8', TRUE);
-        header('X-Powered-By: HORUS/PHP', TRUE);
-		header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0", TRUE);
-		header("Cache-Control: post-check=0, pre-check=0", TRUE);
-		header("Pragma: no-cache", TRUE);
-        header("X-Frame-Options: SAMEORIGIN", TRUE);
-        header("X-XSS-Protection: 1; mode=block", TRUE);
-        header("X-Content-Type-Options: nosniff", TRUE);
-
-        // free memory from some vars
-        unset($s, $i, $x, $t, $_INPUT, $path);
-
-        return $this;
-    }
-
-    /** @ignore */
-    public function __get($k)
-    {
-        // lazy initializeing ...
-
-        // router
-        if ( $k == 'router' ) {
-            if ( empty($this->data['router']) )
-                $this->router = new Horus_Router;
-            return $this->data['router'];
-        }
-
-        // sql
-        elseif ( $k == 'sql' ) {
-            if ( empty($this->data['sql']) )
-                $this->sql = new Horus_SQL;
-            return $this->data['sql'];
-        }
-
-        // continue the default getter
-        return parent::__get($k);
-    }
-
-    /** @ignore */
-    public function &__invoke($k)
-    {
-        static $horus;
-        $horus = empty($horus) ? Horus::instance() : $horus;
-        $k = str_replace(array(' ', '-', '.'), '_', $k);   
-        $k = (!isset($horus->{$k}) or empty($k)) ? $horus : $horus->{$k};
-        unset($horus); return $k;
-    }
-
-    /** @ignore */
-    public function &__toString()
-    {
-        $this->run();
     }
 }
 
-// ------------------------------
+// -------------------------------------
 
-/**
- * Horus object
- * @param   string $k
- * @return  mixed
- */
-function &Horus($k = null)
+if ( ! function_exists('url') )
 {
-    static $horus;
+    /**
+     * Format a local url
+     * @param   string  $format
+     * @param   mixed   $args
+     * @return  string
+     */
+    function url($format, $args = null)
+    {
+        $d = array 
+        (
+            '%route'    =>  server('location.route'),
+            '%url'      =>  server('location.url'),
+            '%base'     =>  dirname(server('script.name')),
+            '%scheme'   =>  server('location.scheme'),
+            '%domain'   =>  server('location.domain'),
+            '%auto'     =>  server('router.force') ? 'index.php' : "",
+            '%path'     =>  ltrim(rtrim(server('router.haystack'), '/'), '/'),
+            '%query'    =>  rtrim(server('query.string'), '&')
+        );
 
-    $horus = empty($horus) ? Horus::instance() : $horus;
+        $format = str_ireplace(array_keys($d), array_values($d), $format);
+        $format = str_replace('://', $s = '{$s}', $format);
+        $format = vsprintf($format, is_array($args) ? $args : array_slice(func_get_args(), 1));
+        $format = preg_replace('/\/+/', '/', $format);
 
-    $k = str_replace(array(' ', '-', '.'), '_', $k);   
-    $k = (!isset($horus->{$k})) ? $horus : $horus->{$k};
+        return rtrim(str_replace($s, '://', $format), '/');
+    }
+}
 
-    return $k;
+// -------------------------------------
+
+if ( ! function_exists('start') )
+{
+    /**
+     * Start horus
+     * @param   [callable $output_callback]
+     * @return  void
+     */
+    function start($output_callback = null)
+    {
+        // start new output handler if $callback is valid
+        if ( is_callable($output_callback) ) {
+            cls(true);
+            ob_start($output_callback);
+        }
+
+        // start new output block
+        ob_start();
+
+        // for router
+        scope('$horus.slashes', create_function('$v', "return ((\$r = '/'.(rtrim(ltrim(\$v, '\\\\/'), '\\\\/')).'/') == '//') ? '/' : \$r;"));
+
+        // get the path of $REQUEST_URI
+        $haystack = trim(parse_url(server('request.uri'), PHP_URL_PATH));
+
+        // remove the dir/script_name from the haystack
+        if ( stripos($haystack, $sn = server('script.name')) === 0 )
+            $haystack = substr($haystack, strlen($sn));
+        elseif ( stripos($haystack, $dn = dirname($sn)) === 0 )
+            $haystack = substr($haystack, strlen($dn));
+
+        // set some env vars
+        server('horus.started.at', microtime(true));
+        server('request method', strtolower(server('request.method')));
+        server('router.used', 0);
+        server('router.status', 0);
+        server('router.force', (is_null($rf = server('router.force')) ? true : (bool) $rf));
+        server('router.rewrited', (stripos(server('request.uri'), server('script.name') . '/') === 0));
+        server('router.pattern.group', '/');
+        server('router.haystack', $haystack = call(scope('$horus.slashes'), $haystack));
+        server('location.scheme', is_null($s = server('location.scheme')) ? 'http' : $s);
+        server('location.domain', server('server.name'));
+        server('location.url', server('location.scheme') . '://' . server('location.domain') . '/' . rtrim(ltrim(dirname(server('script.name')), '/\\'), '\\/') . '/');
+        server('location.route', server('location.url') . (server('router.force') ? 'index.php/' : ''));
+        server('location.current', server('location.route') . ltrim($haystack, '/'));
+
+        // special form post var to override current method name
+        ! empty($_POST['HORUS_OVERRIDE_METHOD']) && (server('request.method', strtolower($_POST['HORUS_OVERRIDE_METHOD'])));
+
+        // some php ini settings
+        ini_set('session.hash_function',    1);
+        ini_set('session.use_only_cookies', 1);
+        session_name('HORUSSESID');
+
+        // set some constants
+        defined('DS') 		or define('DS',         DIRECTORY_SEPARATOR, true);
+        defined('BASEPATH') or define('BASEPATH',   realpath(dirname($s['SCRIPT_FILENAME'])) . DS, true);
+        defined('COREPATH') or define('COREPATH',   realpath(dirname(__FILE__)) . DS, true);
+
+        // Set some environment headers
+        hdrs('Content-Type', 'text/html; charset=UTF-8', TRUE);
+        hdrs('X-Powered-By', 'HORUS/PHP', TRUE);
+		hdrs("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0", TRUE);
+		hdrs("Cache-Control", "post-check=0, pre-check=0", TRUE);
+		hdrs("Pragma", "no-cache", TRUE);
+        hdrs("X-Frame-Options", "SAMEORIGIN", TRUE);
+        hdrs("X-XSS-Protection", "1; mode=block", TRUE);
+        hdrs("X-Content-Type-Options", "nosniff", TRUE);
+
+        // force index.php if required
+        if ( server('router.force') && ! server('router.rewrited') ) {
+            go('/');
+            finish(false);
+        }
+
+        // global system vars
+        $GLOBALS += array(
+            '$horus.scope'      =>  array(),
+            '$horus.settings'   =>  array(),
+            '$horus.headers'    =>  array(),
+            '$horus.output'     =>  "",
+            '$horus.events'     =>  array(),
+            '$horus.patterns'   =>  array (
+                '@int'      =>  '([0-9\.,]+)',
+                '@alpha'    =>  '([a-zA-Z]+)',
+                '@alnum'    =>  '([a-zA-Z0-9\.\w]+)',
+                '@str'      =>  '([a-zA-Z0-9-_\.\w]+)',
+                '@any'      =>  '([^\/]+)',
+                '@*'        =>  '?(.*)',
+                '@date'     =>  '(([0-9]+)\/([0-9]{2,2}+)\/([0-9]{2,2}+))'
+            )
+        );
+
+        // some settings
+        settings(array(
+            'tpls.base'     =>  '',
+            'tpls.ext'      =>  'php',
+            'e404'          =>  create_function('', 'echo "<h1>404 page not found</h1><p>the requested resource not found</p>";')
+        ));
+
+        // merge all inputs
+        // but before that, get other [put,delete, .. etc]
+        $in = file_get_contents('php://input', false);
+
+        if ( is_array($x = json_decode($in, true)) )
+            $in = &$x;
+        else
+            parse_str($in, $in);
+
+        // merge all here
+        $_REQUEST = array_merge($_GET, $_POST, $in);
+
+        // unset some global vars
+        unset 
+        (
+            $HTTP_COOKIE_VARS, $HTTP_SESSION_VARS, $HTTP_SERVER_VARS, 
+            $HTTP_POST_VARS, $HTTP_POST_FILES, $HTTP_GET_VARS, $HTTP_ENV_VARS
+        );
+    }
+}
+
+// -------------------------------------
+
+if ( ! function_exists('cls') )
+{
+    /**
+     * Clear the browser window
+     * @param   [bool    $ob_clean]
+     * @return  void
+     */
+    function cls($ob_clean = false)
+    {
+        $ob_clean && @ob_clean();
+        out('', true);
+    }
+}
+
+// -------------------------------------
+
+if ( ! function_exists('finish') )
+{
+    /**
+     * finish the horus application
+     * @param   [bool    $check]
+     * @return  void
+     */
+    function finish($check = true)
+    {
+        // send all headers.
+        foreach ( hdrs() as $k => $v )
+            header(sprintf('%s: %s', $k, $v[0]), $v[1], $v[2]);
+
+        // check the router status { if required } and 
+        // if the status is not ok, call the 404 error
+        if ( $check && server('router.used') == true && server('router.status') == false ){
+            status(404);
+            call(settings('e404'));
+        }
+
+        // catch the output buffer and append it
+        // to the our output container
+        out(ob_get_clean());
+
+        // send the output to the browser of the method is not HEAD
+        (server('request.method') == 'head') || print(trigger('horus.output', out(), out()));
+
+        // end the buffering and send it
+        ob_end_flush(); exit;
+    }
 }
