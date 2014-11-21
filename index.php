@@ -1,12 +1,16 @@
- <?php
+<?php
 
-    // load Horus.php
-    include 'Horus.php';
+    // load Horus
+    include "Horus.php";
+    
+    // initialize Horus
+    start();
 
-    // start horus
-    $app = &Horus();
+    // -----------------------------
 
-        $app->router->get('/', BASEPATH . 'wiki.html');
+    out("hello", "world");
 
-    // run it
-    $app->run();
+    // -----------------------------
+
+    // end and run
+    finish();
