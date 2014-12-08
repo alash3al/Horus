@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- basic meta -->
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="Horus PHP Framework 9 introduces a micro full-stack framework to scale from small apps, to large without complex code in simple way with small lines of code all of that in just 1.2k of lines in one file" />
+        <meta name="author" content="Mohammed Abdullah Alashaal" />
+
+        <title>HPHP9 &amp; Write less, Do Much more</title>
+
+        <!-- CSS -->
+        <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.0/cosmo/bootstrap.min.css" rel="stylesheet" />
+        <link href="//cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.min.css" rel="stylesheet" />
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
+
+        <!-- favicon -->
+        <link href="https://scontent-a-mad.xx.fbcdn.net/hphotos-xap1/v/t1.0-9/10500339_421029108048154_5740342647673073365_n.jpg?oh=0166931f250910c2abdbdc602202ac09&oe=54FD00C1" rel="shortcut icon" />
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+          <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+    </head>
+
+    <body>
+
+        <nav class="navbar navbar-default navbar-fixed-bottom one-page-nav" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#intro"><span class="glyphicon glyphicon-fire"></span> HPHP9</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="fa fa-key"></span> API <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#cont">&rsaquo; Container</a></li>
+                                <li><a href="#env">&rsaquo; Environment</a></li>
+                                <li><a href="#loader">&rsaquo; AutoLoader</a></li>
+                                <li><a href="#res">&rsaquo; Response</a></li>
+                                <li><a href="#req">&rsaquo; Request</a></li>
+                                <li><a href="#router">&rsaquo; Router</a></li>
+                                <li><a href="#hooks">&rsaquo; Hooks</a></li>
+                                <li><a href="#util">&rsaquo; Util</a></li>
+                                <li><a href="#pdo">&rsaquo; PDO</a></li>
+                                <li><a href="#misc">&rsaquo; Misc</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="fa fa-link"></span> Links <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a target="_blank" href="//github.com/alash3al/Horus">&rsaquo; Horus, Github</a></li>
+                                <li><a target="_blank" href="//webscripts.softpedia.com/script/Frameworks/Horus-Framework-82303.html">&rsaquo; Horus, Softpedia</a></li>
+                                <li><a target="_blank" href="//www.phpclasses.org/package/8642-PHP-Develop-Web-applications-using-a-micro-framework.html">&rsaquo; Horus, PHPClasses</a></li>
+                                <li><a target="_blank" href="//facebook.com/horus.framework">&rsaquo; Horus, Facebook</a></li>
+                                <li><a target="_blank" href="//packagist.org/packages/alash3al/horus">&rsaquo; Horus, Packagist</a></li>
+                                <li><a target="_blank" href="//www.horuslitedev.com">&rsaquo; Horus, Lite Dev</a></li>
+                                <li><a target="_blank" href="//fb.me/alash3al">&rsaquo; Horus, Maintainer</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container -->
+        </nav>
+
+        <div class="container" style="padding-bottom: 90px; max-width: 700px;">
+
+            <!-- Logo -->
+            <div class="row text-center center-block" style="margin-top: 20px;">
+                <div class="text-center center-block">
+                    <img class="img-responsive img-thumbnail" src="https://scontent-b-mad.xx.fbcdn.net/hphotos-xfa1/v/t1.0-9/1507110_421028611381537_23004464390051550_n.png?oh=d3363456912d121175a7e3441e89cee7&oe=55174FBE" />
+                </div>
+                <br />                
+                <div class="text-center center-block">
+                    <span><iframe src="http://ghbtns.com/github-btn.html?user=alash3al&repo=Horus&type=watch&count=true" height="30" width="118" frameborder="0" scrolling="0" style="width:118px; height: 30px;" allowTransparency="true"></iframe></span>
+                    <span><iframe src="http://ghbtns.com/github-btn.html?user=alash3al&repo=Horus&type=fork&count=true" height="30" width="118" frameborder="0" scrolling="0" style="width:118px; height: 30px;" allowTransparency="true"></iframe></span>
+                    <span><iframe src="http://ghbtns.com/github-btn.html?user=alash3al&type=follow&count=true" height="30" width="168" frameborder="0" scrolling="0" style="width:168px; height: 30px;" allowTransparency="true"></iframe></span>
+                </div>
+            </div>
+           <!-- End Logo --> 
+
+            <hr />
+
+            <!-- BODY -->
+            <div class="center-block">
+
+                <!-- CONTENTS -->
+                <div class="tab-content">
+
+                    <!-- intro -->
+                    <div id="intro" class="section">
+
+                        <h1> <span class="glyphicon glyphicon-bookmark"></span> Introduction</h1>
+                        <!-- TODO: <p class="lead"><blockquote>
+                            The Horus Framework is a pretty solid attempt at designing a good OOP framework in as a small package as possible.
+                            Focused on a light codebase and on a solid, standards-friendly approach, Horus can be used to write advanced applications 
+                            without having to deal with complex coding toolkits like Zend or CakePHP.
+                            Horus is easy to learn and the code is pretty well commented in case developers need help figuring out what's going on.
+                        -- <a target="_blank" href="http://webscripts.softpedia.com/script/Frameworks/Horus-Framework-82303.html">Softpedia</a>
+                        </blockquote></p>-->
+
+                        <p class="lead"><blockquote>
+                            HPHP is a minimal event-driven and flexible PHP web application framework that provides a powerful set of features for web based apps,
+                            creating a powerful API is quick and easy using its APIs, it is also focusing on scalability from small to large apps
+                            without killing PHP core features, it provides you with a very powerful <strong>Router</strong> in small number of lines
+                            with the support for subdomain routing in very easy way, you can also use its <strong>Hooks</strong> API to build
+                            any event-driven application and with the help of its <strong>Response</strong> manager you can have full control
+                            over the output easily, and with its <strong>Request</strong> manager you can take full control over the inputs
+                            it auto detects XML, Json or normal request input, you can also use its <strong>PDO</strong> simplified API, that merges PDO with PDOStatement in one object
+                            , there is more but all of that in just one file with ~1.4k of lines.
+                        </blockquote></p>
+
+                        <hr />
+
+                        <h1> <span class="glyphicon glyphicon-bookmark"></span> Download Horus</h1>
+                        <ul>
+                            <li>From <a target="_blank" href="//webscripts.softpedia.com/script/Frameworks/Horus-Framework-82303.html">Softpedia</a></li>
+                            <li>From <a target="_blank" href="//github.com/alash3al/Horus/releases/latest">Github Archive</a></li>
+                            <li>From <a target="_blank" href="//www.phpclasses.org/package/8642-PHP-Develop-Web-applications-using-a-micro-framework.html">PHPClasses</a></li>
+                            <li>From <a target="_blank" href="//packagist.org/packages/alash3al/horus">Packagist</a></li>
+                        </ul>
+
+                        <hr />
+
+                        <h1> <span class="glyphicon glyphicon-bookmark"></span> Setup Horus</h1>
+                        <ul>
+                            <li>After downloading horus. unpack it</li>
+                            <li>You will notice that it's about three files <code>{H9.php, index.php, .htaccess}</code></li>
+                            <li>The main file is just <code>H9.php</code></li>
+                            <li><code>index.php</code> is just a demo</li>
+                            <li><code>.htaccess</code> is for <code>mod_rewrite</code> Horus can work without <code>.htaccess</code></li>
+                            <li>There are <code>Zero</code> configurations needed to use horus</li>
+                            <li>Now open <code>index.php</code> and see the demo</li>
+                        </ul>
+
+                        <hr />
+
+                        <h1> <span class="glyphicon glyphicon-bookmark"></span> Quick Test</h1>
+                        In your <code>index.php</code> : <br /><br />
+<pre class="prettyprint"><code class="language-php">&lt;?php
+
+    // load it
+    include 'H9.php';
+
+    // start it
+    $horus = new Horus;
+
+        // when the borwser enter the 'GET /' show it 'hi index';
+        $horus->router->get('/', function($horus){
+            // res = response object
+            // lets code in organized stack
+            $horus->res->send("hi index");
+        });
+
+        // when the borwser enter the 'GET /user/@str' show it 'hi @str';
+        // router pass horus object to the callable
+        $horus->router->get('/user/@str', function($horus, $str){
+            // req = request object
+            $horus->res->sendf("hi %s", $str);
+        });
+
+    // run
+    $horus->run();
+</code></pre>
+                    </div>
+                    <!-- intro -->
+
+                    <hr />
+
+                    <!-- container -->
+                    <div id="cont">
+
+                        <h1> <span class="glyphicon glyphicon-bookmark"></span> Container</h1>
+                        <blockquote>You can call it object container</blockquote>
+
+<pre><code class="language-php">
+
+    // load it
+    include "H9.php";
+
+    // start
+    $app = new Horus;
+
+    // -------------------
+
+    // construct new container
+    $cont = new Horus_Container;
+    // or
+    $cont = new Horus_Container(array(/* key => values */));
+
+    // set key and val
+    // [., -, ' '] will be '_'
+    $cont->set('key.x', 'value');
+    // or
+    $cont->set(array('key' => 'value'));
+    // or
+    $cont->key = 'value';
+    // or
+    $cont['key'] = 'value';
+
+    // get
+    $key = $cont['key'];
+    // or
+    $key = $cont->key;
+    // or
+    $key = $cont->get('key.x');
+
+    // callback
+    $cont->clbk = function($x){print $x;};
+    $cont->clbk('test');
+    $cont->call('clbk', array('test'));
+
+    // import array [override current]
+    $cont->import(array(/* key => values */));
+    // export
+    $cont->export();
+
+    // set key's value to true
+    $cont->enable('key');
+    // false
+    $cont->disable('key');
+    // check if true
+    $cont->enabled('key');
+    // check if disabled
+    $cont->disabled('key');
+
+    // ['.', '-', ' '] will be --> '_'
+    // you can add your own key filter
+    // this will upper-case the key
+    // this is used by Horus_Environment
+    $cont->key_filter = function($key){
+        return strtoupper($key);
+    };
+
+    // any of the above operation
+    // could be done on the main Horus object '$app'
+    // because it extends it .
+    $app->key = 'value'; // and so ...
+
+    // You can override default 404 page
+    $app->e404 = function(){
+        // must return, not print !
+        return "404 not found";
+    };
+
+    // -------------------
+
+    // run
+    $app->run();
+
+</code></pre>
+
+                    </div>
+                    <!-- container -->
+
+                    <hr />
+
+                    <!-- env -->
+                    <div id="env">
+
+                        <h1> <span class="glyphicon glyphicon-bookmark"></span> Environment</h1>
+                        <blockquote>Horus environment manager</blockquote>
+
+<pre><code class="language-php">
+
+    // load it
+    include "H9.php";
+
+    // start
+    $app = new Horus;
+
+    // -------------------
+
+    // it extends Horus_Container
+    // so it is very flixible
+    $env = $app->env;
+
+    // get the http host
+    $env->get('http host');
+    // or
+    $env->get('http.host');
+    // or
+    $env->get('http-host');
+
+    // there are some custom env vars
+    // that horus set, starting with
+    // prefix 'HORUS_'
+
+    // if you want to change default url scheme
+    // default is auto-set based on current request
+    $env->set('horus.scheme', 'https');
+
+    // if you want to change the domain name
+    $env->set('horus.domain', 'localtest.me');
+
+    // if you want to add some sub-domains
+    // to be ignored by the router
+    $env->set('horus.sub.domains', array('www', 'default'));
+
+    // disable horus rewrite emulator
+    // "in case you have htacces or its alternatives"
+    // our htaccess file automatically set it ;)
+    $env->disable('horus.rewrite');
+
+    // sometimes you have some problems with
+    // server url_rewriter, so horus has its own
+    // now enable it
+    $env->enable('horus.rewrite');
+
+    // and you can choose how to will be rewritten
+    // using query --> "/?/..."
+    // or path_info --> "/index.php/..."
+    // or request_uri --> "will create new path_info"
+    $env->set('horus.rewrite.using', 'query');
+
+    // -------------------
+
+    // run
+    $app->run();
+
+</code></pre>
+
+                    </div>
+                    <!-- env -->
+
+                    <hr />
+
+                    <!-- loader -->
+                    <div id="loader">
+
+                        <h1> <span class="glyphicon glyphicon-bookmark"></span> AutoLoader</h1>
+                        <blockquote>Horus smart class loader</blockquote>
+
+<pre><code class="language-php">
+
+    // load it
+    include "H9.php";
+
+    // start
+    $app = new Horus;
+
+    // -------------------
+
+    $loader = $app->loader;
+
+    // to start it
+    // register it self in spl_autoload callbacks
+    $loader->start();
+
+    // get the HorusAutoloader ClassName Convention
+    // of a class ?
+    $class = $loader->prepare('\My\Class_Name'); //> MY/Class/Name
+
+    // get logs [classes loaded and not loaded]
+    $loader->logs();
+
+    // get maps of registered maps
+    $loader->maps();
+
+    // add a directory to be used in autoload process
+    $loader->addDir('/real/path/to/dir');
+    // or with extension
+    $loader->addDir('/real/path/to/dir', 'php');
+    // or with multiple extensions
+    $loader->addDir('/real/path/to/dir', array('php', 'class.php'));
+
+    // add multiple directories
+    $loader->addDirs(array(
+        '/real/path/to/dir1'    =>  array('ext1', 'ext2'),
+        '/real/path/to/dir2'    =>  'ext21'
+    ));
+
+    // map a single class directly ?!
+    $loader->addClass('My_Class_Name', 'full/path/to/this/class.php');
+
+    // map multiple classes
+    $loader->addClasses(array(
+        'My_Class_Name1'    =>  'full/path/to/class1.php',
+        'My_Class_Name2'    =>  'full/path/to/class2.php'
+    ));
+
+    // add a prefix or (namespace)
+    $loader->addPrefix('MY\Prefix', 'path/to/its/dir');
+    // or add a prefix with multiple paths
+    $loader->addPrefix('My_Prefix', array('path/to/dir1', 'path/to/dir2'));
+    // or add prefix with multiple paths and extensions
+    $loader->addPrefix('My.Prefix', array('dir1', 'dir2'), array('php', 'php5'));
+
+    // add multiple prefixes
+    $loader->addPrefixes(array(
+        'My Prefix' =>  array( array('path1', 'path2'), array('ext1', 'ext2') )
+    ));
+
+    // find a class path
+    $loader->find('My.Prefix.ClassName');
+
+    // manual class loading
+    $loader->load('My.Prefix.ClassName');
+
+    // [., -, _, /, \] will be DIRECTORY_SEPARATOR
+
+    // stop
+    // unregister it self  from spl_autoload callbacks
+    $loader->stop();
+
+    // -------------------
+
+    // run
+    $app->run();
+?>
+</code></pre>
+
+                    </div>
+                    <!-- env -->
+
+                    <hr />
+
+                    <!-- response -->
+                    <div id="res">
+                        
+                        <h1> <span class="glyphicon glyphicon-bookmark"></span> Response</h1>
+                        <blockquote>Manage the output and headers to be sent to the browser, in other words, manage what to be sent to the client</blockquote>
+
+<pre class="prettyprint"><code class="language-php">&lt;?php
+
+    // load it
+    include 'H9.php';
+
+    // start it
+    $app = new Horus;
+    $res = $app->res;
+
+    // Horus_Response, constructed by horus
+    // it needs Horus instance in the first arg
+
+    // ----------------
+
+    // set http status
+    $res->status(403);
+    // get the current http status
+    $status = $res->status(); //> 403
+
+    // set the current page type [content type]
+    // also [optional] you can set the charset
+    $res->type('text/html', 'utf-8');
+    // get the current content-type
+    $type = $res->type(); //> text/html
+
+    // set the charset ?
+    $res->charset('utf-8');
+    // get the charset
+    $charset = $res->charset(); //> utf-8
+
+    // set a header field
+    $res->set('x-header-field', 'value');
+    // set array of headers
+    $res->set(array(
+        'header-1'  =>  'value-1',
+        'header-2'  =>  'value-2'
+    ));
+
+    // get a header field
+    $ctype = $res->get('content-type'); //> text/html; charset=utf-8
+    // get all
+    $all = $res->get();
+    // del a header field
+    $res->del('header-1');
+
+    // write to the output
+    $res->send('test');
+    // or array/object 'will be json'
+    $res->send(range(1, 100));
+    // or override the output
+    $res->send('new output', true);
+
+    // write a formated string ?
+    $res->sendf('this is %s', 'output');
+    $res->sendf('this is %s number %s', array('output', 'two'));
+    // or array/object 'will be json'
+    $res->sendf(array('number %s', 'ok'), 'one');
+    // or override the output
+    $res->sendf('new output %s', 'two', true);
+
+    // how about sending a template file ?
+    $res->sendt('path/to/filename.html');
+    // send a file and pass some scope vars
+    $res->sendt('path/to/file.html', array('title' => 'the title'));
+    // send a template and override the output
+    // set the third arg to true
+    $res->sendt('path/to/file.html', array(), true);
+    // send multiple files
+    $res->sendt(array('path/file1.html', 'path/file2.html'));
+    // NOTE: there is a default var passed to the arguments
+    //       it is $horus, so you can easily access any $horus "$app"
+    //       object from the loaded file easily
+
+    // How about print_r ?
+    $res->sendr(range(1, 10));
+    // replace too ?
+    $res->sendr(range(1, 10));
+
+    // set content-type header to application/json + charset to utf-8
+    // then encode and send the output [override]
+    $res->json(array(
+        'field-1'   =>  'val-1',
+        'field-2'   =>  'val-2'
+    ));
+
+    // send cookie
+    $res->cookie('name', 'value');
+    // or with options
+    $res->cookie('name', 'value', array(
+        'expire'    =>  (3600 * 24 * 30) + time(),
+        'path'      =>  "/",
+        'domain'    =>  null,
+        'secure'    =>  false,
+        'http'      =>  true
+    ));
+
+    // set a session value
+    // NOTE: if you didn't start the session, it would start it.
+    $res->session('key', 'value');
+    // or
+    $res->session(array(
+        'key'   =>  'value'
+    ));
+
+    // redirect [Location: ...]
+    $res->redirect('/file.php', 302);
+
+    // end everything and send all to the browser
+    // then turn off output buffering
+    // NOTE: this should be used only when you
+    //       need to send a header that must be applied
+    //       at once !, "used in ->redirect(), ->run(), ->cache()"
+    //       you will use it rarely
+    $res->end();
+
+    // get the full output string
+    $output = $res->output();
+
+    // every method above, returns response object
+    // so you can do this
+    $res->set('header-1', 'val-1')->status(304)->charset('utf-8')
+        ->session('k', 'v')->cookie('name', 'args')->type('text/xml');
+
+    // ---------------
+
+    // run
+    $app->run();
+
+</code></pre>
+
+                    </div>
+                    <!-- response -->
+
+                    <hr />
+
+                    <!-- request -->
+                    <div id="req">
+                        
+                        <h1> <span class="glyphicon glyphicon-bookmark"></span> Request</h1>
+                        <blockquote>Manage what comes from the client</blockquote>
+
+<pre class="prettyprint"><code class="language-php">&lt;?php
+
+    // load it
+    include 'H9.php';
+
+    // start it
+    $app = new Horus;
+    $req = $app->req;
+
+    // Horus_Request, constructed by horus
+    // it needs Horus instance in the first arg
+
+    // ----------------
+
+    // get a request header key from the browser
+    // the key will be upper-cased, replaced spaces, -, . with '_'
+    // then prepend HTTP_, then fetch it from _SERVER array
+    $req->get('user agent');
+
+    // get the current request method
+    $method = $req->method();
+    // override the current request method
+    // will be upper-cased
+    $req->method('post');
+    // you can also override it
+    // using any client, by setting header field: X_METHOD_OVERRIDE
+    // or using any post form by setting a field with name X_METHOD_OVERRIDE
+    // and any value to override the current method
+
+    // is the request from xmlHttpRequest [ajax .. etc]
+    $req->xhr();
+
+    // is the request under https ?
+    $req->secure();
+
+    // get array of ips that may has the client ip address
+    $req->ips();
+
+    // get a session field
+    $v = $req->session('test');
+    // or get it and set its default value if not set
+    $v = $req->session('test', 'default');
+    // or give the third argument a callback/array of callback
+    // to filter that field
+    $v = $req->session('test', null, 'htmlentities');
+    $v = $req->session('test', null, array('htmlentities', 'strtoupper'));
+    // get all sessions
+    $req->session();
+
+    // the same could be with cookie
+    // get a cookie field
+    $v = $req->cookie('test');
+    // or get it and set its default value if not set
+    $v = $req->cookie('test', 'default');
+    // or give the third argument a callback/array of callback
+    // to filter that field
+    $v = $req->cookie('test', null, 'htmlentities');
+    $v = $req->cookie('test', null, array('htmlentities', 'strtoupper'));
+    // get all ?
+    $req->cookie();
+
+    // also could be for query ( _GET )
+    // get a _GET field
+    $v = $req->query('test');
+    // or get it and set its default value if not set
+    $v = $req->query('test', 'default');
+    // or give the third argument a callback/array of callback
+    // to filter that field
+    $v = $req->query('test', null, 'htmlentities');
+    $v = $req->query('test', null, array('htmlentities', 'strtoupper'));
+    // get all
+    $req->query();
+
+    // also could be for body ( POST/PUT/DELETE ... etc )
+    // get a body field
+    // NOTE: horus automatically parse it [xml, json or normal]
+    $v = $req->body('test');
+    // or get it and set its default value if not set
+    $v = $req->body('test', 'default');
+    // or give the third argument a callback/array of callback
+    // to filter that field
+    $v = $req->body('test', null, 'htmlentities');
+    $v = $req->body('test', null, array('htmlentities', 'strtoupper'));
+    // get all
+    $req->body();
+
+    // ---------------
+
+    // run
+    $app->run();
+
+</code></pre>
+
+                    </div>
+                    <!-- request -->
+
+                    <hr />
+
+                    <!-- router -->
+                    <div id="router">
+                        
+                        <h1> <span class="glyphicon glyphicon-bookmark"></span> Router</h1>
+                        <blockquote>
+                            A robust minimal routing system . <br />
+                            When a user access your site, it sends some request
+                            <b>Horus</b> Serve it and organize it, then calling
+                            the <b>Router</b> to reply with what the user asked,
+                            if it found, it would replay with the handler then
+                            end the request life cycle at once "you can control that by telling horus router to wait for the next route",
+                            but if it didn't found any route ?
+                            it will display e404, then end the request life cycle . <br />
+                            All of that without any kind of loop "the hell !" .
+                        </blockquote>
+
+<pre class="prettyprint"><code class="language-php">&lt;?php
+
+    // load it
+    include 'H9.php';
+
+    // start it
+    $app    =   new Horus;
+    $router =   $app->router;
+
+    // Horus_Router, constructed by horus
+    // on demand, it needs Horus instance in the first arg
+
+    // ----------------
+
+
+    // accept a get request on '/index' uri
+    $router->get('/index', function($app){
+        // using Response object
+        $app->res->send('hello world');
+    });
+
+    // accept a post request on '/index' uri
+    // you can toggle the request method to virtually 
+    // test it
+    $app->req->method('post');
+    $router->post('/index', function($app){
+        $app->res->send('hi :)');
+    });
+
+    // toggle the request method back
+    $app->req->method($app->env->get('request method'));
+
+    // accept a get or post request at '/index'
+    $router->get_post('/index', function($app){
+        $app->res->send('hi :D');
+    });
+
+    // accept any request method at '/index'
+    $router->any('/index', function($app){
+        $app->res->send('hi -_-');
+    });
+
+    // now the time to test regex !
+    // this will accept any request method
+    // at /test/(any digit ranges between "0 & 9")
+    $router->any('/test/([0-9]+)', function($app, $number){
+        // first param is $app
+        // and others are the router params
+        // respond with a formated output
+        $app->res->sendf('this number is: %d', $number);
+    });
+
+    // again with multiple params
+    // at /test/(any digit ranges between "0 & 9")/(letters between "a & z")
+    $router->any('/test/([0-9]+)/([a-z]+)', function($app, $number, $text){
+        // respond with a formated output
+        $app->res->sendf('number is: %d, text is %s', array($number, $text));
+    });
+
+    /** REGEXP shortcuts
+        '@int'      =>  '([0-9\.,]+)',
+        '@alpha'    =>  '([a-zA-Z]+)',
+        '@alnum'    =>  '([a-zA-Z0-9\.\w]+)',
+        '@str'      =>  '([a-zA-Z0-9-_\.\w]+)',
+        '@any'      =>  '([^\/]+)',
+        '@*'        =>  '?(.*)',
+        '@date'     =>  '(([0-9]+)\/([0-9]{2,2}+)\/([0-9]{2,2}+))'
+     */
+
+    // you can add shortcuts too
+    $router->mine = "(.*?)"; //> @mine
+    // delete it
+    unset($router->mine);
+
+    // But wait !, you know that horus will only execute one,
+    // then end and exit, what if we wanted to execute
+    // the next one if it matched ?!
+    $router->get('/@*', function($app){
+        $app->res->send('work in any path');
+
+        // tell horus to wait for the next
+        // now you can create new route that work
+        // along with this .
+        $app->router->wait();
+        // you can stop waiting
+        $app->router->stop();
+        // you can check 
+        $app->router->waiting(); //> true or false
+    });
+
+    // how about grouping ?
+    $router->group('/api', function($app){
+        
+        // now we can add any routes
+        // with the base '/api/'
+
+        $router = $app->router;
+
+        /* same-as: /api/tweet/@str get a tweet */
+        $router->get('/tweet/@str', function($app){
+            // the code that gets the tweet info from the db
+            // the return it
+            $app->res->json(array(
+                'status'    =>  'found',
+                'tweet'     =>  array
+                (
+                    'id'        =>  1263454,
+                    'content'   =>  'this is the #tweet content',
+                    'user'      =>  array
+                    (
+                        'uid'       =>  163534,
+                        'uname'     =>  'alash3al',
+                        'ufname'    =>  'Mohammed Al Ashaal',
+                        'uavatar'   =>  '//cdn.domain.com/avatar-alash3al.png'
+                    )
+                )
+            )); 
+        })
+
+        // !!! yes coniue from the past route, it returs Router object
+        // add a new tweet
+        ->post('/tweet', function($app){
+            // your code to add a tweet data
+            // then send the response
+            $app->res->json(array(
+                'status'    =>  'done',
+                'id'        =>  7920847
+            ));
+        });
+
+        // You can try nested groups with no limit !
+
+        // It is time for sub-domain routing !
+        // at first you must set the default domain
+        // of your app [to be fixed]
+        // set it after starting Horus .
+        // why we do it?
+        // > to fix all links and internal-redirects to this domain .
+        $app->env->set('horus.domain', 'localtest.me');
+        // localtest.me is a free service, that redirects
+        // any request to your local-server
+        // and we will use it in the docs
+
+        // lets create a group on 'api.localtest.me'
+        $router->group('//api.localtest.me', function($app){
+            $app->router->get('/index', function($app){
+                $app->res->send('hi in api subdomain index');
+            });
+        });
+
+        // lets create a group on 'site-([0-9]+).localtest.me'
+        $router->group('//site-([0-9]+).localtest.me', function($app){
+            // same-as: //site-([0-9]+).localtest.me/index
+            $app->router->get('/index', function($app, $site_num){
+                $app->res->sendf('hi in site number %d', $site_num);
+            });
+        });
+
+        // NOTE: there are some subdomains, that should be
+        //       as default [like: www]
+        //       it is set by default, you can override this env
+        // (dom1|dom2|www).localtest.me = localtest.me
+        // also this setting must be after construction
+        // "before first router usage"
+        $app->env->set('horus.sub.domains', array('dom1', 'dom2', 'www'));
+
+        // check if current uri matches certain pattern ?
+        $router->is('/api/tweet');
+
+    });
+
+    // ---------------
+
+    // run
+    $app->run();
+
+</code></pre>
+
+                    </div>
+                    <!-- router -->
+
+                    <hr />
+
+                    <!-- hooks -->
+                    <div id="hooks">
+                        
+                        <h1> <span class="glyphicon glyphicon-bookmark"></span> Hooks</h1>
+                        <blockquote>Built event driven apps easily</blockquote>
+
+<pre class="prettyprint"><code class="language-php">&lt;?php
+
+    // load it
+    include 'H9.php';
+
+    // start it
+    $app    =   new Horus;
+    $hooks  =   $app->hooks;
+
+    // Horus_Hooks initialized by Horus
+
+
+    // ----------------
+
+    // add new hook
+    $hooks->hook('actions', $action1 = function() use($app) {
+        $app->res->send('action-1 started');
+    });
+
+    // add hook and set its order to 0, "first"
+    // default order is -1 "auto-in-the-last"
+    $hooks->hook('actions', $action2 = function() use($app) {
+        $app->res->send('action-2 started');
+    }, 0);
+
+    // add hook and set its order to -1, "auto"
+    // and tell it to be removed when we execute it "last arg: true"
+    $hooks->hook('actions', $action3 = function($name) use($app) {
+        $app->res->sendf('%s started', $name);
+    }, -1, true);
+
+    // execute actions group
+    $hooks->apply('actions', "myNameAsArg"); // the last hook needs it
+
+    // another examples with "filtering"
+    $text = "hi";
+
+    $hooks->hook('filter.text', function($add_text, $color, $last_filter){
+        // add_text, red: arguments we will pass
+        // last_filter: is the value of the last filter
+        //              if there is no hook before this
+        //              it will be the default_value we pass
+
+        // this will be the value of the next filter
+        return sprintf( '<span style="color: %s">%s, %s,</span>', $color, $last_filter, $add_text );
+    });
+
+    $text = $hooks->apply('filter.text', array('add-this', 'red'), $text);
+
+    // get all hooks
+    $all = $hooks->hooks();
+
+    // remove a hooks-group
+    $hooks->unhook('actions');
+
+    // remove a certain hook from a hooks-group
+    $hooks->unhook('actions', $action1);
+
+    // ---------------
+
+    // run
+    $app->run();
+
+</code></pre>
+
+                    </div>
+                    <!-- hooks -->
+
+                    <hr />
+
+                    <!-- util -->
+                    <div id="util">
+
+                        <h1> <span class="glyphicon glyphicon-bookmark"></span> Util</h1>
+                        <blockquote>Some helpers <code>Encryption, Hashing, Autoload &amp; Urls</code></blockquote>
+
+<pre><code class="language-php">
+
+    // load it
+    include "H9.php";
+
+    // start
+    $app    =   new Horus;
+    $util   =   $app->util;
+
+    // -------------------
+
+    // hash using any supported php hash algo.
+    $util->md5('string');
+    $util->sha512('data');
+    $util->whirlpool('data');
+    $util->gost('data');
+    $util->haval128_4('data'); //haval128,4
+    // and so ... .
+    // "convert any ',', '-'" to '_'
+
+    // send a horus exception
+    $util->exception('exception message here');
+
+    // register an autoload path
+    // php: extenstion, "optional" default is 'php'
+    $util->autoload('path/to/dir/classes', 'php');
+
+    // show errors
+    $util->debug(true);
+
+    // hide errors
+    $util->debug(false);
+
+    // MCrypt encrypt shortcut
+    $en = $util->encrypt('data to encrypt', 'secret-key');
+    // decrypt
+    $util->decrypt($en, 'secret-key');
+
+    // like php5.5 password hashing api
+    $algo = 'blowfish'; // [md5, sha256, sha512, blowfish]
+    $hash = $util->hashMake('real-data', $algo);
+    // now check 
+    $is_ok = $util->hashVerify('real-data', $hash);
+
+    // get internal urls [formated]
+    // to get the direct "[r]eal [url]" to the script
+    // recommended to be used for assets
+    $util->url('%rurl/assets/css/style.css');
+
+    // to get the virtual url
+    // virual url is the url auto-generated
+    // by the router settings
+    // recommended to be used for internal page linking
+    $util->url('%vurl/tweet/12123');
+
+    /* URL formates
+        '%scheme'   =>  the system scheme
+        '%domain'   =>  the system domain,
+        '%rpath'    =>  "/path/to/main-horus/dir",
+        '%vpath'    =>  from the router '/?/' or '/index.php/'
+        '%rurl'     =>  real url
+        '%vurl'     =>  virtual url
+    */
+
+    // you can add your formats
+    $util->url('%rurl/assests/%s/%s/', array('css', 'bootstrap.css'));
+    // or
+    $util->url('%rurl/assests/%s/%s/', 'css', 'bootstrap.css');
+
+    // $app->res->redirect() uses this method
+
+    // -------------------
+
+    // run
+    $app->run();
+
+</code></pre>
+
+                    </div>
+                    <!-- util -->
+
+                    <hr />
+
+                    <!-- pdo -->
+                    <div id="pdo">
+
+                        <h1> <span class="glyphicon glyphicon-bookmark"></span> PDO</h1>
+                        <blockquote>Simplified PDO Object</blockquote>
+
+<pre><code class="language-php">
+
+    // load it
+    include "H9.php";
+
+    // start
+    $app = new Horus;
+    $pdo = $app->pdo;
+
+    // Horus_PDO
+
+    // -------------------
+
+    //$pdo->connect('driver:info....', 'user', 'pass', array(/* optional options */));
+    // mysql
+    $pdo->connect('mysql:host=localhost;dbname=test', 'username', 'password');
+    // or
+    $pdo->mysql('host', 'dbname', 'user', 'pass', array(/* optional options */));
+    // sqlite 'shortcut'
+    $pdo->sqlite('dbfile', array(/* optional options */));
+    // pgsql
+    $pdo->pgsql('host', 'dbname', 'user', 'pass', array(/* optional options */));
+
+    // query and prepare ?!
+    $pdo->query('drop table x');
+    $pdo->query('select * from tb where x = ?', 'value');
+    $pdo->query('select * from tb where x = ? and y = ?', array('v1', 'v2'));
+
+    while( $row = $pdo->fetch(PDO::FETCH_ASSOC) ) {
+        // code ...
+    }
+
+    foreach ( $pdo->fetchAll(PDO::FETCH_ASSOC) as $row ) {
+        // code
+    }
+
+    // Yes, everything from $pdo->
+
+    // -------------------
+
+    // run
+    $app->run();
+
+</code></pre>
+
+                    </div>
+                    <!-- pdo -->
+
+                    <hr />
+
+                    <div id="misc">
+                        <h1><span class="fa fa-bookmark"></span> Misc</h1>
+<pre><code class="language-php">
+
+    include "H9.php";
+
+    // we can start horus
+    // and pass an output handler
+    $app = new Horus('ob_gzhandler');
+
+    // you can hook a output filter too !
+    // hook to 'horus.res.output'
+    $app->hooks->hook('horus.res.output', function($output){
+        return htmlentities($output);
+    });
+
+    // Some Constants:
+    /*
+        DS          :   DIRECTORY_SEPARATOR
+        COREPATH    :   the path where H9.php exists
+        BASEPATH    :   the path to the main application dir.
+        HORUS_INIT  :   when horus has been started 'microtime-float'
+    */
+
+    // You can get Horus instance
+    $horus = Horus::I();
+
+    $app->run();
+
+</code></pre>
+                    </div>
+
+              </div>
+                <!-- CONTENTS -->
+
+                <footer class="center-block text-center panel panel-default" style="padding: 15px;">
+                    Copyright &copy; 2014 HPHP Framework, <br />
+                    sponsored by <a target="_blank" href="//horuslitedev.com">HLD</a>
+                </footer>
+
+            </div>
+            <!-- BODY -->
+        </div>
+        <!-- /.container -->
+
+        <!-- JavaScript -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-one-page-nav/3.0.0/jquery.nav.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $('[data-toggle="tooltip"').tooltip();
+                $('.one-page-nav').onePageNav();
+            });
+        </script>
+    </body>
+</html>
