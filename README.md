@@ -1,4 +1,4 @@
-What is Horus.php ?
+What is HPHP ?
 =======
 <p class="lead"><blockquote>
     HPHP is a minimal event-driven and flexible PHP web application framework that provides a powerful set of features for web based apps,
