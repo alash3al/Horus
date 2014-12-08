@@ -26,3 +26,12 @@ What is new in version 9 ?
 - PDO Simplified Class  
 - Better AutoLoader Class  
 - New Hooks system  
+
+Download
+=========
+<ul>
+    <li>From <a target="_blank" href="//webscripts.softpedia.com/script/Frameworks/Horus-Framework-82303.html">Softpedia</a></li>
+    <li>From <a target="_blank" href="//github.com/alash3al/Horus/releases/latest">Github Archive</a></li>
+    <li>From <a target="_blank" href="//www.phpclasses.org/package/8642-PHP-Develop-Web-applications-using-a-micro-framework.html">PHPClasses</a></li>
+    <li>From <a target="_blank" href="//packagist.org/packages/alash3al/horus">Packagist</a> <i><small>( composer )</small></i></li>
+</ul>
