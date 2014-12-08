@@ -20,5 +20,5 @@
     RewriteRule ^(.*)$ index.php/$1 [QSA,L]
 
     # tell horus don't use index.php/ in urls
-    setEnv ROUTER_FORCE  0
+    setEnv HORUS_REWRITE  0
 </IfModule>
