@@ -8,7 +8,7 @@ What is Horus.php ?
     any event-driven application and with the help of its <strong>Response</strong> manager you can have full control
     over the output easily, and with its <strong>Request</strong> manager you can take full control over the inputs
     it auto detects XML, Json or normal request input, you can also use its <strong>PDO</strong> simplified API, that merges PDO with PDOStatement in one object
-    , there is more but all of that in just one file with ~1.4k of lines.
+    , there is more but all of that in just one organized file .
 </blockquote></p>
 
 What is new in version 9 ?
