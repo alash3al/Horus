@@ -1,18 +1,8 @@
 {
     "name": "alash3al/horus",
-    "description": "Light & tiny miccro PHP framework scales from small to big applications",
-    "keywords": ["horus", "pdo", "rest", "http", "framework", "portable", "router"],
-    "type": "library",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Mohammed Al Ashaal",
-            "email": "m7medalash3al@gmail.com",
-            "role": "Software Engineer"
-        }
-    ],
+    "keywords": ["horus", "framework", "express", "classLoader", "pdo", "rest", "http", "framework", "portable", "router"],
+    "description": "A portable full stack event-driven framework for express developments",
     "require": {
         "php": ">=5.2.17"
     }
 }
-
