@@ -5,11 +5,11 @@
     "type": "library",
     "license": "MIT",
     "authors": [
-        {
-            "name": "Mohammed Al Ashaal",
-            "email": "m7medalash3al@gmail.com",
-            "role": "The Maintainer"
-        }
+    {
+        "name": "Mohammed Al Ashaal",
+        "email": "m7medalash3al@gmail.com",
+        "role": "The Maintainer"
+    },
     "require": {
         "php": ">=5.2.17"
     }
