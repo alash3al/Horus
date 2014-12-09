@@ -1009,6 +1009,29 @@ Class Horus_Router
     }
 
     /**
+     * Fix and prepare the pattern
+     * @param   string $pattern
+     * @param   string $escape
+     * @return  string
+     */
+    public function pattern( $pattern, $escape = '/.' )
+    {
+        $s          =   &$_SERVER;
+        $pattern    =   is_array($pattern) ? ("".join('|', $pattern)."") : $pattern;
+
+        if ( strpos($this->base, '//') !== 0 )
+            $this->base = $s['HORUS_DOMAIN'] . '/';
+
+        if ( strpos($pattern, '//') !== 0 )
+            $pattern = $this->base . '/' . $pattern;
+
+        $pattern    =   '//' . preg_replace('/\/+/', '/', ltrim(rtrim($pattern, '/'), '/')) . '/';
+        $pattern    =   str_ireplace( array_keys($this->regex), array_values($this->regex), $pattern );
+
+        return preg_replace('/\\\+/', '\\', addcslashes( $pattern, $escape ));
+    }
+
+    /**
      * Rewrite and pathinfo fixer helper
      * @return void
      */
@@ -1131,29 +1154,6 @@ Class Horus_Router
         }
 
         return $this;
-    }
-
-    /**
-     * Fix and prepare the pattern
-     * @param   string $pattern
-     * @param   string $escape
-     * @return  string
-     */
-    protected function pattern( $pattern, $escape = '/.' )
-    {
-        $s          =   &$_SERVER;
-        $pattern    =   is_array($pattern) ? ("".join('|', $pattern)."") : $pattern;
-
-        if ( strpos($this->base, '//') !== 0 )
-            $this->base = $s['HORUS_DOMAIN'] . '/';
-
-        if ( strpos($pattern, '//') !== 0 )
-            $pattern = $this->base . '/' . $pattern;
-
-        $pattern    =   '//' . preg_replace('/\/+/', '/', ltrim(rtrim($pattern, '/'), '/')) . '/';
-        $pattern    =   str_ireplace( array_keys($this->regex), array_values($this->regex), $pattern );
-
-        return preg_replace('/\\\+/', '\\', addcslashes( $pattern, $escape ));
     }
 }
 
