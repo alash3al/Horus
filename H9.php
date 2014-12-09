@@ -947,6 +947,29 @@ Class Horus_Router
     }
 
     /**
+     * Virtually rewrite a uri from one to another
+     * @param   string $from
+     * @param   string $to
+     * @param   string $method
+     * @return  self
+     */
+    public function re($from, $to, $method = 'get')
+    {
+        if ( is_array($from) ) {
+            foreach ( $from as &$f )
+                $this->re($f, $to, $method);
+            return $this;
+        }
+
+        if ( $this->is($from) ) {
+            $_SERVER['REQUEST_METHOD'] = strtoupper($method);
+            $_SERVER['HORUS_HAYSTACK'] = $this->pattern($to, '');
+        }
+
+        return $this;
+    }
+
+    /**
      * Add new REGEXP shortcut
      * @param   string $k
      * @param   string $v
