@@ -4,12 +4,12 @@
     "description": "A portable full stack event-driven framework for express developments",
     "type": "library",
     "license": "MIT",
-    "authors": [
-    {
+    "authors":
+    [{
         "name": "Mohammed Al Ashaal",
         "email": "m7medalash3al@gmail.com",
         "role": "The Maintainer"
-    },
+    }],
     "require": {
         "php": ">=5.2.17"
     }
