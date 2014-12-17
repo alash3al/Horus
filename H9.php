@@ -947,6 +947,29 @@ Class Horus_Router
     }
 
     /**
+     * Virtually rewrite a uri from one to another
+     * @param   string $from
+     * @param   string $to
+     * @param   string $method
+     * @return  self
+     */
+    public function re($from, $to, $method = 'get')
+    {
+        if ( is_array($from) ) {
+            foreach ( $from as &$f )
+                $this->re($f, $to, $method);
+            return $this;
+        }
+
+        if ( $this->is($from) ) {
+            $_SERVER['REQUEST_METHOD'] = strtoupper($method);
+            $_SERVER['HORUS_HAYSTACK'] = $this->pattern($to, '');
+        }
+
+        return $this;
+    }
+
+    /**
      * Add new REGEXP shortcut
      * @param   string $k
      * @param   string $v
@@ -983,6 +1006,29 @@ Class Horus_Router
             call_user_func_array( array( $this, 'handle' ), array_merge( array($k), $argv ) );
 
         return $this;
+    }
+
+    /**
+     * Fix and prepare the pattern
+     * @param   string $pattern
+     * @param   string $escape
+     * @return  string
+     */
+    public function pattern( $pattern, $escape = '/.' )
+    {
+        $s          =   &$_SERVER;
+        $pattern    =   is_array($pattern) ? ("".join('|', $pattern)."") : $pattern;
+
+        if ( strpos($this->base, '//') !== 0 )
+            $this->base = $s['HORUS_DOMAIN'] . '/';
+
+        if ( strpos($pattern, '//') !== 0 )
+            $pattern = $this->base . '/' . $pattern;
+
+        $pattern    =   '//' . preg_replace('/\/+/', '/', ltrim(rtrim($pattern, '/'), '/')) . '/';
+        $pattern    =   str_ireplace( array_keys($this->regex), array_values($this->regex), $pattern );
+
+        return preg_replace('/\\\+/', '\\', addcslashes( $pattern, $escape ));
     }
 
     /**
@@ -1042,8 +1088,6 @@ Class Horus_Router
      */
     protected function handle( $argv )
     {
-        $is_group = false;
-                
         if ( ($n = func_num_args()) === 2 )
         {
             list( $pattern, $callable ) = func_get_args();
@@ -1061,7 +1105,7 @@ Class Horus_Router
             if ( preg_match('/^'.($this->pattern($this->base)).'/', $_SERVER['HORUS_HAYSTACK']) )
             {
                 call_user_func( $callable, $this->sys );
-            }            
+            }     
 
             $this->base = $old;
 
@@ -1112,29 +1156,6 @@ Class Horus_Router
         }
 
         return $this;
-    }
-
-    /**
-     * Fix and prepare the pattern
-     * @param   string $pattern
-     * @param   string $escape
-     * @return  string
-     */
-    protected function pattern( $pattern, $escape = '/.' )
-    {
-        $s          =   &$_SERVER;
-        $pattern    =   is_array($pattern) ? ("".join('|', $pattern)."") : $pattern;
-
-        if ( strpos($this->base, '//') !== 0 )
-            $this->base = $s['HORUS_DOMAIN'] . '/';
-
-        if ( strpos($pattern, '//') !== 0 )
-            $pattern = $this->base . '/' . $pattern;
-
-        $pattern    =   '//' . preg_replace('/\/+/', '/', ltrim(rtrim($pattern, '/'), '/')) . '/';
-        $pattern    =   str_ireplace( array_keys($this->regex), array_values($this->regex), $pattern );
-
-        return preg_replace('/\\\+/', '\\', addcslashes( $pattern, $escape ));
     }
 }
 
