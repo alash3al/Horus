@@ -641,7 +641,7 @@ Class Horus_Response
      */
     public function redirect($url, $code = 302)
     {
-        $this->set('location', $this->sys->util->url($url))->status($code);
+        $this->set('location', $url)->status($code);
         $this->end();
     }
 
@@ -1052,7 +1052,7 @@ Class Horus_Router
             $s['HORUS_REWRITED'] =  (bool) (stripos($s['REQUEST_URI'], dirname($s['SCRIPT_NAME']) . '/?/') === 0);
 
         if ( $this->sys->env->enabled('horus.rewrite') && ! $s['HORUS_REWRITED'] )
-            $this->sys->res->redirect('%vurl');
+            $this->sys->res->redirect($this->sys->util->url('%vurl'));
 
         if ( $using == 'path_info' )
         {
@@ -1102,10 +1102,7 @@ Class Horus_Router
             $old        =   $this->base;
             $this->base =   $this->pattern($pattern, '');
 
-            if ( preg_match('/^'.($this->pattern($this->base)).'/', $_SERVER['HORUS_HAYSTACK']) )
-            {
-                call_user_func( $callable, $this->sys );
-            }     
+            call_user_func( $callable, $this->sys );
 
             $this->base = $old;
 
