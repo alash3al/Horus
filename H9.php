@@ -1102,7 +1102,8 @@ Class Horus_Router
             $old        =   $this->base;
             $this->base =   $this->pattern($pattern, '');
 
-            call_user_func( $callable, $this->sys );
+            if ( preg_match('/^'.(addcslashes($this->base, './')).'/', $_SERVER['HORUS_HAYSTACK']) )
+                call_user_func( $callable, $this->sys );
 
             $this->base = $old;
 
