@@ -978,7 +978,6 @@ Class Horus_Router
     public function is($pattern, $fix = true, $strcit = true)
     {
         $x = (bool) preg_match('/^'.($fix ? $this->pattern($pattern) : $pattern).($strcit ? '$' : null).'/', $this->sys->env->get('horus.haystack'), $m);
-        array_shift($m);
         return $x ? $m : false;
     }
 
@@ -1140,7 +1139,7 @@ Class Horus_Router
             $method     =   strtolower(is_array($method)  ? join('|', $method) : str_replace(',', '|', $method));
             $method     =   ltrim(rtrim(str_replace('|any|', "|".strtolower($this->sys->env->request_method)."|", "|{$method}|"), '|'), '|');
 
-            //die(json_encode(array('p' => $this->sys->env->horus_pattern, 'h' => $this->sys->env->horus_haystack)));
+            // die(json_encode(array('p' => $this->sys->env->horus_pattern, 'h' => $this->sys->env->horus_haystack)));
 
             if ( ! is_callable($callable) )
                 throw new Horus_Exception('Wait, invalid callable for "'.$method.'" for "'.$pattern.'"');
@@ -1148,6 +1147,7 @@ Class Horus_Router
             elseif ( preg_match("/{$method}/", strtolower($this->sys->env->request_method)) &&  ($m = $this->is($this->sys->env->horus_pattern, false, $strict)) )
             {
                 ob_start();
+                array_shift($m);
                 call_user_func_array( $callable, array_merge(array($this->sys), $m) );
 
                 $this->sys->res->send(ob_get_clean());
