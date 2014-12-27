@@ -66,7 +66,7 @@
                                 <li><a target="_blank" href="//facebook.com/horus.framework">&rsaquo; Horus, Facebook</a></li>
                                 <li><a target="_blank" href="//packagist.org/packages/alash3al/horus">&rsaquo; Horus, Packagist</a></li>
                                 <li><a target="_blank" href="//www.horuslitedev.com">&rsaquo; Horus, Lite Dev</a></li>
-                                <li><a target="_blank" href="//alash3al.github.io/Me">&rsaquo; Horus, Maintainer</a></li>
+                                <li><a target="_blank" href="//fb.me/alash3al">&rsaquo; Horus, Maintainer</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -120,7 +120,7 @@
                             any event-driven application and with the help of its <strong>Response</strong> manager you can have full control
                             over the output easily, and with its <strong>Request</strong> manager you can take full control over the inputs
                             it auto detects XML, Json or normal request input, you can also use its <strong>PDO</strong> simplified API, that merges PDO with PDOStatement in one object
-                            , there is more but all of that in just one file with ~1.4k of lines.
+                            , there is more but all of that in just one organized file.
                         </blockquote></p>
 
                         <hr />
@@ -748,6 +748,13 @@
         $app->res->sendf('number is: %d, text is %s', array($number, $text));
     });
 
+    // by default the router is using strict matching "^{pattren}$"
+    // this means that for '/test/' the url must be '/test/'
+    // but to '/test/' allow '/test/new/x/y...etc' you need to disable it
+    // to disable it to be "^{pattern}"
+    // just put the third param in the routes to false
+    $router->any('/my/', 'your_function', false);
+
     /** REGEXP shortcuts
         '@int'      =>  '([0-9\.,]+)',
         '@alpha'    =>  '([a-zA-Z]+)',
@@ -846,38 +853,49 @@
                 $app->res->sendf('hi in site number %d', $site_num);
             });
         });
+
+        // NOTE: there are some subdomains, that should be
+        //       as default [like: www]
+        //       it is set by default, you can override this env
+        // (dom1|dom2|www).localtest.me = localtest.me
+        // also this setting must be after construction
+        // "before first router usage"
+        $app->env->set('horus.sub.domains', array('dom1', 'dom2', 'www'));
+
+        // ### Advanced ###
+
+        // to fix a custom pattern and return the valid one
+        // that is accepted by the router
+        $p = $router->pattern('/my'); //-> //domain.com/my/
+        // to escape some chars
+        $p = $router->pattern('/my', './'); //-> \/\/domain\.com\/my\/
+
+        // check if current uri matches certain pattern ?
+        // if ok, returns array of matched
+        $router->is('/api/tweet');
+        // by default it uses strict matching and fix the pattern
+        // disable fixing, the 2nd argument
+        $router->is('//domain.com/my/', false);
+        // disable strict matching & fix the pattern
+        //          $pattern    , $fix, $strict
+        $router->is('/api/tweet', true, false);
+
+        // re route from 'GET /my' to 'GET /his'
+        $router->re('my', 'his', 'GET');
+        // also it uses strict matching, disable it ?
+        $router->re('my', 'his', 'GET', false);
+
+        // if horus didn't find any routes, throws e404
+        // you can override the default 404 easily
+        $app->e404 = function(){return "404 not found"};
+
+        // to tell horus "spoof" that you found a route
+        $router->found(true); // will increment the found by 1
+
+        // get number of found routes
+        $found = $router->found();
+
     });
-
-    // NOTE: there are some subdomains, that should be
-    //       as default [like: www]
-    //       it is set by default, you can override this env
-    // (dom1|dom2|www).localtest.me = localtest.me
-    // also this setting must be after construction
-    // "before first router usage"
-    $app->env->set('horus.sub.domains', array('dom1', 'dom2', 'www'));
-
-    // check if current uri matches certain pattern ?
-    $router->is('/api/tweet');
-
-    // to re-set "virtual rewrite" the current
-    // haystack to another
-    // rewrite the current '/google' to be '/gogl'
-    // then the router will execute '/gogle' handler
-    // instead of '/google' "in GET request"
-    $router->re('/google', '/gogle');
-
-    // to change the request method too !
-    // METHOD: 'case in-sensitive'
-    $router->re('/google', '/gogle', 'GET');
-
-    // You can try array of "from"
-    $app->router->re(array('/google', '/gog'), '/gogle');
-
-    // for advanced users, you may need to generate and
-    // fix a pattern that is completable with Horus Router
-    // and [optinal] escape some chars, like: '.' and '/'
-    // set the make arg '' to not to escape anything
-    $app->router->pattern('/my/pattern', './');
 
     // ---------------
 
@@ -912,19 +930,20 @@
     // ----------------
 
     // add new hook
-    $hooks->hook('actions', $action1 = function() use($app) {
+    // horus passes Horus object in the first argument
+    $hooks->hook('actions', $action1 = function($app){
         $app->res->send('action-1 started');
     });
 
     // add hook and set its order to 0, "first"
     // default order is -1 "auto-in-the-last"
-    $hooks->hook('actions', $action2 = function() use($app) {
+    $hooks->hook('actions', $action2 = function($app){
         $app->res->send('action-2 started');
     }, 0);
 
     // add hook and set its order to -1, "auto"
     // and tell it to be removed when we execute it "last arg: true"
-    $hooks->hook('actions', $action3 = function($name) use($app) {
+    $hooks->hook('actions', $action3 = function($app, $name){
         $app->res->sendf('%s started', $name);
     }, -1, true);
 
@@ -1037,12 +1056,19 @@
         '%vurl'     =>  virtual url
     */
 
-    // you can add your formats
+    // you can do more formating
     $util->url('%rurl/assests/%s/%s/', array('css', 'bootstrap.css'));
     // or
     $util->url('%rurl/assests/%s/%s/', 'css', 'bootstrap.css');
 
-    // $app->res->redirect() uses this method
+    // assign your own formats easily
+    $util->url(array(
+        '%my'   =>  '%vurl/my',
+        /* and so */
+    ));
+
+    // get all formats
+    $all = $util->url();
 
     // -------------------
 
@@ -1121,6 +1147,9 @@
     // we can start horus
     // and pass an output handler
     $app = new Horus('ob_gzhandler');
+
+    // Horus version
+    $ver = Horus::VERSION;
 
     // you can hook a output filter too !
     // hook to 'horus.res.output'
