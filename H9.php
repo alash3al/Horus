@@ -4,7 +4,7 @@
  * 
  * @package     Horus
  * @author      Mohammed Al-Ashaal <http://is.gd/alash3al>
- * @version     9.0.0
+ * @version     9.1
  * @license     MIT
  * @copyright   2014 (c) HPHP Framework
  */
@@ -57,7 +57,7 @@ Class Horus_Container implements ArrayAccess, Countable, IteratorAggregate, Seri
 
     /**
      * Set a key's value
-     * @param   string  $k
+     * @param   mixed   $k
      * @param   mixed   $v
      * @return  self
      */
@@ -238,8 +238,32 @@ Class Horus_Container implements ArrayAccess, Countable, IteratorAggregate, Seri
      */
     public function _key($key)
     {
-        $key = str_replace(array(' ', '.', '-'), '_', $key);
+        $key = trim(str_replace(array(' ', '.', '-'), '_', $key));
         return is_callable($this->key_filter) ? call_user_func($this->key_filter, $key) : $key;
+    }
+}
+
+// -------------------------------
+
+/**
+ * Horus Environment Class
+ * 
+ * @package     Horus
+ * @author      Mohammed Al-Ashaal <http://is.gd/alash3al>
+ * @since       9.0.0
+ * @copyright   2014 (c) HPHP Framework
+ */
+Class Horus_Environment extends Horus_Container
+{
+    /**
+     * Constructor
+     * @return  self
+     */
+    public function __construct()
+    {
+        parent::__construct($_SERVER);
+
+        $this->key_filter       =   create_function('$k', 'return strtoupper($k);');
     }
 }
 
@@ -256,7 +280,17 @@ Class Horus_Container implements ArrayAccess, Countable, IteratorAggregate, Seri
 Class Horus_Hooks
 {
     /** @ignore */
-    protected $hooks;
+    protected $hooks, $sys;
+
+    /**
+     * Constructor
+     * @param   Horus $horus
+     * @return  self
+     */
+    public function __construct(Horus $horus)
+    {
+        $this->sys = $horus;
+    }
 
     /**
      * Register a new hook
@@ -339,36 +373,13 @@ Class Horus_Hooks
             {
                 list($c, $once) = $c;
 
-                $default_value = call_user_func_array($c, array_merge((array) $args, array($default_value)));
+                $default_value = call_user_func_array($c, array_merge(array($this->sys), (array) $args, array($default_value)));
 
                 if ( $once == true )
                     unset($this->hooks[$hook][$i]);
             }
 
         return $default_value;
-    }
-}
-
-// -------------------------------
-
-/**
- * Horus Environment Class
- * 
- * @package     Horus
- * @author      Mohammed Al-Ashaal <http://is.gd/alash3al>
- * @since       9.0.0
- * @copyright   2014 (c) HPHP Framework
- */
-Class Horus_Environment extends Horus_Container
-{
-    /**
-     * Constructor
-     * @return  self
-     */
-    public function __construct()
-    {
-        parent::__construct($_SERVER);
-        $this->key_filter = create_function('$k', 'return strtoupper($k);');
     }
 }
 
@@ -418,6 +429,7 @@ Class Horus_Response
     /**
      * SET/GET Current http content-type
      * @param   string  $new
+     * @param   string  $charset
      * @return  self |  string
      */
     public function type($new = null, $charset = 'utf-8')
@@ -855,7 +867,7 @@ Class Horus_Router
     protected   $sys, $base;
 
     /** @ignore */
-    protected  $found, $next = 0;
+    protected  $found, $wait = 0;
 
     /** @ignore */
     protected   $regex  =   array
@@ -876,18 +888,12 @@ Class Horus_Router
      */
     public function __construct(Horus $horus)
     {
-        $this->sys              =   $horus;
-
+        $this->sys                      =   $horus;
         $this->rewrite();
-
-        $s                      =   &$_SERVER;
-        $s['HORUS_SCHEME']      =   $this->sys->env->get('horus_scheme');      
-        $s['HORUS_DOMAIN']      =   $this->sys->env->get('horus_domain');
-        $s['HORUS_HAYSTACK']    =   ltrim(rtrim($_SERVER['PATH_INFO'], '/'), '/');
-        $s['HORUS_HAYSTACK']    =   empty($s['HORUS_HAYSTACK']) ? '/' : "/{$s['HORUS_HAYSTACK']}/";
-        $s['HORUS_HAYSTACK']    =   '//' .
-                                    preg_replace('/^('.(join('|', (array) $horus->env->get('horus.sub.domains'))).')\./i', '', $s['HTTP_HOST'], 1) .
-                                    preg_replace('/\/+/', '/', $s['HORUS_HAYSTACK']);
+        $horus->env->horus_haystack     =   sizeof($x = ltrim(rtrim($horus->env->path_info, '/'), '/')) == 0 ? '/' : "/{$x}/";
+        $horus->env->horus_haystack     =   '//' .
+                                            preg_replace('/^('.(join('|', (array) $horus->env->get('horus.sub.domains'))).')\./i', '', $horus->env->get('http.host'), 1) .
+                                            preg_replace('/\/+/', '/', $horus->env->horus_haystack);
     }
 
     /**
@@ -896,7 +902,7 @@ Class Horus_Router
      */
     public function wait()
     {
-        $this->next = true;
+        $this->wait = true;
     }
 
     /**
@@ -905,7 +911,7 @@ Class Horus_Router
      */
     public function waiting()
     {
-        return $this->next == true;
+        return $this->wait == true;
     }
 
     /**
@@ -914,7 +920,7 @@ Class Horus_Router
      */
     public function stop()
     {
-        $this->next = false;
+        $this->wait = false;
     }
 
     /**
@@ -923,47 +929,78 @@ Class Horus_Router
      */
     public function stopped()
     {
-        return $this->next == false;
+        return $this->wait == false;
     }
 
 
     /**
      * Return number of found routes
+     * @param   $incr
      * @return  int
      */
-    public function found()
+    public function found($incr = false)
     {
+        if ( $incr )
+            ++ $this->found;
+
         return $this->found;
     }
 
     /**
-     * Whether current uri haystack matches a certain pattern
+     * Fix and prepare the pattern
      * @param   string $pattern
+     * @param   string $escape
+     * @return  string
+     */
+    public function pattern($pattern, $escape = '/.')
+    {
+        $pattern    =   is_array($pattern) ? (join('|', $pattern)) : $pattern;
+
+        if ( strpos($this->base, '//') !== 0 )
+            $this->base = $this->sys->env->get('horus.domain') . '/';
+
+        if ( strpos($pattern, '//') !== 0 )
+            $pattern = $this->base . '/' . $pattern;
+
+        $pattern    =   '//' . preg_replace('/\/+/', '/', ltrim(rtrim($pattern, '/'), '/')) . '/';
+        $pattern    =   str_ireplace( array_keys($this->regex), array_values($this->regex), $pattern );
+
+        return preg_replace('/\\\+/', '\\', addcslashes( $pattern, $escape ));
+    }
+
+    /**
+     * Whether current uri haystack matches a certain pattern
+     * @param   string  $pattern
+     * @param   bool    $fix
+     * @param   bool    $strict
      * @return  bool
      */
-    public function is($pattern)
+    public function is($pattern, $fix = true, $strcit = true)
     {
-        return (bool) preg_match('/^'.($this->pattern($pattern)).'$/', $_SERVER['HORUS_HAYSTACK']);
+        $x = (bool) preg_match('/^'.($fix ? $this->pattern($pattern) : $pattern).($strcit ? '$' : null).'/', $this->sys->env->get('horus.haystack'), $m);
+        array_shift($m);
+        return $x ? $m : false;
     }
 
     /**
      * Virtually rewrite a uri from one to another
-     * @param   string $from
-     * @param   string $to
-     * @param   string $method
+     * @param   string  $from
+     * @param   string  $to
+     * @param   string  $method
+     * @param   string  $strict
      * @return  self
      */
-    public function re($from, $to, $method = 'get')
+    public function re($from, $to, $method = 'get', $strict = true)
     {
         if ( is_array($from) ) {
             foreach ( $from as &$f )
-                $this->re($f, $to, $method);
+                $this->re($f, $to, $method, $strict);
             return $this;
         }
 
-        if ( $this->is($from) ) {
-            $_SERVER['REQUEST_METHOD'] = strtoupper($method);
-            $_SERVER['HORUS_HAYSTACK'] = $this->pattern($to, '');
+        if ( $this->is($from, true, $strict) ) {
+            $this->sys->req->method(strtoupper($method));
+            $this->sys->env->set('horus.haystack', $this->pattern($to, ''));
         }
 
         return $this;
@@ -1009,75 +1046,51 @@ Class Horus_Router
     }
 
     /**
-     * Fix and prepare the pattern
-     * @param   string $pattern
-     * @param   string $escape
-     * @return  string
-     */
-    public function pattern( $pattern, $escape = '/.' )
-    {
-        $s          =   &$_SERVER;
-        $pattern    =   is_array($pattern) ? ("".join('|', $pattern)."") : $pattern;
-
-        if ( strpos($this->base, '//') !== 0 )
-            $this->base = $s['HORUS_DOMAIN'] . '/';
-
-        if ( strpos($pattern, '//') !== 0 )
-            $pattern = $this->base . '/' . $pattern;
-
-        $pattern    =   '//' . preg_replace('/\/+/', '/', ltrim(rtrim($pattern, '/'), '/')) . '/';
-        $pattern    =   str_ireplace( array_keys($this->regex), array_values($this->regex), $pattern );
-
-        return preg_replace('/\\\+/', '\\', addcslashes( $pattern, $escape ));
-    }
-
-    /**
      * Rewrite and pathinfo fixer helper
      * @return void
      */
     protected function rewrite()
     {
-        $s      =   &$_SERVER;
         $using  =   strtolower($this->sys->env->get('horus_rewrite_using'));
 
-        if ( empty($s['REQUEST_URI']) )
-            $s['REQUEST_URI'] = '/';
+        if ( empty($this->sys->env->request_uri) )
+            $this->sys->env->request_uri = '/';
 
-        $s['REQUEST_URI'] = '/' . ltrim($s['REQUEST_URI'], '/');
-        $s['SCRIPT_NAME'] = '/' . ltrim($s['SCRIPT_NAME'], '/');
+        $this->sys->env->request_uri    =   '/' . ltrim($this->sys->env->request_uri, '/');
+        $this->sys->env->script_name    =   '/' . ltrim($this->sys->env->script_name, '/');
 
         if ( $using == 'path_info' || $using == 'request_uri' )
-            $s['HORUS_REWRITED'] = (bool) (stripos($s['REQUEST_URI'], $s['SCRIPT_NAME'] . '/') === 0);
+            $this->sys->env->horus_rewrited     =   (bool) (stripos($this->sys->env->request_uri, $this->sys->env->script_name . '/') === 0);
         else
-            $s['HORUS_REWRITED'] =  (bool) (stripos($s['REQUEST_URI'], dirname($s['SCRIPT_NAME']) . '/?/') === 0);
+            $this->sys->env->horus_rewrited     =   (bool) (stripos($this->sys->env->request_uri, dirname($this->sys->env->script_name) . '/?/') === 0);
 
-        if ( $this->sys->env->enabled('horus.rewrite') && ! $s['HORUS_REWRITED'] )
+        if ( $this->sys->env->enabled('horus.rewrite') && $this->sys->env->disabled('horus.rewrited') )
             $this->sys->res->redirect($this->sys->util->url('%vurl'));
 
         if ( $using == 'path_info' )
         {
-            if ( ! isset($s['PATH_INFO']) && isset($s['ORIG_PATH_INFO']) )
-                $s['PATH_INFO'] = $s['ORIG_PATH_INFO'];
-            elseif ( ! isset($s['PATH_INFO']) && isset($s['PORIG_PATH_INFO']) )
-                $s['PATH_INFO'] = $s['PORIG_PATH_INFO'];
+            if ( ! isset($this->sys->env->path_info) && isset($this->sys->env->orig_path_info) )
+                $this->sys->env->path_info = $this->sys->env->orig_path_info;
+            elseif ( ! isset($this->sys->env->path_info) && isset($this->sys->env->porig_path_info) )
+                $this->sys->env->path_info = $this->sys->env->porig_path_info;
             else
                 $using = 'request_uri';
         }
 
         if ( $using == 'request_uri' )
         {
-            $s['PATH_INFO'] = parse_url($s['REQUEST_URI'], PHP_URL_PATH);
+            $this->sys->env->path_info = parse_url($this->sys->env->request_uri, PHP_URL_PATH);
     
-            if ( stripos($s['PATH_INFO'], $sn = $s['SCRIPT_NAME']) === 0 )
-                $s['PATH_INFO'] = substr($s['PATH_INFO'], strlen($sn));
-            elseif ( stripos($s['PATH_INFO'], $dn = dirname($sn)) === 0 )
-                $s['PATH_INFO'] = substr($s['PATH_INFO'], strlen($dn));
+            if ( stripos($this->sys->env->path_info, $sn = $this->sys->env->script_name) === 0 )
+                $this->sys->env->path_info = substr($this->sys->env->path_info, strlen($sn));
+            elseif ( stripos($this->sys->env->path_info, $dn = dirname($sn)) === 0 )
+                $this->sys->env->path_info = substr($this->sys->env->path_info, strlen($dn));
         }
         elseif ( $using == 'query' )
         {
-            @ list($s['PATH_INFO'], $s['QUERY_STRING']) = (array) explode('?', $s['QUERY_STRING'], 2);
-            $s['QUERY_STRING'] = (string) $s['QUERY_STRING'];
-            parse_str($s['QUERY_STRING'], $_GET);
+            @ list($this->sys->env->path_info, $this->sys->env->query_string) = (array) explode('?', $this->sys->env->query_string, 2);
+            $this->sys->env->query_string = (string) $this->sys->env->query_string;
+            parse_str(str_replace(array("\0", chr(0)), '', $this->sys->env->query_string), $_GET);
         }
     }
 
@@ -1088,8 +1101,8 @@ Class Horus_Router
      */
     protected function handle( $argv )
     {
-        if ( ($n = func_num_args()) === 2 )
-        {
+        if ( ($n = func_num_args()) === 2 ):
+
             list( $pattern, $callable ) = func_get_args();
 
             if ( is_array($pattern) )
@@ -1099,19 +1112,21 @@ Class Horus_Router
                 return $this;
             }
 
-            $old        =   $this->base;
-            $this->base =   $this->pattern($pattern, '');
+            $old        =   (string) $this->base;
+            $this->base =   $this->pattern($pattern, null);
 
-            if ( preg_match('/^'.(addcslashes($this->base, './')).'/', $_SERVER['HORUS_HAYSTACK']) )
+            if ( preg_match('/^'.(addcslashes($this->base, '/')).'/', $this->sys->env->horus_haystack) )
                 call_user_func( $callable, $this->sys );
 
             $this->base = $old;
 
             return $this;
-        }
-        elseif ( $n === 3 )
-        {
-            list( $method, $pattern, $callable )    =   func_get_args();
+
+        elseif ( $n >= 3 ):
+
+            @ list( $method, $pattern, $callable, $strict )    =   func_get_args();
+
+            $strict = ($strict === false) ? false : true;
 
             if ( is_array($pattern) )
             {
@@ -1120,40 +1135,34 @@ Class Horus_Router
                 return $this;
             }
 
-            $pattern = $this->pattern($pattern, '/');
-        }
+            $this->sys->env->horus_pattern =   $this->pattern($pattern, '/');
+            $method     =   empty($method) ? 'any' : $method;
+            $method     =   strtolower(is_array($method)  ? join('|', $method) : str_replace(',', '|', $method));
+            $method     =   ltrim(rtrim(str_replace('|any|', "|".strtolower($this->sys->env->request_method)."|", "|{$method}|"), '|'), '|');
 
-        $s                  =   &$_SERVER;
-        $s['HORUS_PATTERN'] =   &$pattern;
+            //die(json_encode(array('p' => $this->sys->env->horus_pattern, 'h' => $this->sys->env->horus_haystack)));
 
-        $method     =   empty($method) ? 'any' : $method;
-        $method     =   strtolower(is_array($method)  ? join('|', $method) : str_replace(',', '|', $method));
-        $method     =   ltrim(rtrim(str_replace('|any|', "|".strtolower($s['REQUEST_METHOD'])."|", "|{$method}|"), '|'), '|');
+            if ( ! is_callable($callable) )
+                throw new Horus_Exception('Wait, invalid callable for "'.$method.'" for "'.$pattern.'"');
+    
+            elseif ( preg_match("/{$method}/", strtolower($this->sys->env->request_method)) &&  ($m = $this->is($this->sys->env->horus_pattern, false, $strict)) )
+            {
+                ob_start();
+                call_user_func_array( $callable, array_merge(array($this->sys), $m) );
 
-        //die(json_encode(array('p' => $pattern, 'h' => $s['HORUS_HAYSTACK'])));
+                $this->sys->res->send(ob_get_clean());
 
-        if ( ! is_callable($callable) )
-            throw new Horus_Exception('Wait, invalid callable for "'.$method.'" for "'.$pattern.'"');
+                $this->found(true);
 
-        elseif ( preg_match("/{$method}/", strtolower($s['REQUEST_METHOD'])) &&  preg_match("/^{$pattern}$/", $s['HORUS_HAYSTACK'], $m) )
-        {
-            ob_start();
+                if ( ! $this->waiting() )
+                    $this->sys->run();
+                else
+                    $this->stop();
+            }
 
-            array_shift($m);
+            return $this;
 
-            call_user_func_array( $callable, array_merge(array($this->sys), $m) );
-
-            ++ $this->found;
-
-            $this->sys->res->send(ob_get_clean());
-
-            if ( ! $this->waiting() )
-                $this->sys->run();
-            else
-                $this->stop();
-        }
-
-        return $this;
+        endif;
     }
 }
 
@@ -1198,9 +1207,12 @@ Class Horus_Util
      * @param   mixed   $args
      * @return  string
      */
-    public function url($format, $args = null)
+    public function url($format = null, $args = null)
     {
         static $x = array();
+
+        if ( empty($format) )
+            return $x;
 
         if ( empty($x) )
         {
@@ -1221,6 +1233,13 @@ Class Horus_Util
 
             $x['%rurl']     =   $x['%scheme'].'://'.$x['%domain'].$x['%rpath'];
             $x['%vurl']     =   $x['%scheme'].'://'.$x['%domain'].$x['%vpath'];
+        }
+
+        if ( is_array($format) )
+        {
+            foreach ( $format as $k => &$f )
+                $x[$k] = str_replace(array_keys($x), array_values($x), $f);
+            return $this->sys;
         }
 
         $format =   preg_replace('/^([a-z]+):\/\//', '$scheme$', vsprintf(str_ireplace(array_keys($x), array_values($x), $format), is_array($args) ? $args : array_slice(func_get_args(), 1)), 1);
@@ -1669,6 +1688,9 @@ Class Horus extends Horus_Container
     /** @ignore */
     protected static $instance;
 
+    /** @ignore */
+    const VERSION = '9.1';
+
     /**
      * Constructor
      * @return  self
@@ -1683,7 +1705,7 @@ Class Horus extends Horus_Container
         is_callable($ob_handler) && ob_start($ob_handler);
 
         $this->env      =   new Horus_Environment;
-        $this->hooks    =   new Horus_Hooks;
+        $this->hooks    =   new Horus_Hooks($this);
         $this->util     =   new Horus_Util($this);
         $this->res      =   new Horus_Response($this);
         $this->req      =   new Horus_Request($this);
