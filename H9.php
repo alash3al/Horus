@@ -4,7 +4,7 @@
  * 
  * @package     Horus
  * @author      Mohammed Al-Ashaal <http://is.gd/alash3al>
- * @version     9.1
+ * @version     9.2
  * @license     MIT
  * @copyright   2014 (c) HPHP Framework
  */
@@ -16,7 +16,7 @@
  * 
  * @package     Horus
  * @author      Mohammed Al-Ashaal <http://is.gd/alash3al>
- * @since       5.0.0
+ * @since       5.1.0
  * @copyright   2014 (c) HPHP Framework
  */
 Class Horus_Container implements ArrayAccess, Countable, IteratorAggregate, Serializable
@@ -82,6 +82,222 @@ Class Horus_Container implements ArrayAccess, Countable, IteratorAggregate, Seri
     public function get($k)
     {
         return $this->__get($k);
+    }
+
+    /**
+     * Push one or more elements onto the end of array
+     * @param   string  $key
+     * @param   mixed   $value
+     * @return  self
+     */
+    public function push($key, $value)
+    {
+        if ( ! isset($this->data[$key]) )
+            $this->data[$key] = array();
+
+        foreach ( array_slice(func_get_args(), 1) as $v )
+            array_push($this->data[$key], $v);
+
+        return $this;
+    }
+
+    /**
+     * Pop elements off the end of array
+     * @param   string $key
+     * @return  self
+     */
+    public function pop($key)
+    {
+        if ( ! isset($this->data[$key]) )
+            $this->data[$key] = array();
+
+        array_pop($this->data[$key], $v);
+
+        return $this;
+    }
+
+    /**
+     * Shift an element of the beginning
+     * @param   string $key
+     * @return  self
+     */
+    public function shift($key)
+    {
+        if ( ! isset($this->data[$key]) )
+            $this->data[$key] = array();
+
+        array_shift($this->data[$key]);
+
+        return $this;
+    }
+
+    /**
+     * Prepend one or more elements to the beginning of array
+     * @param   string  $key
+     * @param   mixed   $value
+     * @return  self
+     */
+    public function unshift($key, $value)
+    {
+        if ( ! isset($this->data[$key]) )
+            $this->data[$key] = array();
+
+        foreach ( array_slice(func_get_args(), 1) as $v )
+            array_unshift($this->data[$key], $v);
+
+        return $this;
+    }
+
+    /**
+     * Push one or more elements onto the end of list
+     * @param   string  $root     
+     * @param   string  $key
+     * @param   mixed   $value
+     * @return  self
+     */
+    public function lpush($root, $key, $value)
+    {
+        if ( ! isset($this->data[$root][$key]) )
+            $this->data[$root][$key] = array();
+
+        foreach ( array_slice(func_get_args(), 2) as $v )
+            array_push($this->data[$root][$key], $v);
+
+        return $this;
+    }
+
+    /**
+     * Pop elements off the end of list
+     * @param   string  $root
+     * @param   string  $key
+     * @return  self
+     */
+    public function lpop($root, $key)
+    {
+        if ( ! isset($this->data[$root][$key]) )
+            $this->data[$root][$key] = array();
+
+        array_pop($this->data[$root][$key]);
+
+        return $this;
+    }
+
+    /**
+     * Shift an element of the beginning of list
+     * @param   string $root
+     * @param   string $key
+     * @return  self
+     */
+    public function lshift($root, $key)
+    {
+        if ( ! isset($this->data[$root][$key]) )
+            $this->data[$root][$key] = array();
+
+        array_shift($this->data[$root][$key]);
+
+        return $this;
+    }
+
+    /**
+     * Prepend one or more elements to the beginning of list
+     * @param   string  $root
+     * @param   string  $key
+     * @param   mixed   $value
+     * @return  self
+     */
+    public function lunshift($root, $key, $value)
+    {
+        if ( ! isset($this->data[$root][$key]) )
+            $this->data[$root][$key] = array();
+
+        foreach ( array_slice(func_get_args(), 2) as $v )
+            array_unshift($this->data[$root][$key], $v);
+
+        return $this;
+    }
+
+    /**
+     * Set a key and value in a list
+     * @param   string  $root
+     * @param   string  $key
+     * @param   mixed   $value
+     * @return  self
+     */
+    public function lset($root, $key, $value)
+    {
+        if ( ! isset($this->data[$root][$key]) )
+            $this->data[$root][$key] = array();
+
+        $this->data[$root][$key] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Get a key from a list
+     * @param   string  $root
+     * @param   string  $key
+     * @return  self
+     */
+    public function lget($root, $key)
+    {
+        return isset($this->data[$root][$key]) ? $this->data[$root][$key] : null;
+    }
+
+    /**
+     * Unset a key from list
+     * @param   string  $root
+     * @param   string  $key
+     * @return  self
+     */
+    public function lunset($root, $key)
+    {
+        unset($this->data[$root][$key]);
+        return $this;
+    }
+
+    /**
+     * Set a key to true in a list
+     * @param   string  $root
+     * @param   string  $key
+     * @return  self
+     */
+    public function lenable($root, $key)
+    {
+        $this->lset($root, $key, true);
+    }
+
+    /**
+     * Set a key to false in a list
+     * @param   string  $root
+     * @param   string  $key
+     * @return  self
+     */
+    public function ldisable($root, $key)
+    {
+        $this->lset($root, $key, false);
+    }
+
+    /**
+     * Check whether a key is true in a list
+     * @param   string  $root
+     * @param   string  $key
+     * @return  self
+     */
+    public function lenabled($root, $key)
+    {
+        return $this->lget($root, $key) == true;
+    }
+
+    /**
+     * Check whether a key is false in a list
+     * @param   string  $root
+     * @param   string  $key
+     * @return  self
+     */
+    public function ldisabled($root, $key)
+    {
+        return $this->lget($root, $key) == false;
     }
 
     /**
@@ -161,7 +377,7 @@ Class Horus_Container implements ArrayAccess, Countable, IteratorAggregate, Seri
     public function __set($key, $value)
     {
         $key = $this->_key($key);
-        $this->data[$key] = &$value;
+        $this->data[$key] = $value;
     }
 
     /** @ignore */
@@ -1139,7 +1355,7 @@ Class Horus_Router
             $method     =   strtolower(is_array($method)  ? join('|', $method) : str_replace(',', '|', $method));
             $method     =   ltrim(rtrim(str_replace('|any|', "|".strtolower($this->sys->env->request_method)."|", "|{$method}|"), '|'), '|');
 
-            // die(json_encode(array('p' => $this->sys->env->horus_pattern, 'h' => $this->sys->env->horus_haystack)));
+             // die(json_encode(array('p' => $this->sys->env->horus_pattern, 'h' => $this->sys->env->horus_haystack)));
 
             if ( ! is_callable($callable) )
                 throw new Horus_Exception('Wait, invalid callable for "'.$method.'" for "'.$pattern.'"');
@@ -1689,7 +1905,7 @@ Class Horus extends Horus_Container
     protected static $instance;
 
     /** @ignore */
-    const VERSION = '9.1';
+    const VERSION = '9.2';
 
     /**
      * Constructor
