@@ -187,7 +187,7 @@
                         <blockquote>You can call it object container</blockquote>
 
 <pre><code class="language-php">
-
+<?
     // load it
     include "H9.php";
 
@@ -236,6 +236,38 @@
     $cont->enabled('key');
     // check if disabled
     $cont->disabled('key');
+
+    // push elements to a key
+    $cont->push('key', 'value1', 'value2', '...etc');
+    // pop element off the end of array
+    $cont->pop('key');
+    // shift element off the beginning of array
+    $cont->shift('key');
+    // unshift element to the beginning of array
+    $cont->unshift('key', 'val-0', 'val-01', '... etc');
+
+    // push elements to a list
+    $cont->lpush('list_key', 'key', 'value1', 'value2', '...etc');
+    // pop element off the end of array
+    $cont->lpop('list_key', 'key');
+    // shift element off the beginning of array
+    $cont->lshift('list_key', 'key');
+    // unshift element to the beginning of array
+    $cont->lunshift('list_key', 'key', 'val-0', 'val-01', '... etc');
+    // set key and value in a list
+    $cont->lset('list_key', 'key1', 'value1');
+    // get key's value in a list
+    $cont->lget('list_key', 'key1');
+    // unset key and value in a list
+    $cont->lunset('list_key', 'key1');
+    // set a list's key to true
+    $cont->lenable('list_key', 'key2');
+    // set a list's key to false
+    $cont->ldisable('list_key', 'key2');
+    // check that a list's key is true
+    $cont->lenabled('list_key', 'key2');
+    // check that a list's key is false
+    $cont->ldisabled('list_key', 'key2');
 
     // ['.', '-', ' '] will be --> '_'
     // you can add your own key filter
