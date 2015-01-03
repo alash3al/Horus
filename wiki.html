@@ -269,6 +269,9 @@
     // check that a list's key is false
     $cont->ldisabled('list_key', 'key2');
 
+    // for chaining
+    $cont->with(new ClassName)->Method();
+
     // ['.', '-', ' '] will be --> '_'
     // you can add your own key filter
     // this will upper-case the key
