@@ -56,6 +56,16 @@ Class Horus_Container implements ArrayAccess, Countable, IteratorAggregate, Seri
     }
 
     /**
+     * Returns the $var value again, better for chaining .
+     * @param   mixed $var
+     * @return  mixed
+     */
+    public function with($var)
+    {
+        return $mixed;
+    }
+
+    /**
      * Set a key's value
      * @param   mixed   $k
      * @param   mixed   $v
