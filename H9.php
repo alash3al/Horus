@@ -1,10 +1,10 @@
-<?php @ob_clean(); (realpath(__FILE__) == realpath($_SERVER['SCRIPT_FILENAME'])) && die('<h1>Direct access not allowed');
+<?php @ ob_clean(); (realpath(__FILE__) == realpath($_SERVER['SCRIPT_FILENAME'])) && die('<h1>Direct access not allowed');
 /**
  * Horus PHP Framework
  * 
  * @package     Horus
  * @author      Mohammed Al-Ashaal <http://is.gd/alash3al>
- * @version     9.2
+ * @version     9.3
  * @license     MIT
  * @copyright   2014 (c) HPHP Framework
  */
@@ -62,7 +62,7 @@ Class Horus_Container implements ArrayAccess, Countable, IteratorAggregate, Seri
      */
     public function with($var)
     {
-        return $mixed;
+        return $var;
     }
 
     /**
@@ -121,7 +121,7 @@ Class Horus_Container implements ArrayAccess, Countable, IteratorAggregate, Seri
         if ( ! isset($this->data[$key]) )
             $this->data[$key] = array();
 
-        array_pop($this->data[$key], $v);
+        array_pop($this->data[$key]);
 
         return $this;
     }
@@ -227,14 +227,21 @@ Class Horus_Container implements ArrayAccess, Countable, IteratorAggregate, Seri
     }
 
     /**
-     * Set a key and value in a list
+     * Set a key(s) and value(s) in a list
      * @param   string  $root
-     * @param   string  $key
+     * @param   mixed   $key
      * @param   mixed   $value
      * @return  self
      */
-    public function lset($root, $key, $value)
+    public function lset($root, $key, $value = null)
     {
+        if ( is_array($key) )
+        {
+            foreach ( $key as $k => &$v )
+                $this->lset($root, $k, $v);
+            return $this;
+        }
+
         if ( ! isset($this->data[$root][$key]) )
             $this->data[$root][$key] = array();
 
@@ -255,13 +262,20 @@ Class Horus_Container implements ArrayAccess, Countable, IteratorAggregate, Seri
     }
 
     /**
-     * Unset a key from list
+     * Unset key(s) from list
      * @param   string  $root
-     * @param   string  $key
+     * @param   mixed   $key
      * @return  self
      */
     public function lunset($root, $key)
     {
+        if ( is_array($key) )
+        {
+            foreach ( $key as &$k )
+                $this->lunset($root, $k);
+            return $this;
+        }
+
         unset($this->data[$root][$key]);
         return $this;
     }
@@ -793,7 +807,7 @@ Class Horus_Response
      */
     public function sendt($filename, array $args = array(), $override = false)
     {
-        $args['horus']    =   $this->sys;
+        $args[strtolower($this->sys->name)]    =   $this->sys;
 
         extract($args, EXTR_SKIP|EXTR_REFS);
         ob_start();
@@ -926,9 +940,9 @@ Class Horus_Request
      * Constructor
      * @return self
      */
-    public function __construct(Horus $app)
+    public function __construct(Horus $horus)
     {
-        $this->sys = $app;
+        $this->sys = $horus;
 
         if ( ! empty($_POST['X_METHOD_OVERRIDE']) )
             $this->method(strtoupper($_POST['X_METHOD_OVERRIDE']));
@@ -1906,7 +1920,7 @@ class Horus_PDO extends PDO
 Class Horus extends Horus_Container
 {
     /** @ignore */
-    public      $res, $req, $env, $hooks, $util = null;
+    public      $res, $req, $env, $hooks, $util, $name = null;
 
     /** @ignore */
     protected   $router, $pdo, $loader;
@@ -1915,7 +1929,7 @@ Class Horus extends Horus_Container
     protected static $instance;
 
     /** @ignore */
-    const VERSION = '9.2';
+    const VERSION = '9.3';
 
     /**
      * Constructor
@@ -1930,6 +1944,7 @@ Class Horus extends Horus_Container
 
         is_callable($ob_handler) && ob_start($ob_handler);
 
+        $this->name     =   'horus';
         $this->env      =   new Horus_Environment;
         $this->hooks    =   new Horus_Hooks($this);
         $this->util     =   new Horus_Util($this);
