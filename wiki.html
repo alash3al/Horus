@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html>_
     <head>
         <!-- basic meta -->
         <meta charset="UTF-8" />
@@ -256,10 +256,16 @@
     $cont->lunshift('list_key', 'key', 'val-0', 'val-01', '... etc');
     // set key and value in a list
     $cont->lset('list_key', 'key1', 'value1');
+    // or multiple list-set
+    $cont->lset('list_key', array(
+        'k1' => 'v1'
+    ));
     // get key's value in a list
     $cont->lget('list_key', 'key1');
     // unset key and value in a list
     $cont->lunset('list_key', 'key1');
+    // or multiple list-unset
+    $cont->lunset('list_key', array('key1', 'key2'));
     // set a list's key to true
     $cont->lenable('list_key', 'key2');
     // set a list's key to false
@@ -541,6 +547,9 @@
     // NOTE: there is a default var passed to the arguments
     //       it is $horus, so you can easily access any $horus "$app"
     //       object from the loaded file easily
+    //       to change the varname from horus to another
+    $app->name = 'MyApp'; // will be changed to lowercase
+    // so in templates, $myapp->xxx-> .. etc
 
     // How about print_r ?
     $res->sendr(range(1, 10));
