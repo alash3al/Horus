@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>_
+<html>
     <head>
         <!-- basic meta -->
         <meta charset="UTF-8" />
@@ -199,7 +199,9 @@
     // construct new container
     $cont = new Horus_Container;
     // or
-    $cont = new Horus_Container(array(/* key => values */));
+    $data = array(/* key => values */);
+    $cont = new Horus_Container($data); // will import by reference .
+    $cont = new Horus_Container($data, false); // without referencing .
 
     // set key and val
     // [., -, ' '] will be '_'
