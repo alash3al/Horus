@@ -47,12 +47,17 @@ Class Horus_Container implements ArrayAccess, Countable, IteratorAggregate, Seri
 
     /**
      * Import an array
-     * @param   array $data
-     * @return  void
+     * @param   array   $data
+     * @param   bool    $ref
+     * @return  self
      */
-    public function import(array $data)
+    public function import(array $data, $ref = true)
     {
-        $this->data = &$data;
+        if ( $ref )
+            $this->data = &$data;
+        else
+            $this->data = $data;
+        return $this;
     }
 
     /**
