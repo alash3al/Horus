@@ -187,7 +187,7 @@
                         <blockquote>You can call it object container</blockquote>
 
 <pre><code class="language-php">
-<?
+
     // load it
     include "H9.php";
 
@@ -213,12 +213,25 @@
     // or
     $cont['key'] = 'value';
 
+    $cont->obj  =   new stdClass;
+    $cont->obj->x = 'y';
+
     // get
     $key = $cont['key'];
     // or
     $key = $cont->key;
     // or
     $key = $cont->get('key.x');
+    // or
+    $cont('obj')->x;
+
+    // is-set
+    isset($cont->key_x);
+    $cont->has('key-x');
+
+    // unset
+    unset($cont->key_x);
+    $cont->del('key-x');
 
     // callback
     $cont->clbk = function($x){print $x;};
@@ -227,6 +240,7 @@
 
     // import array [override current]
     $cont->import(array(/* key => values */));
+    $cont->import(array(/* key => values */), false); // without referencing
     // export
     $cont->export();
 
@@ -264,8 +278,11 @@
     ));
     // get key's value in a list
     $cont->lget('list_key', 'key1');
+    // list-is-set
+    $cont->lhas('list_key', 'key1');
     // unset key and value in a list
     $cont->lunset('list_key', 'key1');
+    $cont->ldel('list_key', 'key1');
     // or multiple list-unset
     $cont->lunset('list_key', array('key1', 'key2'));
     // set a list's key to true
@@ -572,12 +589,12 @@
         'expire'    =>  (3600 * 24 * 30) + time(),
         'path'      =>  "/",
         'domain'    =>  null,
-        'secure'    =>  false,
-        'http'      =>  true
+        'secure'    =>  false, // default {auto-detect}
+        'http'      =>  true,  // default {true} 'HttpOnly'
     ));
 
     // set a session value
-    // NOTE: if you didn't start the session, it would start it.
+    // NOTE: if you didn't start the session, it would be started.
     $res->session('key', 'value');
     // or
     $res->session(array(
@@ -586,6 +603,9 @@
 
     // redirect [Location: ...]
     $res->redirect('/file.php', 302);
+
+    // http cache
+    $res->cache(60); // cache for 60 seconds, 0 means no cache
 
     // end everything and send all to the browser
     // then turn off output buffering
