@@ -4,7 +4,7 @@
  * 
  * @package     Horus
  * @author      Mohammed Al-Ashaal <http://is.gd/alash3al>
- * @version     9.3
+ * @version     9.4
  * @license     MIT
  * @copyright   2014 (c) HPHP Framework
  */
@@ -21,19 +21,21 @@
  */
 Class Horus_Container implements ArrayAccess, Countable, IteratorAggregate, Serializable
 {
-    /**
-     * @var array
-     */
+    /** @ignore */
     public $data = array(), $key_filter = null;
 
     /**
      * Construct
      * @param   array $data
-     * @return  void
+     * @param   bool  $ref
+     * @return  self
      */
-    public function __construct(array $data = array())
+    public function __construct(array $data = array(), $ref = true)
     {
-        $this->data = &$data;
+        if ( $ref )
+            $this->data = &$data;
+        else
+            $this->data = $data;
     }
 
     /**
@@ -90,6 +92,17 @@ Class Horus_Container implements ArrayAccess, Countable, IteratorAggregate, Seri
     }
 
     /**
+     * Checks whether the container has a key or not
+     * @param   string  $k
+     * @return  bool
+     */
+    public function has($k)
+    {
+        $k = $this->_key($k);
+        return isset($this->{$k});
+    }
+
+    /**
      * Get a key's value
      * @param   string  $k
      * @return  mixed
@@ -97,6 +110,18 @@ Class Horus_Container implements ArrayAccess, Countable, IteratorAggregate, Seri
     public function get($k)
     {
         return $this->__get($k);
+    }
+
+    /**
+     * Get a key's value
+     * @param   string  $k
+     * @return  mixed
+     */
+    public function del($k)
+    {
+        $k = $this->_key($k);
+        unset($this->{$k});
+        return $this;
     }
 
     /**
@@ -267,9 +292,20 @@ Class Horus_Container implements ArrayAccess, Countable, IteratorAggregate, Seri
     }
 
     /**
+     * Get a key from a list
+     * @param   string  $root
+     * @param   string  $key
+     * @return  self
+     */
+    public function lhas($root, $key)
+    {
+        return isset($this->data[$root][$key]);
+    }
+
+    /**
      * Unset key(s) from list
      * @param   string  $root
-     * @param   mixed   $key
+     * @param   string  $key
      * @return  self
      */
     public function lunset($root, $key)
@@ -283,6 +319,17 @@ Class Horus_Container implements ArrayAccess, Countable, IteratorAggregate, Seri
 
         unset($this->data[$root][$key]);
         return $this;
+    }
+
+    /**
+     * Alias of self::lunset
+     * @param   string  $root
+     * @param   string  $key
+     * @return  self
+     */
+    public function ldel($root, $key)
+    {
+        return isset($this->data[$root][$key]);
     }
 
     /**
@@ -423,6 +470,13 @@ Class Horus_Container implements ArrayAccess, Countable, IteratorAggregate, Seri
     }
 
     /** @ignore */
+    public function __invoke($key)
+    {
+        $key = $this->_key($key);
+        return isset($this->{$key}) ? $this->{$key} : false;
+    }
+
+    /** @ignore */
     public function offsetExists($offset)
     {
         return isset($this->{$offset});
@@ -471,9 +525,9 @@ Class Horus_Container implements ArrayAccess, Countable, IteratorAggregate, Seri
     }
 
     /** @ignore */
-    public function &__toString()
+    public function __toString()
     {
-        return $this->data;
+        return sprintf('<pre>%s</pre>', print_r($this->data, true));
     }
 
     /**
@@ -641,9 +695,11 @@ Class Horus_Hooks
 Class Horus_Response
 {
     /** @ignore */
-    protected $headers = array(), $status = 200, 
-              $output = "", $headers_sent = false,
-              $type, $charset, $sys;
+    protected $headers  =   array(),        $status         =   200, 
+              $output   =   '',             $headers_sent   =   false,
+              $type     =   'text/html',    $charset        =   'UTF-8',
+              $sys      =   null
+    ;
 
     /**
      * Constructor
@@ -677,7 +733,7 @@ Class Horus_Response
      * @param   string  $charset
      * @return  self |  string
      */
-    public function type($new = null, $charset = 'utf-8')
+    public function type($new = null, $charset = 'UTF-8')
     {
         if ( ! empty($new) )
             $this->set('content-type', "{$new}; charset={$charset}") && ($this->type = $new) && ($this->charset = $charset);
@@ -719,8 +775,8 @@ Class Horus_Response
         if ( $this->headers_sent )
             return $this;
 
-        $k = str_replace(' ', '-', ucwords(str_replace(array('-', '.', '_'), ' ', strtolower($k))));
-        $v2 = "";
+        $k  =   str_replace(' ', '-', ucwords(str_replace(array('-', '.', '_'), ' ', strtolower($k))));
+        $v2 =   '';
 
         if ( is_array($v) )
         {
@@ -734,6 +790,17 @@ Class Horus_Response
         $this->headers[$k] = $v2;
 
         return $this;
+    }
+
+    /**
+     * Checks whether a header key is set or not .
+     * @param   string $k
+     * @return  bool
+     */
+    public function has($k)
+    {
+        $k = str_replace(' ', '-', ucwords(str_replace(array('-', '.', '_'), ' ', strtolower($k))));
+        return isset($this->headers[$k]);
     }
 
     /**
@@ -760,6 +827,34 @@ Class Horus_Response
     {
         $k = $k = str_replace(' ', '-', ucwords(str_replace(array('-', '.', '_'), ' ', strtolower($k))));
         unset($this->headers[$k]);
+        return $this;
+    }
+
+    /**
+     * Client side page caching
+     * @param   integer $ttl
+     * @return  self
+     */
+    public function cache($ttl = 0)
+    {
+        $ttl = abs((int) $ttl);
+
+        if ( $ttl )
+        {
+            if ( ! $this->has('cache control') )
+                $this->set('cache control', sprintf('private, max-age=%s, post-check=0, pre-check=0', $ttl));
+
+            if ( ! $this->has('pragma') )
+                $this->set('pragma', 'cache');
+
+            $since  =   (int) strtotime($this->sys->req->get('if modified since'));
+
+            if ( (time() - $since) < $ttl )
+                $this->status(304)->end();
+            else
+                $this->set('last modified', gmdate('D, d M Y H:i:s ', time()) . 'GMT');
+        }
+
         return $this;
     }
 
@@ -858,13 +953,13 @@ Class Horus_Response
      */
     public function cookie($name, $value, array $args = array())
     {
-        $value = ((is_array($value) or is_object($value)) ? json_encode($value) : $value);
-        $args = array_merge(array
+        $value  =   ((is_array($value) or is_object($value)) ? json_encode($value) : $value);
+        $args   =   array_merge(array
         (
             'expire'    =>  (3600 * 24 * 30) + time(),
             'path'      =>  "/",
             'domain'    =>  null,
-            'secure'    =>  false,
+            'secure'    =>  $this->sys->req->secure(),
             'http'      =>  true
         ), $args);
 
@@ -912,15 +1007,18 @@ Class Horus_Response
             $this->set('etag', md5($this->output));        
         
         if ( ! $this->headers_sent )
+        {
             foreach ( $this->headers as $k => &$v )
-                header(sprintf('%s: %s', $k, $v), true, $this->status);
-
-        $this->headers_sent = true;
+                header(sprintf('%s: %s', $k, $v), true);
+            header('X-HTTP-HORUS-STATUS: ' . $this->status, false, $this->status());
+            $this->headers_sent = true;
+        }
 
         if ( strtolower($_SERVER['REQUEST_METHOD']) !== 'head' ) 
             echo $this->sys->hooks->apply('horus.res.output', $this->output, $this->output);
 
         ob_end_flush();
+
         exit;
     }
 }
@@ -949,10 +1047,10 @@ Class Horus_Request
     {
         $this->sys = $horus;
 
+        if ( $this->has('x-method-override') != "" )
+            $this->method(strtoupper($this->get('x-method-override')));
         if ( ! empty($_POST['X_METHOD_OVERRIDE']) )
             $this->method(strtoupper($_POST['X_METHOD_OVERRIDE']));
-        if ( $this->get('x-method-override') != "" )
-            $this->method(strtoupper($this->get('x-method-override')));
     }
 
     /**
@@ -963,7 +1061,18 @@ Class Horus_Request
     public function get($k)
     {
         $k = str_replace(array('-', '.', ' '), '_', strtoupper($k));
-        return isset($_SERVER["HTTP_{$k}"]) ? $_SERVER["HTTP_{$k}"] : "";
+        return isset($_SERVER["HTTP_{$k}"]) ? $_SERVER["HTTP_{$k}"] : '';
+    }
+
+    /**
+     * Checks whether a header key is exists or not .
+     * @param   string $k
+     * @return  string
+     */
+    public function has($k)
+    {
+        $k = str_replace(array('-', '.', ' '), '_', strtoupper($k));
+        return isset($_SERVER["HTTP_{$k}"]);
     }
 
     /**
@@ -1080,7 +1189,7 @@ Class Horus_Request
      * @param   mixed   $filter
      * @return  mixed
      */
-    protected function &input(array $source, $k = null, $default = null, $filter = null)
+    public function &input(array $source, $k = null, $default = null, $filter = null)
     {
         if ( is_null($k) || $k === '' )
             return $source;
@@ -1139,6 +1248,7 @@ Class Horus_Router
         $horus->env->horus_haystack     =   '//' .
                                             preg_replace('/^('.(join('|', (array) $horus->env->get('horus.sub.domains'))).')\./i', '', $horus->env->get('http.host'), 1) .
                                             preg_replace('/\/+/', '/', $horus->env->horus_haystack);
+        $this->domain                   =   $horus->env->get('horus.domain');
     }
 
     /**
@@ -1317,7 +1427,7 @@ Class Horus_Router
                 $this->sys->env->path_info = $this->sys->env->orig_path_info;
             elseif ( ! isset($this->sys->env->path_info) && isset($this->sys->env->porig_path_info) )
                 $this->sys->env->path_info = $this->sys->env->porig_path_info;
-            else
+            elseif ( ! isset($this->sys->env->path_info) )
                 $using = 'request_uri';
         }
 
@@ -1340,10 +1450,9 @@ Class Horus_Router
 
     /**
      * Handle request
-     * @param   mixed $argv
      * @return  self
      */
-    protected function handle( $argv )
+    protected function handle()
     {
         if ( ($n = func_num_args()) === 2 ):
 
@@ -1934,7 +2043,7 @@ Class Horus extends Horus_Container
     protected static $instance;
 
     /** @ignore */
-    const VERSION = '9.3';
+    const VERSION = '9.4';
 
     /**
      * Constructor
@@ -1948,6 +2057,10 @@ Class Horus extends Horus_Container
             throw new Horus_Exception( 'You cannot re-create Horus object' );
 
         is_callable($ob_handler) && ob_start($ob_handler);
+
+        ini_set('session.cookie_httponly',1);
+        ini_set('session.use_only_cookies',1);
+        ini_set('session.name', 'HPHPSESS');
 
         $this->name     =   'horus';
         $this->env      =   new Horus_Environment;
@@ -1970,8 +2083,9 @@ Class Horus extends Horus_Container
         $this->set('e404', create_function('', 'return "<h1>404 page not found</h1><p>the requested resource not found</p>";'));
 
         $this->res->type('text/html');
-        $this->res->set(array(
-            'x-powered-by'              =>  'HPHP9/ExpressDev',
+        $this->res->set(array
+        (
+            'x-powered-by'              =>  'H-PHP-9',
             'x-frame-options'           =>  'SAMEORIGIN',
             'X-XSS-Protection'          =>  '1; mode=block',
             'X-Content-Type-Options'    =>  'nosniff'
