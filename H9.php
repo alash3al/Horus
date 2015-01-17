@@ -1047,7 +1047,7 @@ Class Horus_Request
     {
         $this->sys = $horus;
 
-        if ( $this->has('x-method-override') != "" )
+        if ( $this->get('x-method-override') )
             $this->method(strtoupper($this->get('x-method-override')));
         if ( ! empty($_POST['X_METHOD_OVERRIDE']) )
             $this->method(strtoupper($_POST['X_METHOD_OVERRIDE']));
