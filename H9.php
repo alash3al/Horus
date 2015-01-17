@@ -4,7 +4,7 @@
  * 
  * @package     Horus
  * @author      Mohammed Al-Ashaal <http://is.gd/alash3al>
- * @version     9.4
+ * @version     9.4.1
  * @license     MIT
  * @copyright   2014 (c) HPHP Framework
  */
@@ -560,9 +560,8 @@ Class Horus_Environment extends Horus_Container
      */
     public function __construct()
     {
-        parent::__construct($_SERVER);
-
-        $this->key_filter       =   create_function('$k', 'return strtoupper($k);');
+        $this->data         =   &$_SERVER;
+        $this->key_filter   =   create_function('$k', 'return strtoupper($k);');
     }
 }
 
@@ -1093,7 +1092,11 @@ Class Horus_Request
      */
     public function xhr()
     {
-        return strtolower($_SERVER['X-Requested-With']) == strtolower('XMLHttpRequest');
+        return 
+        (
+            isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+            strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == strtolower('XMLHttpRequest')
+        );
     }
 
     /**
@@ -1491,14 +1494,14 @@ Class Horus_Router
             $this->sys->env->horus_pattern =   $this->pattern($pattern, '/');
             $method     =   empty($method) ? 'any' : $method;
             $method     =   strtolower(is_array($method)  ? join('|', $method) : str_replace(',', '|', $method));
-            $method     =   ltrim(rtrim(str_replace('|any|', "|".strtolower($this->sys->env->request_method)."|", "|{$method}|"), '|'), '|');
+            $method     =   ltrim(rtrim(str_replace('|any|', "|".($this->sys->req->method())."|", "|{$method}|"), '|'), '|');
 
              // die(json_encode(array('p' => $this->sys->env->horus_pattern, 'h' => $this->sys->env->horus_haystack)));
 
             if ( ! is_callable($callable) )
                 throw new Horus_Exception('Wait, invalid callable for "'.$method.'" for "'.$pattern.'"');
     
-            elseif ( preg_match("/{$method}/", strtolower($this->sys->env->request_method)) &&  ($m = $this->is($this->sys->env->horus_pattern, false, $strict)) )
+            elseif ( preg_match("/{$method}/", strtolower($this->sys->req->method())) &&  ($m = $this->is($this->sys->env->horus_pattern, false, $strict)) )
             {
                 ob_start();
                 array_shift($m);
@@ -2043,7 +2046,7 @@ Class Horus extends Horus_Container
     protected static $instance;
 
     /** @ignore */
-    const VERSION = '9.4';
+    const VERSION = '9.4.1';
 
     /**
      * Constructor
@@ -2058,9 +2061,9 @@ Class Horus extends Horus_Container
 
         is_callable($ob_handler) && ob_start($ob_handler);
 
-        ini_set('session.cookie_httponly',1);
-        ini_set('session.use_only_cookies',1);
-        ini_set('session.name', 'HPHPSESS');
+        ini_set('session.cookie_httponly',          1);
+        ini_set('session.use_only_cookies',         1);
+        ini_set('session.name',             'HPHPSESS');
 
         $this->name     =   'horus';
         $this->env      =   new Horus_Environment;
