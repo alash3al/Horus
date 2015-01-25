@@ -648,7 +648,7 @@ Class Horus_Environment extends Horus_Container
         $s['HORUS_SUBS']    =   array( 'www' );
 
         // Use self url rewriting or not
-        $s['HORUS_REWRITE'] =   isset($s['HORUS_REWRITE']) ? 1 : (int) $s['HORUS_REWRITE'];
+        $s['HORUS_REWRITE'] =   !isset($s['HORUS_REWRITE']) ? 1 : (int) $s['HORUS_REWRITE'];
 
         // Self url rewriting has been used or not
         $s['HORUS_REWRITED']=   (stripos($s['REQUEST_URI'], $s['SCRIPT_NAME'] . '/') === 0);
