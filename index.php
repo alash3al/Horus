@@ -1,14 +1,9 @@
 <?php
 
-    // load the framework
-    include "H9.php";
+    include "H10.php";
 
-    // prepare it
-    $app    =   new Horus('ob_gzhandler');
+    Horus('ob_gzhandler');
 
-    // res   = response object
-    // sendt = send a template file to the output manager
-    $app->res->sendt('wiki.html');
+    Res::render('wiki.html');
 
-    // end it
-    $app->run();
+    Horus::run();
