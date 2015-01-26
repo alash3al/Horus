@@ -265,10 +265,6 @@
                         <li><code>ldisabled($list, $key)</code>, <small><i>check whether a value in a list is false</i></small></li>
                         <li><code>ldel($list, $key)</code>, <small><i>remove a value from a list</i></small></li>
                         <li><code>lhas($list, $key)</code>, <small><i>check if a value exists in a list</i></small></li>
-                        <li><code>lpush($list, $key, $arg, ...)</code>, <small><i>push one or more values to the end of an list</i></small></li>
-                        <li><code>lunshift($list, $key, $arg, ...)</code>, prepend one or more values to the beginning of an array</li>
-                        <li><code>lpop($list, $key)</code>, <small><i> pop a value off the end of an array</i></small></li>
-                        <li><code>lshift($list, $key)</code>, <small><i>shift a value from the beginning of an array</i></small></li>
                         <li><code>export()</code>, <small><i>export data to array</i></small></li>
                         <li><code>import(array $data, $replace = false)</code>, <small><i>import (replace/merge) with current data</i></small></li>
                         <li><code>getIterator()</code>, <small><i>export data to array</i></small></li>
@@ -364,14 +360,6 @@
     // $cont->key['k12']['k13'] = 'value13' is same as
     // $cont->lset('k12', 'k13', 'value13);
 
-    // push elements to a list
-    $cont->lpush('list_key', 'key', 'value1', 'value2', '...etc');
-    // pop element off the end of array
-    $cont->lpop('list_key', 'key');
-    // shift element off the beginning of array
-    $cont->lshift('list_key', 'key');
-    // unshift element to the beginning of array
-    $cont->lunshift('list_key', 'key', 'val-0', 'val-01', '... etc');
     // set key and value in a list
     $cont->lset('list_key', 'key1', 'value1');
     // or multiple list-set
@@ -383,10 +371,7 @@
     // list-is-set
     $cont->lhas('list_key', 'key1');
     // unset key and value in a list
-    $cont->lunset('list_key', 'key1');
     $cont->ldel('list_key', 'key1');
-    // or multiple list-unset
-    $cont->lunset('list_key', array('key1', 'key2'));
     // set a list's key to true
     $cont->lenable('list_key', 'key2');
     // set a list's key to false
