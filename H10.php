@@ -908,47 +908,32 @@ Class Horus_Router
             return $this;
         }
 
-        // for routing a group of routes ?
-        if ( $method == 'group' )
-        {
-            // why we are using a base ?
-            // because it will be the parent for the group childs
-            $old        =   $this->base;
-            $pattern    =   $this->base =   $this->pattern($pattern);
-            $strict     =   false;
-        }
-        else
-        {
-            $pattern    =   $this->pattern($pattern);
-            $strict     =   true;
-        }
+        $pattern = $this->pattern($pattern);
 
-        // start the output buffring
-        ob_start();
 
-        // call the group callbak if the pattern matches the current haystack
-        $args = $this->is($pattern, $strict, $method);
-
-        if ( ($args !== false) && is_callable($callback) )
+        if ( ($args = $this->is($pattern, ($method == 'group' ? false : $strict), $method)) !== false )
         {
-            // trigger the callback
+            if ( $method == 'group' )
+            {
+                $old        = $this->base;
+                $this->base = $pattern;
+            }
+
+            ob_start();
+
             call_user_func_array($callback, array_merge(array(Horus::instance()), $args));
 
-            // send the output of the callback if found
             Horus::instance()->res->send(ob_get_clean());
 
-            // tell the router that we found our needs
-            // only if this is not a group of routes .
-            if ( $method != 'group' )
-                $this->found(true);
-
-            // run Horus if there is no waiting & this is not a group of routes
-            if ( $method != 'group' && ! $this->wait() )
-                Horus::instance()->run();
-
-            // roll-back the base the old one
             if ( $method == 'group' )
+            {
                 $this->base = $old;
+            }
+            else
+            {
+                $this->found(1);
+                Horus::run();
+            }
         }
 
         return $this;
@@ -1348,7 +1333,7 @@ Class Horus_Response
             $message = json_encode($message);
         }
         else
-            $method = implode('', func_get_args());
+            $message = implode('', func_get_args());
 
         $this->body    .=   $message;
 
