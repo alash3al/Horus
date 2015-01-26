@@ -11,6 +11,6 @@
         "role": "The Maintainer"
     }],
     "require": {
-        "php": ">=5.2.17"
+        "php": ">=5.3"
     }
 }
