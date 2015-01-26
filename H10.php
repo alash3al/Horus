@@ -476,7 +476,7 @@ Class Horus_Container implements ArrayAccess, IteratorAggregate
     {
         $root = $this->key_filter($root);
         $key  = $this->key_filter($key);
-        return isset($this->scope[$key][$root]);
+        return isset($this->scope[$root][$key]);
     }
 
     /**
