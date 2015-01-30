@@ -2162,12 +2162,10 @@ Class Horus extends Horus_Container
  */
 function Horus($ob_handler = null)
 {
-    static $instance = null;
+    if ( ! Horus::constructed() )
+        new Horus($ob_handler);
 
-    if ( empty($instance) )
-        $instance   =   new Horus($ob_handler);
-
-    return $instance;
+    return Horus::instance();
 }
 
 // -------------------------------
