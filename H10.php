@@ -4,7 +4,7 @@
  * 
  * @package     Horus
  * @author      Mohammed Al Ashaal <http://is.gd/alash3al>
- * @version     10.0.0
+ * @version     10.1
  * @license     MIT License
  * @copyright   2014 (c) Mohammed Al Ashaal
  * 
@@ -107,7 +107,8 @@ Class Horus_Facade
  * @author   Mohammed Al Ashaal
  * @since    5.1.0
  *
- * @property array   $scope
+ * @property array      $scope
+ * @property callable   $key_filter
  */
 Class Horus_Container implements ArrayAccess, IteratorAggregate
 {
@@ -689,8 +690,11 @@ Class Horus_Environment extends Horus_Container
             ));
         }
 
-        $format =   str_ireplace( array_keys($env->horus_urls), array_values($env->horus_urls), $format );
-        $format =   str_ireplace( array_keys($env->horus_urls), array_values($env->horus_urls), $format );
+        if ( empty($format) )
+            return $this->get('horus_urls');
+
+        for ( $i = 0; $i < 3; ++ $i )
+            $format =   str_ireplace( array_keys($env->horus_urls), array_values($env->horus_urls), $format );
 
         if ( parse_url($format, PHP_URL_SCHEME) )
         {
@@ -713,9 +717,10 @@ Class Horus_Environment extends Horus_Container
  * @author   Mohammed Al Ashaal
  * @since    1.0.0
  * 
- * @propery  array  $regex
- * @propery  string $base
- * @propery  bool   $wait
+ * @property  array  $regex
+ * @property  string $base
+ * @property  bool   $wait
+ * @property  bool   $found
  */
 Class Horus_Router
 {
@@ -745,6 +750,12 @@ Class Horus_Router
      * @var bool
      */
     protected   $wait = false;
+
+    /**
+     * Whether the requested page found or not
+     * @var callable
+     */
+    protected $found    =   false;
 
     /**
      * Constructor
@@ -848,14 +859,12 @@ Class Horus_Router
      */
     public function found($found = null)
     {
-        static $state = false;
-
         if ( is_null($found) )
-            return $state;
+            return $this->found;
 
-        $state = (bool) $found;
+        $this->found = (bool) $found;
 
-        return $state;
+        return $this->found;
     }
 
     /**
@@ -921,14 +930,12 @@ Class Horus_Router
 
             ob_start();
 
-            call_user_func_array($callback, array_merge(array(Horus::instance()), $args));
+            call_user_func_array($callback, $args);
 
             Horus::instance()->res->send(ob_get_clean());
 
             if ( $method == 'group' )
-            {
                 $this->base = $old;
-            }
             else
             {
                 $this->found(1);
@@ -1350,7 +1357,7 @@ Class Horus_Response
     {
         if ( is_callable($callback) ) {
             ob_start();
-            call_user_func($callback, $this);
+            call_user_func($callback);
             $this->send(ob_get_clean());
         }
 
@@ -1364,11 +1371,9 @@ Class Horus_Response
      * @param   array   $args
      * @return  Horus_Response
      */
-    public function render($filename, $args = null)
+    public function render($filename, array $args = array())
     {
         ob_start();
-
-        $args[Horus::instance()->env->app_name] = Horus::instance();
 
         extract($args, EXTR_OVERWRITE|EXTR_REFS);
 
@@ -1388,14 +1393,14 @@ Class Horus_Response
      */
     public function cookie($name, $value, array $options = array())
     {
-        $options = array
+        $options = array_merge(array
         (
-            'domain'    =>  null,
+            'domain'    =>  '',
             'path'      =>  '/',
             'secure'    =>  Horus::instance()->req->secure(),
             'expire'    =>  0,
             'httpOnly'  =>  true
-        );
+        ), $options);
 
         setcookie( $name, $value, $options['expire'], $options['path'], $options['domain'],(bool) $options['secure'], (bool) $options['httpOnly'] );
 
@@ -1575,11 +1580,11 @@ Class Horus_Events
             return $default_value;
         else
         {
-            foreach ( $this->events[$event] as $i => &$c )
+            foreach ( $this->events[$event] as $i => $c )
             {
                 list($c, $once) = $c;
 
-                $default_value = call_user_func_array($c, array_merge(array(Horus::instance()), (array) $args, array($default_value)));
+                $default_value = call_user_func_array($c, array_merge((array) $args, array($default_value)));
 
                 if ( $once == true )
                     unset($this->events[$event][$i]);
@@ -1604,7 +1609,7 @@ Class Horus_Events
             unset($this->events[$event]);
             return $this;
         else:
-            foreach ( $this->events[$event] as $i => &$clbk )
+            foreach ( $this->events[$event] as $i => $clbk )
             {
                 list($clbk, $once) = $clbk;
                 if ( $callable === $clbk )
@@ -2046,7 +2051,7 @@ Class Horus extends Horus_Container
     /**
      * @const string
      */
-    const VERSION = '10';
+    const VERSION = '10.1';
 
     /**
      * Constructor
@@ -2081,7 +2086,6 @@ Class Horus extends Horus_Container
         define('COREPATH',          dirname(__FILE__) . DS);
         define('BASEPATH',          str_replace('/', DS, dirname($_SERVER['SCRIPT_FILENAME'])) . DS);
 
-        $this->env->app_name        =   'horus';
         $this->e404                 =   create_function('', 'return "<h1>404 page not found</h1><p>the requested resource not found</p>";');
 
         $this->res->type('text/html');
@@ -2113,7 +2117,7 @@ Class Horus extends Horus_Container
      */
     public static function constructed()
     {
-        return !empty(self::$instance);
+        return self::$instance instanceof Horus;
     }
 
     /**
