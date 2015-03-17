@@ -1,15 +1,7 @@
 {
     "name": "alash3al/horus",
-    "keywords": ["horus", "framework", "express", "classLoader", "pdo", "rest", "http", "framework", "portable", "router"],
-    "description": "A portable full stack event-driven framework for express developments",
-    "type": "library",
-    "license": "MIT",
-    "authors":
-    [{
-        "name": "Mohammed Al Ashaal",
-        "email": "m7medalash3al@gmail.com",
-        "role": "The Maintainer"
-    }],
+    "keywords": ["Framework", "RESTful", "URL Router", "Express", "Micro", "Request", "Response"],
+    "description": "A portable full stack event-driven micro-framework for express developments",
     "require": {
         "php": ">=5.3"
     }
