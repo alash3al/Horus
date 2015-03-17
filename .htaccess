@@ -17,8 +17,5 @@
     RewriteCond %{REQUEST_FILENAME} !-d
 
     # rewrite /xxx to index.php/xxx
-    RewriteRule ^(.*)$ index.php/$1 [QSA,L]
-
-    # tell horus don't use index.php/ in urls
-    setEnv HORUS_REWRITE  0
+    RewriteRule ^(.*)$ index.php [QSA,L]
 </IfModule>
