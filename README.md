@@ -1,34 +1,50 @@
-What is HPHP ?
-=======
-<p class="lead"><blockquote>
-        HPHP is a minimal event-driven and flexible PHP web application framework that provides a powerful set of features for web based apps,
-        creating a powerful API is quick and easy using its APIs, it is also focusing on scalability from small to large apps
-        without killing PHP core features, it provides you with a very powerful <strong>Router</strong> in small number of lines
-        with the support for subdomain routing in very easy way, you can also use its <strong>Events</strong> API to build
-        any event-driven application and with the help of its <strong>Response</strong> manager you can have full control
-        over the output easily, and with its <strong>Request</strong> manager you can take full control over the inputs
-        it auto detects XML, Json or normal request input, there is more but all of that in just one organized file.
-</blockquote></p>
+Horus Framework v11
+===================
 
-What is new in version 10 ?
-======= 
-- New Class <code>Horus_Facade</code>.   
-- Removed <code>Horus_PDO</code> class.   
-- You can use objects or static objects easily .  
-- New constants
-- Removed all useless codes .  
-- New Events system .  
-- New function <code>Horus()</code> .  
+> Horus Framework is a micro PHP framework for creating web applications or APIs .  
+> It contains a very flexible `Protoype` class helps you convert any class to a full flexible one .  
+> It has no overhead on the performance because it just a wrapper for php's default functions .  
+> It gives you a full flexible url `Router` that supports subdomain routing, group routing and named regex .  
+> It's API is highly inspired by the popular `nodejs` framework `expressjs` .
 
-Download
-=========
-<ul>
-    <li>From <a target="_blank" href="//webscripts.softpedia.com/script/Frameworks/Horus-Framework-82303.html">Softpedia</a></li>
-    <li>From <a target="_blank" href="//github.com/alash3al/Horus/releases/latest">Github Archive</a></li>
-    <li>From <a target="_blank" href="//www.phpclasses.org/package/8642-PHP-Develop-Web-applications-using-a-micro-framework.html">PHPClasses</a></li>
-    <li>From <a target="_blank" href="//packagist.org/packages/alash3al/horus">Packagist</a> <i><small>( composer )</small></i></li>
-</ul>
 
-Maintainer
-==========
-<a target="_blank" href="//alash3al.github.io/Me">Mohammed Al Ashaal</a>
+## Requirements
+* PHP >= `PHP 5.3`
+* Any standard web server e.g: `Apache`, `Nginx` ... etc
+
+## Download
+* Github `git clone https://github.com/alash3al/Horus.git`
+* Composer `"alash3al/horus": "11.0"`
+
+## Quick start
+open `index.php` and you will see this
+```php
+    require "Horus.php";
+
+    use Horus\Horus;
+
+    $app = new Horus;
+
+    $app->all('/index', function(){
+        print "Hello World";
+    });
+
+    $app->run();
+```
+
+Horus assumes that you already enabled your url rewrite module of your webserver,
+but if you cannot use any url rewrite, just tell horus to force it
+
+```php
+include "Horus";
+
+$_SERVER['HORUS_FORCE_REWRITE'] = true;
+
+// ... and continue 
+```
+
+For subdomain routing, you should set your base server domain
+$_SERVER['SERVER_NAME'] = 'mysite.com';
+
+### Documentation
+**See** (http://alash3al.github.io/Horus)
