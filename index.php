@@ -1,3 +1,4 @@
+<?php
     require "Horus.php";
 
     use Horus\Horus;
