@@ -1,9 +1,11 @@
-<?php
+    require "Horus.php";
 
-    include "H10.php";
+    use Horus\Horus;
 
-    Horus('ob_gzhandler');
+    $app = new Horus;
 
-    Res::render('wiki.html');
+    $app->all('/index', function(){
+        print "Hello World";
+    });
 
-    Horus::run();
+    $app->run();
