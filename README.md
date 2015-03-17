@@ -44,7 +44,7 @@ $_SERVER['HORUS_FORCE_REWRITE'] = true;
 ```
 
 For subdomain routing, you should set your base server domain
-$_SERVER['SERVER_NAME'] = 'mysite.com';
+`$_SERVER['SERVER_NAME'] = 'mysite.com'`;
 
 ### Documentation
 **See** (http://alash3al.github.io/Horus)
