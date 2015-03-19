@@ -2,6 +2,7 @@
     "name": "alash3al/horus",
     "keywords": ["Framework", "RESTful", "URL Router", "Express", "Micro", "Request", "Response"],
     "description": "A portable full stack event-driven micro-framework for express developments",
+    "license": "MIT",
     "require": {
         "php": ">=5.3"
     }
