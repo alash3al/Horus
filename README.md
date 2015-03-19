@@ -14,7 +14,7 @@ Horus Framework v11
 
 ## Download
 * Github `git clone https://github.com/alash3al/Horus.git`
-* Composer `"alash3al/horus": "11.0"`
+* Composer `"alash3al/horus": "v11.0"`
 
 ## Quick start
 open `index.php` and you will see this
