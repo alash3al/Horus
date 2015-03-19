@@ -643,6 +643,11 @@
     $app->on('horus.output', function($output){
         return strtoupper($output);
     });
+
+    // there is a property called locals
+    // it is an instance of Property class to handle 
+    // your application local vars
+    $app->locals->var1 = "v";
 </code></pre>
                 </div>
 
