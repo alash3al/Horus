@@ -1,678 +1,348 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <!-- basic meta -->
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="description" content="Horus PHP Framework introduces a micro full-stack cheatsheet framework to scale from small apps, to large without complex code in simple way with small lines of code all of that in just ~1k of lines in one file, if you liked express.js, flask in python, sinatra in ruby, then you will like HPHP The Horus PHP Framework" />
-        <meta name="author" content="Mohammed Al Ashaal" />
-
-        <title>Horus Framework, The PHP express web framework</title>
-
-        <!-- CSS -->
-        <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.0/cosmo/bootstrap.min.css" rel="stylesheet" />
-        <link href="//cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.min.css" rel="stylesheet" />
-        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
-
-        <!-- favicon -->
-        <link href="https://scontent-a-mad.xx.fbcdn.net/hphotos-xap1/v/t1.0-9/10500339_421029108048154_5740342647673073365_n.jpg?oh=0166931f250910c2abdbdc602202ac09&oe=54FD00C1" rel="shortcut icon" />
-
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!--[if lt IE 9]>
-          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-          <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
-
-        <style>
-            body
-            {
-                padding-bottom: 30px;
-            }
-        </style>
-
-    </head>
-
-    <body>
-
-        <nav class="navbar navbar-default navbar-fixed-bottom one-page-nav" role="navigation">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#intro"><span class="glyphicon glyphicon-fire"></span> Horus Framework</a>
-                </div>
-
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse navbar-ex1-collapse">
-                    <ul class="nav navbar-nav">
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="fa fa-key"></span> Choose API <span class="caret"></span></a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="#prototype">&rsaquo; Prototype</a></li>
-                                <li><a href="#events">&rsaquo; EventEmitter</a></li>
-                                <li><a href="#util">&rsaquo; Util</a></li>
-                                <li><a href="#horus">&rsaquo; Horus</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="fa fa-link"></span> Links <span class="caret"></span></a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a target="_blank" href="//github.com/alash3al/Horus">&rsaquo; Horus, Github</a></li>
-                                <li><a target="_blank" href="//webscripts.softpedia.com/script/Frameworks/Horus-Framework-82303.html">&rsaquo; Horus, Softpedia</a></li>
-                                <li><a target="_blank" href="//www.phpclasses.org/package/8642-PHP-Develop-Web-applications-using-a-micro-framework.html">&rsaquo; Horus, PHPClasses</a></li>
-                                <li><a target="_blank" href="//facebook.com/horus.framework">&rsaquo; Horus, Facebook</a></li>
-                                <li><a target="_blank" href="//packagist.org/packages/alash3al/horus">&rsaquo; Horus, Packagist</a></li>
-                                <li><a target="_blank" href="//www.horuslitedev.com">&rsaquo; Horus, Lite Dev</a></li>
-                                <li><a target="_blank" href="//fb.me/alash3al">&rsaquo; Horus, Maintainer</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-                <!-- /.navbar-collapse -->
-            </div>
-            <!-- /.container -->
-        </nav>
-
-        <div class="container" style="padding-bottom: 90px; max-width: 700px;">
-
-            <!-- Logo -->
-            <div class="row text-center center-block" style="margin-top: 20px;">
-                <div class="text-center center-block">
-                    <img class="img-responsive img-thumbnail" src="https://scontent-b-mad.xx.fbcdn.net/hphotos-xfa1/v/t1.0-9/1507110_421028611381537_23004464390051550_n.png?oh=d3363456912d121175a7e3441e89cee7&oe=55174FBE" />
-                </div>
-                <br />                
-                <div class="text-center center-block">
-                    <span><iframe src="http://ghbtns.com/github-btn.html?user=alash3al&repo=Horus&type=watch&count=true" height="30" width="118" frameborder="0" scrolling="0" style="width:118px; height: 30px;" allowTransparency="true"></iframe></span>
-                    <span><iframe src="http://ghbtns.com/github-btn.html?user=alash3al&repo=Horus&type=fork&count=true" height="30" width="118" frameborder="0" scrolling="0" style="width:118px; height: 30px;" allowTransparency="true"></iframe></span>
-                    <span><iframe src="http://ghbtns.com/github-btn.html?user=alash3al&type=follow&count=true" height="30" width="168" frameborder="0" scrolling="0" style="width:168px; height: 30px;" allowTransparency="true"></iframe></span>
-                </div>
-            </div>
-           <!-- End Logo --> 
-
-            <hr />
-
-            <!-- BODY -->
-            <div class="center-block">
-
-                <h1 class="center-block text-center text-muted"><span class="fa fa-fire"></span> Welcome to Horus Framework</h1>
-
-                <blockquote class="well">
-                    There is no need to tell you some repeated words as a description, just pick the api you want to understand and see it .
-                    Don't forget that PHP itself is a web framework, so there no need to overhead it, and don't forget that a framework isn't just a folder filled up with many and many files that you may not need, you just want a framework that gives you a very flexible code-base that is easy to extend.
-                </blockquote>
-                <br />
-
-                <div id="prototype">
-                    <h1><span class="fa fa-bookmark"></span> Prototype</h1>
-                    <p class="well">
-                        Prototype is a class that extends PHP's <a target="" href="http://php.net/manual/en/class.arrayobject.php">ArrayObject</a>
-                        and adds some features to it, lets see examples:
-                    </p>
-<pre class="language-php"><code>
-    require "Horus.php";
-
-    use \Horus\Prototype;
-
-    // lets use it as a container for our vars
-    $my = new Prototype;
-
-    // assign a value to a var
-    $my->key1 = "value1";
-
-    // array style
-    $my['key2'] = "value2";
-
-    // a closure
-    $my->func = function(){
-        print "func";
-    };
-
-    // call the closure
-    $my->func();
-
-    // or
-    $my['func']();
-
-    // nested, 'without getting errors'
-    $my->x->y->z = "Wow";
-    $my->x->y->z->a->b->c->d = array();
-
-    // export ?
-    $my->toArray();
-
-    // import ?
-    $my->import(array(/*...*/));
-
-    // you can do anything could ArrayObject do
-
-    // lets create a class that extends it
-    Class Wow extends Prototype{}
-    
-    // start it
-    $wow = new Wow(array(
-        /*
-            optional param to import array/object into the wow scope
-        */
-    ));
-
-    // get wow instance ?
-    Wow::instance();
-
-    // and so ...
-    $wow->x = "v";
-</code></pre>
-                </div>
-
-                <hr />
-
-                <div id="events">
-                    <h1><span class="fa fa-bookmark"></span> EventEmitter</h1>
-                    <p class="well">
-                        A class that helps you create an event-driven apps, it is inspired by javascript EventEmitter, it also extends
-                        the <a href="#prototype">Prototype</a> Class
-                    </p>
-<pre class="language-php"><code>
-    require "Horus.php";
-
-    use \Horus\EventEmitter;
-
-    // construct
-    $e = new EventEmitter;
-
-    // register a new listener
-    $e->addListener('event.1', $l1 = function(){
-        print "listener.1";
-    });
-
-    // you can also use this alias
-    $e->on('event.1', function(){
-        print "listener.2";
-    });
-
-    // you can cancel the next listeners in the event queue
-    // just like javascript
-    $e->on('event.1', $l2 = function(){
-        print "will cancel next";
-        return false; //> this is the solution
-    });
-
-    // to register a one-time listener
-    // there is an argument called $once
-    // the third argument will be true
-    $e->on('event.1', function(){
-        print "listener.3 only-once";
-    }, true);
-
-    // or use this
-    $e->once('event.1', $l3 = function(){
-        print "listener.4 only-once";
-    });
-
-    // to emit the event.1 listeners
-    $e->emit('event.1');
-
-    // you can also pass arguments
-    // as the second the argument
-    $e->emit('event.1', "arg1");
-    $e->emit('event.1', array("arg1", "arg2"));
-
-    // an example for filters
-    $test = "text";
-
-    $e->on('event.2', $l4 = function($text, $last_return){
-        // last return is a param that has the value
-        // of the last executed listener !
-        return "<b>{$text}</b>";
-    });
-
-    // arg1: the event-name
-    // arg2: the param to pass to the listeners
-    // arg3: the default value to return if it were empty
-    $text = $e->emit('event.2', $text, $text);
-
-    // remove a registered listener from an event
-    $e->removeListener('event.1', $l1);
-
-    // remove all event-listener
-    $e->removeAllListeners('event.1');
-
-    // remove all listeners for all events
-    $e->removeAllListeners();
-
-    // set the maximum listeners per event
-    // default = 0 "unlimited"
-    // we will set to "10"
-    $e->setMaxListeners(10);
-
-    // get events listeners array
-    $e->listeners();
-
-    // get count of listeners in an event
-    $e->listenerCount('event.1');
-</code></pre>
-                </div>
-
-                <hr />
-
-                <div id="util">
-                    <h1><span class="fa fa-bookmark"></span> Util</h1>
-                    <p class="well">
-                        A class that contains some helpers methods specially hashing and encryption, it extends
-                        the <a href="#prototype">Prototype</a> Class
-                    </p>
-<pre class="language-php"><code>
-    require "Horus.php";
-
-    use \Horus\Horus;
-
-    $util = new Util;
-
-    // show/hide errors
-    // show = true
-    // hide = false
-    $util->debug(true);
-
-    // making classes in directory
-    // be lazy-autoloaded !
-    $util->autoload('/packages');
-
-    // encrypt data
-    $encrypted = $util->encrypt('my data', 'secret-key');
-    // you can change the cipher and the mode
-    // cipher: param 3
-    // mode: param 4
-    $encrypted = $util->encrypt('my data', 'secret-key', MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
-
-    // decrypt ?
-    $util->decrypt($encrypted, 'secret-key');
-    // also you can change the cipher and the mode
-    // just like the above one 3rd -> cipher and 4th -> mode
-
-    // create a hash using crypt ?
-    // maybe just like php 5.5 password hashing api
-    $real = "password";
-    $hashed = $util->hash($real);
-    // change the algorithm from default "blowfish" to md5 ?
-    // there are also those algos "sha256, sha512, blowfish, md5"
-    $hashed = $util->hash($real, 'md5');
-
-    // check that the hashed password is valid
-    $util->verify($real, $hashed);
-
-    // generates a random string
-    // with length "15"
-    $rand = $util->rand(15);
-    // to generate with more special chars
-    $rand = $util->rand(15, true);
-</code></pre>
-                </div>
-
-                <hr />
-
-                <div id="horus">
-                    <h1><span class="fa fa-bookmark"></span> Horus</h1>
-                    <p class="well">
-                        The main class that extends <a href="#events">EventEmitter</a> class
-                        which also extends <a href="#prototype">Prototype</a> class .
-                    </p>
-<pre class="language-php"><code>
-    require "Horus.php";
-
-    use \Horus\Horus;
-
-    // This to tell horus the real base domain of your site
-    // i'll use localtest.me "a free service"
-    // that redirects the whole request to your local machine
-    // NOTE: horus will ignore the first 'www'
-    $_SERVER['SERVER_NAME'] = 'www.localtest.me';
-
-    // if your site doesn't support url rewrite
-    // tell horus to force it
-    $_SERVER['HORUS_FORCE_REWRITE'] = true;
-
-    $app = new Horus;
-    $req = $app->req; // the Request object
-    $res = $app->res; // the Response Object
-    $util= $app->util;// the Util object
-
-    // -------------------
-    // Request object
-
-    // instead of _GET
-    // a wrapper
-    // ?k=v
-    $req->query->k; //> "v";
-    // ?k[k1][k2]=v2
-    $req->k->k1->k2; //> "v2"
-
-    // for _POST, PUT, DELETE, or any request body
-    // "supports [json, xml and x-www-form-urlencoded]"
-    // POST -> x=v&b=c
-    $req->body->x; //> v
-    // POST -> {"key":"val"}
-    $req->body->key; //> val
-
-    // to get a param from the router
-    // named params
-    // /page/{id}
-    $req->params->id;
-
-    // $_COOKIE ?
-    // $_COOKIE['key']
-    $req->cookies->key;
-
-    // get the current request method
-    $req->method;
-
-    // check if the request an ajax request ?
-    $req->xhr;
-
-    // check if a request is secure
-    // it supports "X-Forwarded-Proto"
-    $req->secure;
-
-    // the request protocol "http" or "https"
-    $req->protocol;
-
-    // the hostname of the host headers
-    // for example.com:8080
-    // hostname is example.com
-    $req->hostname;
-
-    // the request path "x/y/z?q=v"
-    $req->path; //> x/y/z
-    
-    // the virtual path "PATH_INFO"
-    // it is automatically fixed
-    $req->vpath;
-
-    // the current route that router use
-    // http://site.com/page/5
-    // it ignores the first 'www'
-    $req->route; //> "//site.com/page/5"
-
-    // Whether _SERVER['HORUS_FORCE_REWRITE'] = true
-    $req->forceURW;
-
-    // get the url to the script
-    $req->url;
-
-    // get the virtual-url to the script
-    $req->vurl; //> it will contains '/index.php/' if $req->forceURW is true
-
-    // get a header field from the client request
-    // case in-sensitive
-    $req->get('host');
-    $req->get('user-agent');
-
-    // ---------------------
-
-    // Response object
-
-    // set a http header [will replace any header with the same field]
-    // this is case in-sensitive
-    // it return $this, usefull for chaining
-    $res->set('content-type', 'text/html');
-    // multiple ?
-    $res->set(array(
-        'x-header-1'    =>  'value',
-        'x-header-2'    =>  'value2'
-    ));
-
-    // don't want to replace ?
-    // just use append
-    // also returns $this
-    $res->append('x-header3', 'value3');
-    $res->append(array(
-        /*
-            same as set
-            array of key value paris
-        */
-    ));
-
-    // set the status code
-    $res->status(404)->set('x-code', '404 not found');
-
-    // write to the client
-    $res->send('just a message');
-    // or json ?
-    // json will also send the content-type: application/json
-    $res->send(array(
-        'x' => 'y'
-    ));
-
-    // json too ..
-    // + content-type: application/json
-    $res->json(array(
-        // ...
-    ));
-
-    // jsonp
-    // + content-type: application/json
-    $res->jsonp(array(
-        // ..
-    )); //> default jsonp callback is 'callback'
-
-    // change it
-    $res->jsonp(array(), 'myfunction');
-
-    // xml
-    // + content-type: text/html
-    $res->xml(array(
-        'book'  =>  array(
-            '__attr'=>  array('rel' => 'xxx') //> &lt;book rel="xxx">
-            'name'  =>  'test'
-            'date'  =>  '12/12/2012'
-        )
-    ));
-
-    // multiple
-    $res->xml(array(
-        'title' =>  'test',
-        array(
-            array(
-                'book' => array(
-                    'name'  =>  'test-1'
-                )
-            ),
-            array(
-                'book' => array(
-                    'name' => 'test-2'
-                )
-            )
-        )
-    ));
-
-    // you can change the xml version and encoding
-    $data = array(/* xml array */);
-    $version = "1.0"; // default: 1.0
-    $encoding = "UTF-8"; // default utf-8
-    $res->xml($data, $version, $encoding);
-
-    // setcookie
-    $res->cookie('name', 'value', array(/* options here */));
-    /*
-        cookie options
-        'domain'    =>  empty by default
-        'path'      =>  directory of the main index file
-        'expires'   =>  zero by default
-        'secure'    =>  horus detect it
-        'httpOnly'  =>  true by default
-    */
-
-    // cache web page for a $ttl
-    // cache for 10 seconds
-    // using last-modified
-    $res->cache(10);
-
-    // cache using expires after 10 seconds from now
-    $res->expires(time() + 10);
-
-    // render file ?
-    $res->render('filename.html');
-    // you can pass vars
-    $res->render('filename.html', array('var' => 'c'));
-    // you can use multiple files
-    $res->render(array(
-        'file1.html',
-        'file2.html'
-    ), array(
-        'var1'  =>  'val1'
-    ));
-
-    // redirect ? "temporarily"
-    $res->redirect('/target.php');
-
-    // redirect ? "permanent"
-    $res->redirect("/to.php", true);
-
-    // clear the output
-    $res->clear();
-
-    // halt the script, instead of exit & die
-    // this is Horus frindly method for halting
-    // the response cycle
-    $res->halt();
-
-    // or halt and send status code
-    $res->halt(404);
-
-    // or send status with message
-    $res->halt(404, "we cannot find the requested page");
-
-    // ---------------------
-
-    // Routing
-
-    // router a request
-    // 'GET /'
-    // arg1: the Request object 'descriped later'
-    // arg2: the Response object 'descriped later'
-    // arg3: the Horus object
-    $app->get('/', function($req, $res, $app){
-        print "hello";
-    });
-
-    // 'GET /page/5'
-    $app->get('/page/{id}', function($req, $res, $app){
-        echo $req->params->id; //> 5
-    });
-
-    // 'PUT /user/alash3al'
-    $app->put('user/{name:[a-z]+}', function($req, $res, $app){
-        // this means that horus will only exec this route
-        // if the name in range [a-z]
-        $res->send($req->params->name);
-    });
-
-    // handle multiple methods ?
-    $app->post_get_put('/i', function(){/* ... */});
-
-    // handle any request method ?
-    $app->all('/a', function(){/* ... */});
-
-    // handle any 'admin/*' path
-    $app->all('admin/*', function($req, $res, $app){
-        // do an action on all admin pages
-        // and also tell horus that there are more
-        // routes don't halt after executing this
-        // because Horus is a lazy framework
-        // that executes only on demand
-        // and when it executes, it will halt
-        // but somethimes "like this" you need
-        // to execute more than just one route
-        // so we set wait to true
-        // and after executing the next route
-        // it will roll-back it to false
-        $app->wait = true;
-    });
-
-    // Horus using strict matching
-    // means it will match from start to end "^...$"
-    // sometimes you need to disable this to be "^..." only
-    // just set the 3rd param to false
-    $app->get('/items/', function(){
-        print "items and its sub-paths";
-    });
-
-    // group routing ?
-    $app->group('/api', function($req, $res, $app){
-        'GET /api/add'
-        $app->get('/add', function(){
-            print "data";
-        });
-        
-        // you can add more routes
-        // also you can add more unlimted nested groups !
-    });
-
-    // subdomain routing
-    // You should set the SERVER_NAME
-    // variable before initializing horus
-    // as we did in the top
-    $app->all('api.localtest.me', function(){
-        // this will work on 'http://api.localtest.me/'
-        print "api - subdomain";
-    });
-
-    // if you need to normalize a custom pattern
-    // to horus pattern
-    $app->pattern('/my/pattern/'); //> \/\/localtest.me\/my\/pattern\/
-
-    // check if your pattern matches the current route or not
-    $pattern = "/test/";
-    $strict = true;
-    $app->matches($pattern, $strcit);
-    // returns object "stdClass"
-    // ->ok [true/false]
-    // ->params [array of matches]
-
-    // what will happen if horus cannot find any matched route ?
-    //> it will show '404 page'
-    // 404 page is just a method
-    // in the $app object, that you can override
-    $app->e404 = function(){
-        exit("my custom 404 page");
-    };
-
-    // You can filter the output using the 'horus.output' event
-    $app->on('horus.output', function($output){
-        return strtoupper($output);
-    });
-
-    // there is a property called locals
-    // it is an instance of Property class to handle 
-    // your application local vars
-    $app->locals->var1 = "v";
-</code></pre>
-                </div>
-
-                <br />
-
-                <footer class="center-block text-center panel panel-default" style="padding: 15px;">
-                    Copyright &copy; 2014 - 2015 &nbsp; HPHP Framework, <br />
-                    By <a target="_blank" href="//alash3al.github.io/Me">Mohammed Al Ashaal</a>,<br />
-                </footer>
-
-            </div>
-            <!-- BODY -->
-        </div>
-        <!-- /.container -->
-
-        <!-- JavaScript -->
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-one-page-nav/3.0.0/jquery.nav.min.js"></script>
-        <script type="text/javascript">
-            $(document).ready(function(){
-                $('[data-toggle="tooltip"').tooltip();
-                $('.one-page-nav').onePageNav();
-            });
-        </script>
-    </body>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Horus by alash3al</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Horus</h1>
+        <h2>A Micro PHP 5 Framework Perfect For Getting Programmers Start</h2>
+        <a href="https://github.com/alash3al/Horus" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h3>
+<a id="horus-12" class="anchor" href="#horus-12" aria-hidden="true"><span class="octicon octicon-link"></span></a>#Horus 12</h3>
+
+<p>An imporved layer for any php application</p>
+
+<h3>
+<a id="overview" class="anchor" href="#overview" aria-hidden="true"><span class="octicon octicon-link"></span></a>#Overview</h3>
+
+<p>In php world, there are many and many frameworks, but there are no simple and standalone
+layers that is just a wrapper for any web application, and this is Horus .<br>
+Horus is a very simple layer/foundation for any "any" web application, it will help you in 
+rapid apps developments .  </p>
+
+<div class="highlight highlight-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-k">require</span>(<span class="pl-s"><span class="pl-pds">"</span>Horus.php<span class="pl-pds">"</span></span>);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    (<span class="pl-k">new</span> <span class="pl-c1">\Horus\</span><span class="pl-c1">App</span>)<span class="pl-k">-&gt;</span>on(<span class="pl-s"><span class="pl-pds">'</span>/<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">$request</span>, <span class="pl-smi">$response</span>){</span>
+<span class="pl-s1">        <span class="pl-smi">$response</span><span class="pl-k">-&gt;</span>send(<span class="pl-s"><span class="pl-pds">"</span>hello world<span class="pl-pds">"</span></span>);</span>
+<span class="pl-s1">        <span class="pl-smi">$response</span><span class="pl-k">-&gt;</span>end();</span>
+<span class="pl-s1">    })<span class="pl-k">-&gt;</span>on(<span class="pl-s"><span class="pl-pds">'</span>GET|POST /test<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">$request</span>, <span class="pl-smi">$response</span>){</span>
+<span class="pl-s1">        <span class="pl-smi">$response</span><span class="pl-k">-&gt;</span>end(<span class="pl-s"><span class="pl-pds">"</span>What is this ?<span class="pl-pds">"</span></span>);</span>
+<span class="pl-s1">    });</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"></span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span></pre></div>
+
+<h3>
+<a id="contents" class="anchor" href="#contents" aria-hidden="true"><span class="octicon octicon-link"></span></a>#Contents</h3>
+
+<ul>
+<li><strong>Download</strong></li>
+<li>
+<strong>Prorotype</strong><br>
+</li>
+<li>
+<strong>App</strong><br>
+</li>
+<li>
+<strong>Request</strong><br>
+</li>
+<li>
+<strong>Response</strong> </li>
+</ul>
+
+<h3>
+<a id="download" class="anchor" href="#download" aria-hidden="true"><span class="octicon octicon-link"></span></a>#Download</h3>
+
+<blockquote>
+<p><code>composer require alash3al/horus</code>  </p>
+
+<p><code>git clone https://github.com/alash3al/Horus.git</code>  </p>
+
+<p><code>https://github.com/alash3al/Horus/archive/master.zip</code>  </p>
+</blockquote>
+
+<h3>
+<a id="prototype" class="anchor" href="#prototype" aria-hidden="true"><span class="octicon octicon-link"></span></a>#Prototype</h3>
+
+<blockquote>
+<p>just an improved <code>stdClass</code> that supports closure  </p>
+</blockquote>
+
+<div class="highlight highlight-php"><pre><span class="pl-s1">    <span class="pl-k">require</span> <span class="pl-s"><span class="pl-pds">"</span>Horus.php<span class="pl-pds">"</span></span>;</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-smi">$proto</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-c1">\Horus\</span><span class="pl-c1">Prototype</span>;</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-smi">$proto</span><span class="pl-k">-&gt;</span><span class="pl-smi">key</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>value<span class="pl-pds">"</span></span>;</span>
+<span class="pl-s1">    <span class="pl-smi">$proto</span><span class="pl-k">-&gt;</span><span class="pl-smi">func</span> <span class="pl-k">=</span> <span class="pl-k">function</span>() <span class="pl-k">use</span>(<span class="pl-smi">$proto</span>) {</span>
+<span class="pl-s1">        <span class="pl-c1">print</span> <span class="pl-smi">$proto</span><span class="pl-k">-&gt;</span><span class="pl-smi">key</span>;</span>
+<span class="pl-s1">        <span class="pl-k">return</span> <span class="pl-smi">$proto</span>;</span>
+<span class="pl-s1">    };</span></pre></div>
+
+<h3>
+<a id="app" class="anchor" href="#app" aria-hidden="true"><span class="octicon octicon-link"></span></a>#App</h3>
+
+<blockquote>
+<p>Our main class that handles request and response ..  </p>
+</blockquote>
+
+<div class="highlight highlight-php"><pre><span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-k">require</span> <span class="pl-s"><span class="pl-pds">"</span>Horus.php<span class="pl-pds">"</span></span>;</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-c1">\Horus\</span><span class="pl-c1">App</span>;</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// you register a callback for a uri</span></span>
+<span class="pl-s1">    <span class="pl-c">// when the user access it, it will be distpatched</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>on(<span class="pl-s"><span class="pl-pds">'</span>/index<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">$req</span>, <span class="pl-smi">$res</span>){</span>
+<span class="pl-s1">        <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>send(<span class="pl-s"><span class="pl-pds">"</span>index<span class="pl-pds">"</span></span>);</span>
+<span class="pl-s1">        <span class="pl-c">// we don't need any other route</span></span>
+<span class="pl-s1">        <span class="pl-c">// so we will end the app</span></span>
+<span class="pl-s1">        <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>end();</span>
+<span class="pl-s1">    });</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// for a certain method ?</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>on(<span class="pl-s"><span class="pl-pds">'</span>POST /test<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">$req</span>, <span class="pl-smi">$res</span>){</span>
+<span class="pl-s1">        <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>end(<span class="pl-s"><span class="pl-pds">"</span>post request on '/test'<span class="pl-pds">"</span></span>);</span>
+<span class="pl-s1">    });</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// multiple methods?</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>on(<span class="pl-s"><span class="pl-pds">'</span>POST|GET /t<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">$req</span>, <span class="pl-smi">$res</span>){</span>
+<span class="pl-s1">        <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>end(<span class="pl-s"><span class="pl-pds">'</span>will work for "POST /t" and "GET /t"<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1">    });</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// unknown/dynamic params ?</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>on(<span class="pl-s"><span class="pl-pds">'</span>/user/?/settings<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">$req</span>, <span class="pl-smi">$res</span>, <span class="pl-smi">$id</span>){</span>
+<span class="pl-s1">        <span class="pl-c">// yes, the dynamic args, will be passed with the "$req, $res"</span></span>
+<span class="pl-s1">        <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>end(<span class="pl-s"><span class="pl-pds">"</span>you want the settings of the user {<span class="pl-smi">$id</span>}<span class="pl-pds">"</span></span>);</span>
+<span class="pl-s1">    });</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// more ?</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>on(<span class="pl-s"><span class="pl-pds">'</span>/user/?/set/?<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">$req</span>, <span class="pl-smi">$res</span>, <span class="pl-smi">$id</span>, <span class="pl-smi">$section</span>){</span>
+<span class="pl-s1">        <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>end(<span class="pl-s"><span class="pl-pds">"</span>you want the settings of {<span class="pl-smi">$section</span>} for the user {<span class="pl-smi">$id</span>}<span class="pl-pds">"</span></span>);</span>
+<span class="pl-s1">    });</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// wildcards ?</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>on(<span class="pl-s"><span class="pl-pds">'</span>/test/*<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">$req</span>, <span class="pl-smi">$res</span>, <span class="pl-smi">$path</span>){</span>
+<span class="pl-s1">        <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>end(<span class="pl-s"><span class="pl-pds">"</span>you are in 'test/{<span class="pl-smi">$path</span>}'<span class="pl-pds">"</span></span>);</span>
+<span class="pl-s1">    });</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// group of routes ?</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>group(<span class="pl-s"><span class="pl-pds">"</span>/group<span class="pl-pds">"</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">$req</span>, <span class="pl-smi">$res</span>, <span class="pl-smi">$app</span>){</span>
+<span class="pl-s1">        <span class="pl-c">// group/page-1</span></span>
+<span class="pl-s1">        <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>on(<span class="pl-s"><span class="pl-pds">'</span>/page-1<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(){});</span>
+<span class="pl-s1">        <span class="pl-c">// you can create nested groups too .</span></span>
+<span class="pl-s1">    });</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// vhosts ?</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>vhost(<span class="pl-s"><span class="pl-pds">"</span>user-*.my.com<span class="pl-pds">"</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">$req</span>, <span class="pl-smi">$res</span>, <span class="pl-smi">$app</span>, <span class="pl-smi">$uid</span>){</span>
+<span class="pl-s1">        <span class="pl-c">// you can apply routes here too</span></span>
+<span class="pl-s1">    });</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// lets put this at the end of our routes</span></span>
+<span class="pl-s1">    <span class="pl-c">// so if "PHP" didn't find the right route</span></span>
+<span class="pl-s1">    <span class="pl-c">// it will display '404'</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>on(<span class="pl-s"><span class="pl-pds">'</span>/*<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">$req</span>, <span class="pl-smi">$res</span>){</span>
+<span class="pl-s1">        <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>end(<span class="pl-s"><span class="pl-pds">"</span>404 not found<span class="pl-pds">"</span></span>);</span>
+<span class="pl-s1">    });</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// get a direct url for a local file ?</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>urlFor(<span class="pl-s"><span class="pl-pds">"</span>/assets/style.css<span class="pl-pds">"</span></span>);</span>
+<span class="pl-s1">    <span class="pl-c">// by default it starts with "http",</span></span>
+<span class="pl-s1">    <span class="pl-c">// but you want to get a secure url "starts with https" ?</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>urlFor(<span class="pl-s"><span class="pl-pds">"</span>/assets/style.css<span class="pl-pds">"</span></span>, <span class="pl-c1">true</span>);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// get a url for an internal route ?</span></span>
+<span class="pl-s1">    <span class="pl-c">// for "/user/1/settings"</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>routeFor(<span class="pl-s"><span class="pl-pds">"</span>user/1/settings<span class="pl-pds">"</span></span>);</span>
+<span class="pl-s1">    <span class="pl-c">// it will return a clean and simple url</span></span>
+<span class="pl-s1">    <span class="pl-c">// but if your server does not support rewriting</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>routeFor(<span class="pl-s"><span class="pl-pds">"</span>user/1/settings<span class="pl-pds">"</span></span>, <span class="pl-c1">false</span>);</span>
+<span class="pl-s1">    <span class="pl-c">// will use "index.php/" as a proxy</span></span>
+<span class="pl-s1">    <span class="pl-c">// do you want a secure clean url ?</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>routeFor(<span class="pl-s"><span class="pl-pds">"</span>user/1/settings<span class="pl-pds">"</span></span>, <span class="pl-c1">true</span>, <span class="pl-c1">true</span>);</span>
+<span class="pl-s1"></span></pre></div>
+
+<h3>
+<a id="request" class="anchor" href="#request" aria-hidden="true"><span class="octicon octicon-link"></span></a>#Request</h3>
+
+<blockquote>
+<p>Manage the input easily  </p>
+</blockquote>
+
+<div class="highlight highlight-php"><pre><span class="pl-s1">    <span class="pl-c">// instead of _GET</span></span>
+<span class="pl-s1">    <span class="pl-c">// a wrapper</span></span>
+<span class="pl-s1">    <span class="pl-c">// ?k=v</span></span>
+<span class="pl-s1">    <span class="pl-smi">$req</span><span class="pl-k">-&gt;</span><span class="pl-smi">query</span><span class="pl-k">-&gt;</span><span class="pl-smi">k</span>; <span class="pl-c">//&gt; "v";</span></span>
+<span class="pl-s1">    <span class="pl-c">// ?k[k1][k2]=v2</span></span>
+<span class="pl-s1">    <span class="pl-smi">$req</span><span class="pl-k">-&gt;</span><span class="pl-smi">k</span><span class="pl-k">-&gt;</span><span class="pl-smi">k1</span><span class="pl-k">-&gt;</span><span class="pl-smi">k2</span>; <span class="pl-c">//&gt; "v2"</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// for _POST, PUT, DELETE, or any request body</span></span>
+<span class="pl-s1">    <span class="pl-c">// POST -&gt; x=v&amp;b=c</span></span>
+<span class="pl-s1">    <span class="pl-smi">$req</span><span class="pl-k">-&gt;</span><span class="pl-smi">body</span><span class="pl-k">-&gt;</span><span class="pl-smi">x</span>; <span class="pl-c">//&gt; v;</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// $_COOKIE ?</span></span>
+<span class="pl-s1">    <span class="pl-c">// $_COOKIE['key']</span></span>
+<span class="pl-s1">    <span class="pl-smi">$req</span><span class="pl-k">-&gt;</span><span class="pl-smi">cookies</span><span class="pl-k">-&gt;</span><span class="pl-smi">key</span>;</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// get the current request method</span></span>
+<span class="pl-s1">    <span class="pl-smi">$req</span><span class="pl-k">-&gt;</span><span class="pl-smi">method</span>;</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// the hostname of the host headers</span></span>
+<span class="pl-s1">    <span class="pl-c">// for example.com:8080</span></span>
+<span class="pl-s1">    <span class="pl-c">// hostname is example.com</span></span>
+<span class="pl-s1">    <span class="pl-smi">$req</span><span class="pl-k">-&gt;</span><span class="pl-smi">hostname</span>;</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// the request path "/x/y/z/"</span></span>
+<span class="pl-s1">    <span class="pl-c">// it also the same as "PATH_INFO"</span></span>
+<span class="pl-s1">    <span class="pl-smi">$req</span><span class="pl-k">-&gt;</span><span class="pl-smi">path</span>; <span class="pl-c">//&gt; x/y/z</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// headers ?</span></span>
+<span class="pl-s1">    <span class="pl-smi">$req</span><span class="pl-k">-&gt;</span><span class="pl-smi">headers</span><span class="pl-k">-&gt;</span><span class="pl-smi">host</span>; <span class="pl-c">//&gt; returns the host headers</span></span>
+<span class="pl-s1">    <span class="pl-smi">$req</span><span class="pl-k">-&gt;</span><span class="pl-smi">headers</span><span class="pl-k">-&gt;</span><span class="pl-smi">user_agent</span> <span class="pl-c">//&gt; returns the user agent value</span></span>
+<span class="pl-s1">    <span class="pl-c">// and so ...</span></span></pre></div>
+
+<h3>
+<a id="response" class="anchor" href="#response" aria-hidden="true"><span class="octicon octicon-link"></span></a>#Response</h3>
+
+<blockquote>
+<p>Useful methods for handling the output </p>
+</blockquote>
+
+<div class="highlight highlight-php"><pre><span class="pl-s1">    <span class="pl-c">// Response object</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// set a http header [will replace any header with the same field]</span></span>
+<span class="pl-s1">    <span class="pl-c">// this is case in-sensitive</span></span>
+<span class="pl-s1">    <span class="pl-c">// it return $this, usefull for chaining</span></span>
+<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>set(<span class="pl-s"><span class="pl-pds">'</span>content-type<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>text/html<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1">    <span class="pl-c">// multiple ?</span></span>
+<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>set([</span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>x-header-1<span class="pl-pds">'</span></span>    <span class="pl-k">=&gt;</span>  <span class="pl-s"><span class="pl-pds">'</span>value<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>x-header-2<span class="pl-pds">'</span></span>    <span class="pl-k">=&gt;</span>  <span class="pl-s"><span class="pl-pds">'</span>value2<span class="pl-pds">'</span></span></span>
+<span class="pl-s1">    ]);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// don't want to replace ?</span></span>
+<span class="pl-s1">    <span class="pl-c">// just use append</span></span>
+<span class="pl-s1">    <span class="pl-c">// also returns $this</span></span>
+<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>append(<span class="pl-s"><span class="pl-pds">'</span>x-header3<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>value3<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>append([</span>
+<span class="pl-s1">        <span class="pl-c">/*</span></span>
+<span class="pl-s1"><span class="pl-c">            same as set</span></span>
+<span class="pl-s1"><span class="pl-c">            array of key value paris</span></span>
+<span class="pl-s1"><span class="pl-c">        */</span></span>
+<span class="pl-s1">    ]);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// set the status code</span></span>
+<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>status(<span class="pl-c1">404</span>)<span class="pl-k">-&gt;</span>set(<span class="pl-s"><span class="pl-pds">'</span>x-code<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>404 not found<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// write to the client</span></span>
+<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>send(<span class="pl-s"><span class="pl-pds">'</span>just a message<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1">    <span class="pl-c">// or json ?</span></span>
+<span class="pl-s1">    <span class="pl-c">// json will also send the content-type: application/json</span></span>
+<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>send([</span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>x<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>y<span class="pl-pds">'</span></span></span>
+<span class="pl-s1">    ]);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// json too ..</span></span>
+<span class="pl-s1">    <span class="pl-c">// + content-type: application/json</span></span>
+<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>json([</span>
+<span class="pl-s1">        <span class="pl-c">// ...</span></span>
+<span class="pl-s1">    ]);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// jsonp</span></span>
+<span class="pl-s1">    <span class="pl-c">// + content-type: application/json</span></span>
+<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>jsonp([</span>
+<span class="pl-s1">        <span class="pl-c">// ..</span></span>
+<span class="pl-s1">    ]); <span class="pl-c">//&gt; default jsonp callback is 'callback'</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// change it ?</span></span>
+<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>jsonp([], <span class="pl-s"><span class="pl-pds">'</span>myfunction<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// setcookie</span></span>
+<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>cookie(<span class="pl-s"><span class="pl-pds">'</span>name<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>value<span class="pl-pds">'</span></span>, [<span class="pl-c">/* options here */</span>]);</span>
+<span class="pl-s1">    <span class="pl-c">/*</span></span>
+<span class="pl-s1"><span class="pl-c">        cookie options</span></span>
+<span class="pl-s1"><span class="pl-c">        'domain'    =&gt;  empty by default</span></span>
+<span class="pl-s1"><span class="pl-c">        'path'      =&gt;  directory of the main index file</span></span>
+<span class="pl-s1"><span class="pl-c">        'expires'   =&gt;  zero by default</span></span>
+<span class="pl-s1"><span class="pl-c">        'secure'    =&gt;  horus detect it</span></span>
+<span class="pl-s1"><span class="pl-c">        'httpOnly'  =&gt;  true by default</span></span>
+<span class="pl-s1"><span class="pl-c">    */</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// cache web page for a $ttl</span></span>
+<span class="pl-s1">    <span class="pl-c">// cache for 10 seconds</span></span>
+<span class="pl-s1">    <span class="pl-c">// using last-modified</span></span>
+<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>cache(<span class="pl-c1">10</span>);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// cache using expires after 10 seconds from now</span></span>
+<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>expires(<span class="pl-c1">time</span>() <span class="pl-k">+</span> <span class="pl-c1">10</span>);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// render file ?</span></span>
+<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>render(<span class="pl-s"><span class="pl-pds">'</span>filename.html<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1">    <span class="pl-c">// you can pass vars</span></span>
+<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>render(<span class="pl-s"><span class="pl-pds">'</span>filename.html<span class="pl-pds">'</span></span>, [<span class="pl-s"><span class="pl-pds">'</span>var<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>c<span class="pl-pds">'</span></span>]);</span>
+<span class="pl-s1">    <span class="pl-c">// you can use multiple files</span></span>
+<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>render([</span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>file1.html<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>file2.html<span class="pl-pds">'</span></span></span>
+<span class="pl-s1">    ], [</span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>var1<span class="pl-pds">'</span></span>  <span class="pl-k">=&gt;</span>  <span class="pl-s"><span class="pl-pds">'</span>val1<span class="pl-pds">'</span></span></span>
+<span class="pl-s1">    ]);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// redirect ? "temporarily"</span></span>
+<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>redirect(<span class="pl-s"><span class="pl-pds">'</span>/target.php<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// redirect ? "permanent"</span></span>
+<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>redirect(<span class="pl-s"><span class="pl-pds">"</span>/to.php<span class="pl-pds">"</span></span>, <span class="pl-c1">true</span>);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// clear the output</span></span>
+<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>clear();</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// now the time to end the response</span></span>
+<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>end();</span>
+<span class="pl-s1">    <span class="pl-c">// or end with some text</span></span>
+<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>end(<span class="pl-s"><span class="pl-pds">"</span>By<span class="pl-pds">"</span></span>);</span>
+<span class="pl-s1">    <span class="pl-c">// or end with some text and status code</span></span>
+<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>end(<span class="pl-s"><span class="pl-pds">"</span>404 not found<span class="pl-pds">"</span></span>, <span class="pl-c1">404</span>);</span></pre></div>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/alash3al/Horus/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/alash3al/Horus/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/alash3al/Horus"></a> is maintained by <a href="https://github.com/alash3al">alash3al</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
 </html>
