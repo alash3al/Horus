@@ -61,7 +61,18 @@ rapid apps developments .
 
     require "Horus.php";
 
-    $app = new \Horus\App;
+    // you can optionally create layers "middlewares"
+    // layers are just array of callbacks
+    // executed each request .
+    // e.g: you can create a layer that add
+    // some properties to the 'req' object.
+    $layers = [
+        function($req, $res, $app){},
+        function($req, $res, $app){},
+        // and so ...
+    ];
+
+    $app = new \Horus\App($layers);
 
     // you register a callback for a uri
     // when the user access it, it will be distpatched
