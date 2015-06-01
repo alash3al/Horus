@@ -116,22 +116,6 @@ rapid apps developments .
 	$app->on('/*', function($req, $res){
 		$res->end("404 not found");
 	});
-
-    // get a direct url for a local file ?
-    $app->urlFor("/assets/style.css");
-    // by default it starts with "http",
-    // but you want to get a secure url "starts with https" ?
-    $app->urlFor("/assets/style.css", true);
-
-    // get a url for an internal route ?
-    // for "/user/1/settings"
-    $app->routeFor("user/1/settings");
-    // it will return a clean and simple url
-    // but if your server does not support rewriting
-    $app->routeFor("user/1/settings", false);
-    // will use "index.php/" as a proxy
-    // do you want a secure clean url ?
-    $app->routeFor("user/1/settings", true, true);
     
 ``` 
 
@@ -263,6 +247,22 @@ rapid apps developments .
 
     // redirect ? "permanent"
     $res->redirect("/to.php", true);
+
+    // get a direct url for a local file ?
+    $app->urlFor("/assets/style.css");
+    // by default it starts with "http",
+    // but you want to get a secure url "starts with https" ?
+    $app->urlFor("/assets/style.css", true);
+
+    // get a url for an internal route ?
+    // for "/user/1/settings"
+    $app->routeFor("user/1/settings");
+    // it will return a clean and simple url
+    // but if your server does not support rewriting
+    $app->routeFor("user/1/settings", false);
+    // will use "index.php/" as a proxy
+    // do you want a secure clean url ?
+    $app->routeFor("user/1/settings", true, true);
 
     // clear the output
     $res->clear();
