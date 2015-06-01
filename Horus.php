@@ -165,6 +165,16 @@ class Request extends Prototype
 class Response extends Prototype
 {
     /**
+     * Constructor
+     * 
+     * @param   Request     $req
+     */
+    public function __construct(Request $req)
+    {
+        $this->req = $req;
+    }
+
+    /**
      * Set new header field(s)
      * 
      * @param   string|array    $field
@@ -425,6 +435,40 @@ class Response extends Prototype
     }
 
     /**
+     * Return a url for a local real file
+     * 
+     * @param   string  $local_path
+     * @param   bool    $secure
+     * @return  string
+     */
+    public function urlFor($local_path, $secure = false)
+    {
+        return sprintf('%s://%s/%s',
+            ($secure ? 'https' : 'http'),
+            $this->req->servername,
+            preg_replace('/\/+/', '/', ltrim(trim($local_path), '/'))
+        );
+    }
+
+    /**
+     * Return a url for a local virtual path "route"
+     * 
+     * @param   string  $local_route
+     * @param   bool    $clean
+     * @param   bool    $secure
+     * @return  string
+     */
+    public function routeFor($local_route, $clean = true, $secure = false)
+    {
+        return sprintf('%s://%s%s%s',
+            ($secure ? 'https' : 'http'),
+            $this->req->servername,
+            ($clean ? '/' : ('/' . trim($_SERVER['SCRIPT_NAME'], '/') . '/')),
+            preg_replace('/\/+/', '/', ltrim(trim($local_route), '/'))
+        );
+    }
+
+    /**
      * Clear the output
      * 
      * @return  $this
@@ -476,7 +520,7 @@ class App extends Prototype
     {
         $this->locals = new Prototype;
         $this->req = new Request;
-        $this->res = new Response;
+        $this->res = new Response($this->req);
         $this->parent = '/';
 
         foreach ( $layers as $l ) {
@@ -566,40 +610,6 @@ class App extends Prototype
         }
 
         return $this;
-    }
-
-    /**
-     * Return a url for a local real file
-     * 
-     * @param   string  $local_path
-     * @param   bool    $secure
-     * @return  string
-     */
-    public function urlFor($local_path, $secure = false)
-    {
-        return sprintf('%s://%s/%s',
-            ($secure ? 'https' : 'http'),
-            $this->req->servername,
-            preg_replace('/\/+/', '/', ltrim(trim($local_path), '/'))
-        );
-    }
-
-    /**
-     * Return a url for a local virtual path "route"
-     * 
-     * @param   string  $local_route
-     * @param   bool    $clean
-     * @param   bool    $secure
-     * @return  string
-     */
-    public function routeFor($local_route, $clean = true, $secure = false)
-    {
-        return sprintf('%s://%s%s%s',
-            ($secure ? 'https' : 'http'),
-            $this->req->servername,
-            ($clean ? '/' : ('/' . trim($_SERVER['SCRIPT_NAME']) . '/')),
-            preg_replace('/\/+/', '/', ltrim(trim($local_route), '/'))
-        );
     }
 
     /** @ignore */
