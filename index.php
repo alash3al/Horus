@@ -1,15 +1,7 @@
 <?php
 
-    require "Horus.php";
+    require("Horus.php");
 
-    use Horus\Horus;
-
-    $app = new Horus;
-
-    $app->all('/api/json', function($req, $res, $app){
-        $res->json(array(
-           'status' =>  'ok' 
-        ));
+    (new \Horus\App)->on('/', function($req, $res){
+        $res->end("Hello World");
     });
-
-    $app->run();
