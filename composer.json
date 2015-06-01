@@ -1,9 +1,16 @@
 {
     "name": "alash3al/horus",
-    "keywords": ["Framework", "RESTful", "URL Router", "Express", "Micro", "Request", "Response"],
-    "description": "A portable full stack event-driven micro-framework for express developments",
+    "description": "A micro php 5 framework",
+    "keywords": ["framework", "standalone", "router", "response", "request", "psr"],
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Mohammed Al Ashaal",
+            "email": "m7medalash3al@gmail.com"
+        }
+    ],
     "require": {
-        "php": ">=5.3"
-    }
+        "php": ">=5.4"
+    },
+    "minimum-stability": "stable"
 }
