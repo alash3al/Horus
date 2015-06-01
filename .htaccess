@@ -1,21 +1,5 @@
- ServerSignature Off
-
 <IfModule mod_rewrite.c>
-    RewriteEngine On
-    
-    # On some web hosts this code may not work because of the 'RewriteBase' 
-    # so you should use `RewriteBase`
-    # And set it to the real absolute path of horus installation directory
-    # example: 
-    # RewriteBase /path/to/current_directory
-
-    # the next line tells apache to handle the requested file if exists
-    # or it will pass it to horus url_rewrite
-    RewriteCond %{REQUEST_FILENAME} !-f
-
-    # the next line just like the above, but it check for folders not files
-    RewriteCond %{REQUEST_FILENAME} !-d
-
-    # rewrite /xxx to index.php/xxx
-    RewriteRule ^(.*)$ index.php [QSA,L]
+   RewriteEngine On
+   RewriteCond %{REQUEST_FILENAME} !-f
+   RewriteRule ^ index.php [QSA,L]
 </IfModule>
