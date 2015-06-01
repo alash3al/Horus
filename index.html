@@ -2,8 +2,7 @@
 <html lang="en-us">
   <head>
     <meta charset="UTF-8">
-    <title>Horus 12, PHP Olive !</title>
-    <meta name="description" content="Horus 12, is the lightest php micro framework, it has been created to be the foundation of your next project">
+    <title>Horus by alash3al</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
@@ -13,7 +12,7 @@
   <body>
     <section class="page-header">
       <h1 class="project-name">Horus</h1>
-      <h2 class="project-tagline">A light layer/foundation of your next project</h2>
+      <h2 class="project-tagline">A Micro PHP 5 Framework Perfect For Getting Programmers Start</h2>
       <a href="https://github.com/alash3al/Horus" class="btn">View on GitHub</a>
       <a href="https://github.com/alash3al/Horus/zipball/master" class="btn">Download .zip</a>
       <a href="https://github.com/alash3al/Horus/tarball/master" class="btn">Download .tar.gz</a>
@@ -102,7 +101,18 @@ rapid apps developments .  </p>
 <div class="highlight highlight-php"><pre><span class="pl-s1"></span>
 <span class="pl-s1">    <span class="pl-k">require</span> <span class="pl-s"><span class="pl-pds">"</span>Horus.php<span class="pl-pds">"</span></span>;</span>
 <span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-smi">$app</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-c1">\Horus\</span><span class="pl-c1">App</span>;</span>
+<span class="pl-s1">    <span class="pl-c">// you can optionally create layers "middlewares"</span></span>
+<span class="pl-s1">    <span class="pl-c">// layers are just array of callbacks</span></span>
+<span class="pl-s1">    <span class="pl-c">// executed each request .</span></span>
+<span class="pl-s1">    <span class="pl-c">// e.g: you can create a layer that add</span></span>
+<span class="pl-s1">    <span class="pl-c">// some properties to the 'req' object.</span></span>
+<span class="pl-s1">    <span class="pl-smi">$layers</span> <span class="pl-k">=</span> [</span>
+<span class="pl-s1">        <span class="pl-k">function</span>(<span class="pl-smi">$req</span>, <span class="pl-smi">$res</span>, <span class="pl-smi">$app</span>){},</span>
+<span class="pl-s1">        <span class="pl-k">function</span>(<span class="pl-smi">$req</span>, <span class="pl-smi">$res</span>, <span class="pl-smi">$app</span>){},</span>
+<span class="pl-s1">        <span class="pl-c">// and so ...</span></span>
+<span class="pl-s1">    ];</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-c1">\Horus\</span><span class="pl-c1">App</span>(<span class="pl-smi">$layers</span>);</span>
 <span class="pl-s1"></span>
 <span class="pl-s1">    <span class="pl-c">// you register a callback for a uri</span></span>
 <span class="pl-s1">    <span class="pl-c">// when the user access it, it will be distpatched</span></span>
