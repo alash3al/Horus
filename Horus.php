@@ -118,11 +118,14 @@ class Request extends Prototype
      */
     public function __construct()
     {
-        $uri = trim($_SERVER['REQUEST_URI'], '/');
-        $me = trim($_SERVER['SCRIPT_NAME'], '/');
+        $uri = preg_replace('/\/+/', '/', '/' . trim($_SERVER['REQUEST_URI'], '/') . '/');
+        $me = preg_replace('/\/+/', '/', '/' . trim($_SERVER['SCRIPT_NAME'], '/') . '/');
+        $parent = preg_replace('/\/+/', '/', '/' . trim(dirname($me), '/') . '/');
 
         if ( stripos($uri, $me) !== false ) {
             $this->path = substr($uri, strlen($me));
+        } elseif ( stripos($uri, $parent) !== false ){
+            $this->path = substr($uri, strlen($parent));
         } else {
             $this->path = $uri;
         }
