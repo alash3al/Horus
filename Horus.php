@@ -618,7 +618,7 @@ class App extends Prototype
     /** @ignore */
     protected function prepare($uri)
     {
-        return str_replace(['/?', '/*'], ['/([^\/]+)', '/(.*)'], preg_replace('/\\\+/', '\\', addcslashes(preg_replace('/\/+/', '/', $this->parent . '/' . $uri . '/'), '/')));
+        return str_replace(['/?', '/*'], ['/([^\/]+)', '/?(.*)'], preg_replace('/\\\+/', '\\', addcslashes(preg_replace('/\/+/', '/', $this->parent . '/' . $uri . '/'), '/')));
     }
 
     /** @ignore */
