@@ -131,7 +131,7 @@ class Request extends Prototype
         }
 
         if ( strpos($this->path, '?') !== false ) {
-            $this->path = trim(strstr($this->path, '?'), '?');
+            $this->path = trim(strtok($this->path, '?'), '?');
         }
 
         $this->path = preg_replace('/\/+/', '/', ('/' . $this->path . '/'));
