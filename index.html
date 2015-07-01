@@ -2,8 +2,7 @@
 <html lang="en-us">
   <head>
     <meta charset="UTF-8">
-    <title>Horus 12, PHP Olive !</title>
-    <meta name="description" content="Horus 12, is the lightest standalone micro framework for php, lets build the next web app easily, you don't have to learn it, just start coding directly !">
+    <title>Horus by alash3al</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
@@ -13,7 +12,7 @@
   <body>
     <section class="page-header">
       <h1 class="project-name">Horus</h1>
-      <h2 class="project-tagline">A light layer/foundation for your next application, you don't have to learn it !</h2>
+      <h2 class="project-tagline">A Micro PHP 5 Framework Perfect For Getting Programmers Start</h2>
       <a href="https://github.com/alash3al/Horus" class="btn">View on GitHub</a>
       <a href="https://github.com/alash3al/Horus/zipball/master" class="btn">Download .zip</a>
       <a href="https://github.com/alash3al/Horus/tarball/master" class="btn">Download .tar.gz</a>
@@ -303,20 +302,20 @@ rapid apps developments .  </p>
 <span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>redirect(<span class="pl-s"><span class="pl-pds">"</span>/to.php<span class="pl-pds">"</span></span>, <span class="pl-c1">true</span>);</span>
 <span class="pl-s1"></span>
 <span class="pl-s1">    <span class="pl-c">// get a direct url for a local file ?</span></span>
-<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>urlFor(<span class="pl-s"><span class="pl-pds">"</span>/assets/style.css<span class="pl-pds">"</span></span>);</span>
+<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>urlFor(<span class="pl-s"><span class="pl-pds">"</span>/assets/style.css<span class="pl-pds">"</span></span>);</span>
 <span class="pl-s1">    <span class="pl-c">// by default it starts with "http",</span></span>
 <span class="pl-s1">    <span class="pl-c">// but you want to get a secure url "starts with https" ?</span></span>
-<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>urlFor(<span class="pl-s"><span class="pl-pds">"</span>/assets/style.css<span class="pl-pds">"</span></span>, <span class="pl-c1">true</span>);</span>
+<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>urlFor(<span class="pl-s"><span class="pl-pds">"</span>/assets/style.css<span class="pl-pds">"</span></span>, <span class="pl-c1">true</span>);</span>
 <span class="pl-s1"></span>
 <span class="pl-s1">    <span class="pl-c">// get a url for an internal route ?</span></span>
 <span class="pl-s1">    <span class="pl-c">// for "/user/1/settings"</span></span>
-<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>routeFor(<span class="pl-s"><span class="pl-pds">"</span>user/1/settings<span class="pl-pds">"</span></span>);</span>
+<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>routeFor(<span class="pl-s"><span class="pl-pds">"</span>user/1/settings<span class="pl-pds">"</span></span>);</span>
 <span class="pl-s1">    <span class="pl-c">// it will return a clean and simple url</span></span>
 <span class="pl-s1">    <span class="pl-c">// but if your server does not support rewriting</span></span>
-<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>routeFor(<span class="pl-s"><span class="pl-pds">"</span>user/1/settings<span class="pl-pds">"</span></span>, <span class="pl-c1">false</span>);</span>
+<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>routeFor(<span class="pl-s"><span class="pl-pds">"</span>user/1/settings<span class="pl-pds">"</span></span>, <span class="pl-c1">false</span>);</span>
 <span class="pl-s1">    <span class="pl-c">// will use "index.php/" as a proxy</span></span>
 <span class="pl-s1">    <span class="pl-c">// do you want a secure clean url ?</span></span>
-<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>routeFor(<span class="pl-s"><span class="pl-pds">"</span>user/1/settings<span class="pl-pds">"</span></span>, <span class="pl-c1">true</span>, <span class="pl-c1">true</span>);</span>
+<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>routeFor(<span class="pl-s"><span class="pl-pds">"</span>user/1/settings<span class="pl-pds">"</span></span>, <span class="pl-c1">true</span>, <span class="pl-c1">true</span>);</span>
 <span class="pl-s1"></span>
 <span class="pl-s1">    <span class="pl-c">// clear the output</span></span>
 <span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>clear();</span>
@@ -328,6 +327,11 @@ rapid apps developments .  </p>
 <span class="pl-s1">    <span class="pl-c">// or end with some text and status code</span></span>
 <span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>end(<span class="pl-s"><span class="pl-pds">"</span>404 not found<span class="pl-pds">"</span></span>, <span class="pl-c1">404</span>);</span></pre></div>
 
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/alash3al/Horus">Horus</a> is maintained by <a href="https://github.com/alash3al">alash3al</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
 
     </section>
 
