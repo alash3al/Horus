@@ -449,7 +449,7 @@ class Response extends Prototype
         return sprintf('%s://%s/%s',
             ($secure ? 'https' : 'http'),
             $this->req->servername,
-            preg_replace('/\/+/', '/', ltrim(trim(dirname($_SERVER['SCRIPT_NAME']) . '/' . $local_path), '/'))
+            preg_replace('/\/+/', '/', ltrim(trim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'])) . '/' . $local_path), '/'))
         );
     }
 
@@ -463,7 +463,7 @@ class Response extends Prototype
      */
     public function routeFor($local_route, $clean = true, $secure = false)
     {
-        $prepend = ($clean ? dirname($_SERVER['SCRIPT_NAME']) : $_SERVER['SCRIPT_NAME']);
+        $prepend = str_replace('\\', '/', ($clean ? dirname($_SERVER['SCRIPT_NAME']) : $_SERVER['SCRIPT_NAME']));
         return sprintf('%s://%s/%s',
             ($secure ? 'https' : 'http'),
             $this->req->servername,
