@@ -1,5 +1,5 @@
 # # Horus 13 [![Build Status](https://scrutinizer-ci.com/g/alash3al/Horus/badges/build.png?b=master)](https://scrutinizer-ci.com/g/alash3al/Horus/build-status/master) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/alash3al/Horus/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/alash3al/Horus/?branch=master)
--------------
+
 A simple yet powerful micro-framework for php5 >= php5.4
 
 # # Why a large framework ?
@@ -9,7 +9,7 @@ A simple yet powerful micro-framework for php5 >= php5.4
 
 
 # # Quick Demo
-----------------
+
 
 ```php
 <?php
@@ -30,7 +30,7 @@ A simple yet powerful micro-framework for php5 >= php5.4
 ```
 
 # # Learn By Examples
--------------
+
 ```php
 
 	// load the Horus File
