@@ -5,7 +5,7 @@
     <title>Horus by alash3al</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
   </head>
@@ -19,313 +19,271 @@
     </section>
 
     <section class="main-content">
-      <h3>
-<a id="horus-12" class="anchor" href="#horus-12" aria-hidden="true"><span class="octicon octicon-link"></span></a>#Horus 12</h3>
+      <h1>
+<a id="-horus-13" class="anchor" href="#-horus-13" aria-hidden="true"><span class="octicon octicon-link"></span></a># Horus 13</h1>
 
-<p>An imporved layer for any php application</p>
+<hr>
 
-<h3>
-<a id="overview" class="anchor" href="#overview" aria-hidden="true"><span class="octicon octicon-link"></span></a>#Overview</h3>
+<p>A simple yet powerful micro-framework for php5 &gt;= php5.4</p>
 
-<p>In php world, there are many and many frameworks, but there are no simple and standalone
-layers that is just a wrapper for any web application, and this is Horus .<br>
-Horus is a very simple layer/foundation for any "any" web application, it will help you in 
-rapid apps developments .  </p>
+<h1>
+<a id="-why-a-large-framework-" class="anchor" href="#-why-a-large-framework-" aria-hidden="true"><span class="octicon octicon-link"></span></a># Why a large framework ?</h1>
+
+<blockquote>
+<p>Why i need a large framework when i can use a <code>foundation</code> + <code>composer</code> ! .
+Really we don't need a large framework, but we need a simple powerful modular <code>foundation</code> framework that helps me building small or large application and with the help of the <code>composer</code> ecosystem you can build a large framework .
+We should know that a <code>framework</code> is not just a folder that contains some libraries but it is a better designed modular workflow that contains the application logic easily .</p>
+</blockquote>
+
+<h1>
+<a id="-quick-demo" class="anchor" href="#-quick-demo" aria-hidden="true"><span class="octicon octicon-link"></span></a># Quick Demo</h1>
+
+<hr>
 
 <div class="highlight highlight-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
 <span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-k">require</span>(<span class="pl-s"><span class="pl-pds">"</span>Horus.php<span class="pl-pds">"</span></span>);</span>
+<span class="pl-s1">    <span class="pl-k">require</span>(<span class="pl-s"><span class="pl-pds">'</span>Horus.php<span class="pl-pds">'</span></span>);</span>
 <span class="pl-s1"></span>
-<span class="pl-s1">    (<span class="pl-k">new</span> <span class="pl-c1">\Horus\</span><span class="pl-c1">App</span>)<span class="pl-k">-&gt;</span>on(<span class="pl-s"><span class="pl-pds">'</span>/<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">$request</span>, <span class="pl-smi">$response</span>){</span>
-<span class="pl-s1">        <span class="pl-smi">$response</span><span class="pl-k">-&gt;</span>send(<span class="pl-s"><span class="pl-pds">"</span>hello world<span class="pl-pds">"</span></span>);</span>
-<span class="pl-s1">        <span class="pl-smi">$response</span><span class="pl-k">-&gt;</span>end();</span>
-<span class="pl-s1">    })<span class="pl-k">-&gt;</span>on(<span class="pl-s"><span class="pl-pds">'</span>GET|POST /test<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">$request</span>, <span class="pl-smi">$response</span>){</span>
-<span class="pl-s1">        <span class="pl-smi">$response</span><span class="pl-k">-&gt;</span>end(<span class="pl-s"><span class="pl-pds">"</span>What is this ?<span class="pl-pds">"</span></span>);</span>
-<span class="pl-s1">    });</span>
-<span class="pl-s1"></span>
-<span class="pl-s1"></span><span class="pl-pse"><span class="pl-s1">?</span>&gt;</span></pre></div>
+<span class="pl-s1">    (<span class="pl-k">new</span> <span class="pl-c1">Horus</span>)<span class="pl-k">-&gt;</span>on(<span class="pl-s"><span class="pl-pds">'</span>/<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(){</span>
+<span class="pl-s1">        <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>end(<span class="pl-s"><span class="pl-pds">"</span>Hello World<span class="pl-pds">"</span></span>);</span>
+<span class="pl-s1">    })<span class="pl-k">-&gt;</span>on(<span class="pl-s"><span class="pl-pds">'</span>/page/:?<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">$page</span>){</span>
+<span class="pl-s1">        <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>end(<span class="pl-c1">sprintf</span>(<span class="pl-s"><span class="pl-pds">'</span>current param is %s<span class="pl-pds">'</span></span>, <span class="pl-smi">$page</span>));</span>
+<span class="pl-s1">    })<span class="pl-k">-&gt;</span>on(<span class="pl-s"><span class="pl-pds">'</span>POST /api/user<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(){</span>
+<span class="pl-s1">        <span class="pl-smi">$username</span> <span class="pl-k">=</span> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span><span class="pl-smi">body</span><span class="pl-k">-&gt;</span><span class="pl-smi">username</span>;</span>
+<span class="pl-s1">        <span class="pl-smi">$token</span> <span class="pl-k">=</span> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span><span class="pl-smi">query</span><span class="pl-k">-&gt;</span><span class="pl-smi">token</span>;</span>
+<span class="pl-s1">        <span class="pl-c">// do some database operations</span></span>
+<span class="pl-s1">    })<span class="pl-k">-&gt;</span>on(<span class="pl-s"><span class="pl-pds">'</span>:*<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(){</span>
+<span class="pl-s1">        <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>end(<span class="pl-s"><span class="pl-pds">'</span>404, cannot find any matched route !<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1">    });</span></pre></div>
 
-<h3>
-<a id="contents" class="anchor" href="#contents" aria-hidden="true"><span class="octicon octicon-link"></span></a>#Contents</h3>
+<h1>
+<a id="-learn-by-examples" class="anchor" href="#-learn-by-examples" aria-hidden="true"><span class="octicon octicon-link"></span></a># Learn By Examples</h1>
 
-<ul>
-<li><strong>Download</strong></li>
-<li>
-<strong>Prorotype</strong><br>
-</li>
-<li>
-<strong>App</strong><br>
-</li>
-<li>
-<strong>Request</strong><br>
-</li>
-<li>
-<strong>Response</strong> </li>
-</ul>
-
-<h3>
-<a id="download" class="anchor" href="#download" aria-hidden="true"><span class="octicon octicon-link"></span></a>#Download</h3>
-
-<blockquote>
-<p><code>composer require alash3al/horus</code>  </p>
-
-<p><code>git clone https://github.com/alash3al/Horus.git</code>  </p>
-
-<p><code>https://github.com/alash3al/Horus/archive/master.zip</code>  </p>
-</blockquote>
-
-<h3>
-<a id="prototype" class="anchor" href="#prototype" aria-hidden="true"><span class="octicon octicon-link"></span></a>#Prototype</h3>
-
-<blockquote>
-<p>just an improved <code>stdClass</code> that supports closure  </p>
-</blockquote>
-
-<div class="highlight highlight-php"><pre><span class="pl-s1">    <span class="pl-k">require</span> <span class="pl-s"><span class="pl-pds">"</span>Horus.php<span class="pl-pds">"</span></span>;</span>
-<span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-smi">$proto</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-c1">\Horus\</span><span class="pl-c1">Prototype</span>;</span>
-<span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-smi">$proto</span><span class="pl-k">-&gt;</span><span class="pl-smi">key</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>value<span class="pl-pds">"</span></span>;</span>
-<span class="pl-s1">    <span class="pl-smi">$proto</span><span class="pl-k">-&gt;</span><span class="pl-smi">func</span> <span class="pl-k">=</span> <span class="pl-k">function</span>() <span class="pl-k">use</span>(<span class="pl-smi">$proto</span>) {</span>
-<span class="pl-s1">        <span class="pl-c1">print</span> <span class="pl-smi">$proto</span><span class="pl-k">-&gt;</span><span class="pl-smi">key</span>;</span>
-<span class="pl-s1">        <span class="pl-k">return</span> <span class="pl-smi">$proto</span>;</span>
-<span class="pl-s1">    };</span></pre></div>
-
-<h3>
-<a id="app" class="anchor" href="#app" aria-hidden="true"><span class="octicon octicon-link"></span></a>#App</h3>
-
-<blockquote>
-<p>Our main class that handles request and response ..  </p>
-</blockquote>
+<hr>
 
 <div class="highlight highlight-php"><pre><span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-k">require</span> <span class="pl-s"><span class="pl-pds">"</span>Horus.php<span class="pl-pds">"</span></span>;</span>
+<span class="pl-s1">    <span class="pl-c">// load the Horus File</span></span>
+<span class="pl-s1">    <span class="pl-k">require</span>(<span class="pl-s"><span class="pl-pds">'</span>Horus.php<span class="pl-pds">'</span></span>);</span>
 <span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// you can optionally create layers "middlewares"</span></span>
-<span class="pl-s1">    <span class="pl-c">// layers are just array of callbacks</span></span>
-<span class="pl-s1">    <span class="pl-c">// executed each request .</span></span>
-<span class="pl-s1">    <span class="pl-c">// e.g: you can create a layer that add</span></span>
-<span class="pl-s1">    <span class="pl-c">// some properties to the 'req' object.</span></span>
-<span class="pl-s1">    <span class="pl-smi">$layers</span> <span class="pl-k">=</span> [</span>
-<span class="pl-s1">        <span class="pl-k">function</span>(<span class="pl-smi">$req</span>, <span class="pl-smi">$res</span>, <span class="pl-smi">$app</span>){},</span>
-<span class="pl-s1">        <span class="pl-k">function</span>(<span class="pl-smi">$req</span>, <span class="pl-smi">$res</span>, <span class="pl-smi">$app</span>){},</span>
-<span class="pl-s1">        <span class="pl-c">// and so ...</span></span>
-<span class="pl-s1">    ];</span>
+<span class="pl-s1">    <span class="pl-c">// create a new instance of Horus with default configs</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-c1">Horus</span>;</span>
 <span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-smi">$app</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-c1">\Horus\</span><span class="pl-c1">App</span>(<span class="pl-smi">$layers</span>);</span>
+<span class="pl-s1">    <span class="pl-c">// or you can initialize it and set some options</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-c1">Horus</span></span>
+<span class="pl-s1">    ([</span>
+<span class="pl-s1">        <span class="pl-c">// whether your site is using ssl or not ?</span></span>
+<span class="pl-s1">        <span class="pl-c">// true/false</span></span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>secure<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">true</span>,</span>
 <span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// you register a callback for a uri</span></span>
-<span class="pl-s1">    <span class="pl-c">// when the user access it, it will be distpatched</span></span>
-<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>on(<span class="pl-s"><span class="pl-pds">'</span>/index<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">$req</span>, <span class="pl-smi">$res</span>){</span>
-<span class="pl-s1">        <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>send(<span class="pl-s"><span class="pl-pds">"</span>index<span class="pl-pds">"</span></span>);</span>
-<span class="pl-s1">        <span class="pl-c">// we don't need any other route</span></span>
-<span class="pl-s1">        <span class="pl-c">// so we will end the app</span></span>
-<span class="pl-s1">        <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>end();</span>
-<span class="pl-s1">    });</span>
+<span class="pl-s1">        <span class="pl-c">// There are some methods that will helps you</span></span>
+<span class="pl-s1">        <span class="pl-c">// generating some urls/routes</span></span>
+<span class="pl-s1">        <span class="pl-c">// any route is about &lt;schema&gt;://&lt;host&gt;/&lt;base&gt;/&lt;path&gt;</span></span>
+<span class="pl-s1">        <span class="pl-c">// and &lt;base&gt; is what this option affects</span></span>
+<span class="pl-s1">        <span class="pl-c">// i.e: you may set it to 'index.php' if your server</span></span>
+<span class="pl-s1">        <span class="pl-c">// doesn't support url-rewriting</span></span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>base<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>/<span class="pl-pds">'</span></span>,</span>
 <span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// for a certain method ?</span></span>
-<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>on(<span class="pl-s"><span class="pl-pds">'</span>POST /test<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">$req</span>, <span class="pl-smi">$res</span>){</span>
-<span class="pl-s1">        <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>end(<span class="pl-s"><span class="pl-pds">"</span>post request on '/test'<span class="pl-pds">"</span></span>);</span>
-<span class="pl-s1">    });</span>
-<span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// multiple methods?</span></span>
-<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>on(<span class="pl-s"><span class="pl-pds">'</span>POST|GET /t<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">$req</span>, <span class="pl-smi">$res</span>){</span>
-<span class="pl-s1">        <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>end(<span class="pl-s"><span class="pl-pds">'</span>will work for "POST /t" and "GET /t"<span class="pl-pds">'</span></span>);</span>
-<span class="pl-s1">    });</span>
-<span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// unknown/dynamic params ?</span></span>
-<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>on(<span class="pl-s"><span class="pl-pds">'</span>/user/?/settings<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">$req</span>, <span class="pl-smi">$res</span>, <span class="pl-smi">$id</span>){</span>
-<span class="pl-s1">        <span class="pl-c">// yes, the dynamic args, will be passed with the "$req, $res"</span></span>
-<span class="pl-s1">        <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>end(<span class="pl-s"><span class="pl-pds">"</span>you want the settings of the user {<span class="pl-smi">$id</span>}<span class="pl-pds">"</span></span>);</span>
-<span class="pl-s1">    });</span>
-<span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// more ?</span></span>
-<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>on(<span class="pl-s"><span class="pl-pds">'</span>/user/?/set/?<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">$req</span>, <span class="pl-smi">$res</span>, <span class="pl-smi">$id</span>, <span class="pl-smi">$section</span>){</span>
-<span class="pl-s1">        <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>end(<span class="pl-s"><span class="pl-pds">"</span>you want the settings of {<span class="pl-smi">$section</span>} for the user {<span class="pl-smi">$id</span>}<span class="pl-pds">"</span></span>);</span>
-<span class="pl-s1">    });</span>
-<span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// wildcards ?</span></span>
-<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>on(<span class="pl-s"><span class="pl-pds">'</span>/test/*<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">$req</span>, <span class="pl-smi">$res</span>, <span class="pl-smi">$path</span>){</span>
-<span class="pl-s1">        <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>end(<span class="pl-s"><span class="pl-pds">"</span>you are in 'test/{<span class="pl-smi">$path</span>}'<span class="pl-pds">"</span></span>);</span>
-<span class="pl-s1">    });</span>
-<span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// group of routes ?</span></span>
-<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>group(<span class="pl-s"><span class="pl-pds">"</span>/group<span class="pl-pds">"</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">$req</span>, <span class="pl-smi">$res</span>, <span class="pl-smi">$app</span>){</span>
-<span class="pl-s1">        <span class="pl-c">// group/page-1</span></span>
-<span class="pl-s1">        <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>on(<span class="pl-s"><span class="pl-pds">'</span>/page-1<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(){});</span>
-<span class="pl-s1">        <span class="pl-c">// you can create nested groups too .</span></span>
-<span class="pl-s1">    });</span>
-<span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// vhosts ?</span></span>
-<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>vhost(<span class="pl-s"><span class="pl-pds">"</span>user-*.my.com<span class="pl-pds">"</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">$req</span>, <span class="pl-smi">$res</span>, <span class="pl-smi">$app</span>, <span class="pl-smi">$uid</span>){</span>
-<span class="pl-s1">        <span class="pl-c">// you can apply routes here too</span></span>
-<span class="pl-s1">    });</span>
-<span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// lets put this at the end of our routes</span></span>
-<span class="pl-s1">    <span class="pl-c">// so if "PHP" didn't find the right route</span></span>
-<span class="pl-s1">    <span class="pl-c">// it will display '404'</span></span>
-<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>on(<span class="pl-s"><span class="pl-pds">'</span>/*<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">$req</span>, <span class="pl-smi">$res</span>){</span>
-<span class="pl-s1">        <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>end(<span class="pl-s"><span class="pl-pds">"</span>404 not found<span class="pl-pds">"</span></span>);</span>
-<span class="pl-s1">    });</span>
-<span class="pl-s1"></span></pre></div>
-
-<h3>
-<a id="request" class="anchor" href="#request" aria-hidden="true"><span class="octicon octicon-link"></span></a>#Request</h3>
-
-<blockquote>
-<p>Manage the input easily  </p>
-</blockquote>
-
-<div class="highlight highlight-php"><pre><span class="pl-s1">    <span class="pl-c">// instead of _GET</span></span>
-<span class="pl-s1">    <span class="pl-c">// a wrapper</span></span>
-<span class="pl-s1">    <span class="pl-c">// ?k=v</span></span>
-<span class="pl-s1">    <span class="pl-smi">$req</span><span class="pl-k">-&gt;</span><span class="pl-smi">query</span><span class="pl-k">-&gt;</span><span class="pl-smi">k</span>; <span class="pl-c">//&gt; "v";</span></span>
-<span class="pl-s1">    <span class="pl-c">// ?k[k1][k2]=v2</span></span>
-<span class="pl-s1">    <span class="pl-smi">$req</span><span class="pl-k">-&gt;</span><span class="pl-smi">k</span><span class="pl-k">-&gt;</span><span class="pl-smi">k1</span><span class="pl-k">-&gt;</span><span class="pl-smi">k2</span>; <span class="pl-c">//&gt; "v2"</span></span>
-<span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// for _POST, PUT, DELETE, or any request body</span></span>
-<span class="pl-s1">    <span class="pl-c">// POST -&gt; x=v&amp;b=c</span></span>
-<span class="pl-s1">    <span class="pl-smi">$req</span><span class="pl-k">-&gt;</span><span class="pl-smi">body</span><span class="pl-k">-&gt;</span><span class="pl-smi">x</span>; <span class="pl-c">//&gt; v;</span></span>
-<span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// $_COOKIE ?</span></span>
-<span class="pl-s1">    <span class="pl-c">// $_COOKIE['key']</span></span>
-<span class="pl-s1">    <span class="pl-smi">$req</span><span class="pl-k">-&gt;</span><span class="pl-smi">cookies</span><span class="pl-k">-&gt;</span><span class="pl-smi">key</span>;</span>
-<span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// get the current request method</span></span>
-<span class="pl-s1">    <span class="pl-smi">$req</span><span class="pl-k">-&gt;</span><span class="pl-smi">method</span>;</span>
-<span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// the hostname of the host headers</span></span>
-<span class="pl-s1">    <span class="pl-c">// for example.com:8080</span></span>
-<span class="pl-s1">    <span class="pl-c">// hostname is example.com</span></span>
-<span class="pl-s1">    <span class="pl-smi">$req</span><span class="pl-k">-&gt;</span><span class="pl-smi">hostname</span>;</span>
-<span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// the request path "/x/y/z/"</span></span>
-<span class="pl-s1">    <span class="pl-c">// it also the same as "PATH_INFO"</span></span>
-<span class="pl-s1">    <span class="pl-smi">$req</span><span class="pl-k">-&gt;</span><span class="pl-smi">path</span>; <span class="pl-c">//&gt; x/y/z</span></span>
-<span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// headers ?</span></span>
-<span class="pl-s1">    <span class="pl-smi">$req</span><span class="pl-k">-&gt;</span><span class="pl-smi">headers</span><span class="pl-k">-&gt;</span><span class="pl-smi">host</span>; <span class="pl-c">//&gt; returns the host headers</span></span>
-<span class="pl-s1">    <span class="pl-smi">$req</span><span class="pl-k">-&gt;</span><span class="pl-smi">headers</span><span class="pl-k">-&gt;</span><span class="pl-smi">user_agent</span> <span class="pl-c">//&gt; returns the user agent value</span></span>
-<span class="pl-s1">    <span class="pl-c">// and so ...</span></span></pre></div>
-
-<h3>
-<a id="response" class="anchor" href="#response" aria-hidden="true"><span class="octicon octicon-link"></span></a>#Response</h3>
-
-<blockquote>
-<p>Useful methods for handling the output </p>
-</blockquote>
-
-<div class="highlight highlight-php"><pre><span class="pl-s1">    <span class="pl-c">// Response object</span></span>
-<span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// set a http header [will replace any header with the same field]</span></span>
-<span class="pl-s1">    <span class="pl-c">// this is case in-sensitive</span></span>
-<span class="pl-s1">    <span class="pl-c">// it return $this, usefull for chaining</span></span>
-<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>set(<span class="pl-s"><span class="pl-pds">'</span>content-type<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>text/html<span class="pl-pds">'</span></span>);</span>
-<span class="pl-s1">    <span class="pl-c">// multiple ?</span></span>
-<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>set([</span>
-<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>x-header-1<span class="pl-pds">'</span></span>    <span class="pl-k">=&gt;</span>  <span class="pl-s"><span class="pl-pds">'</span>value<span class="pl-pds">'</span></span>,</span>
-<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>x-header-2<span class="pl-pds">'</span></span>    <span class="pl-k">=&gt;</span>  <span class="pl-s"><span class="pl-pds">'</span>value2<span class="pl-pds">'</span></span></span>
+<span class="pl-s1">        <span class="pl-c">// Do you want to apply some filters to the whole application</span></span>
+<span class="pl-s1">        <span class="pl-c">// output ?, then you will use this options</span></span>
+<span class="pl-s1">        <span class="pl-c">// it will has the current output as the first argument</span></span>
+<span class="pl-s1">        <span class="pl-c">// and it must return any value to be the new output</span></span>
+<span class="pl-s1">        <span class="pl-c">// i.e: function($output){ return trim($output); }</span></span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>output.filter<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">null</span></span>
 <span class="pl-s1">    ]);</span>
 <span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// don't want to replace ?</span></span>
-<span class="pl-s1">    <span class="pl-c">// just use append</span></span>
-<span class="pl-s1">    <span class="pl-c">// also returns $this</span></span>
-<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>append(<span class="pl-s"><span class="pl-pds">'</span>x-header3<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>value3<span class="pl-pds">'</span></span>);</span>
-<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>append([</span>
-<span class="pl-s1">        <span class="pl-c">/*</span></span>
-<span class="pl-s1"><span class="pl-c">            same as set</span></span>
-<span class="pl-s1"><span class="pl-c">            array of key value paris</span></span>
-<span class="pl-s1"><span class="pl-c">        */</span></span>
+<span class="pl-s1">    <span class="pl-c">// You can access "set/get" options of the configs directly</span></span>
+<span class="pl-s1">    <span class="pl-c">// after initialization using this object "$app-&gt;configs"</span></span>
+<span class="pl-s1">    <span class="pl-c">// i.e</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span><span class="pl-smi">config</span><span class="pl-k">-&gt;</span><span class="pl-smi">secure</span> <span class="pl-k">=</span> <span class="pl-c1">false</span>;</span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span><span class="pl-smi">config</span><span class="pl-k">-&gt;</span><span class="pl-smi">base</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>/<span class="pl-pds">'</span></span>;</span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span><span class="pl-smi">config</span><span class="pl-k">-&gt;</span>{<span class="pl-s"><span class="pl-pds">'</span>output.filter<span class="pl-pds">'</span></span>} <span class="pl-k">=</span> <span class="pl-k">function</span>(<span class="pl-smi">$output</span>){</span>
+<span class="pl-s1">            <span class="pl-c">// remove duplicated white-spaces</span></span>
+<span class="pl-s1">            <span class="pl-k">return</span> <span class="pl-c1">preg_replace</span>(<span class="pl-sr"><span class="pl-pds">'/</span><span class="pl-cce">\s</span><span class="pl-k">+</span><span class="pl-pds">/'</span></span>, <span class="pl-s"><span class="pl-pds">'</span> <span class="pl-pds">'</span></span>, <span class="pl-smi">$output</span>);</span>
+<span class="pl-s1">    };</span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span><span class="pl-smi">config</span><span class="pl-k">-&gt;</span><span class="pl-smi">myOwnConfig1</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>value1<span class="pl-pds">'</span></span>;</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// send a header ?</span></span>
+<span class="pl-s1">    <span class="pl-c">// Note: this will override any previously headers with the same fields</span></span>
+<span class="pl-s1">    <span class="pl-c">// Note: fields are case in-sensitive</span></span>
+<span class="pl-s1">    <span class="pl-c">// Note: this method return '$this' for chaining purposes</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>set(<span class="pl-s"><span class="pl-pds">'</span>content-type<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>text/html; charset=UTF-8<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// set multiple headers at once ?</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>set([</span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>content-type<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>text/plain<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>x-powered-by<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>Horus13, by Mohammed Al Ashaal<span class="pl-pds">'</span></span></span>
 <span class="pl-s1">    ]);</span>
 <span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// set the status code</span></span>
-<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>status(<span class="pl-c1">404</span>)<span class="pl-k">-&gt;</span>set(<span class="pl-s"><span class="pl-pds">'</span>x-code<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>404 not found<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1">    <span class="pl-c">// but how about appending header fields</span></span>
+<span class="pl-s1">    <span class="pl-c">// i.e: sending a header field multiple times</span></span>
+<span class="pl-s1">    <span class="pl-c">// with no overriding ?</span></span>
+<span class="pl-s1">    <span class="pl-c">// Note: fields are case in-sensitive</span></span>
+<span class="pl-s1">    <span class="pl-c">// Note: this method return '$this' for chaining purposes</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>append(<span class="pl-s"><span class="pl-pds">'</span>field-name<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>value<span class="pl-pds">'</span></span>);</span>
 <span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// write to the client</span></span>
-<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>send(<span class="pl-s"><span class="pl-pds">'</span>just a message<span class="pl-pds">'</span></span>);</span>
-<span class="pl-s1">    <span class="pl-c">// or json ?</span></span>
-<span class="pl-s1">    <span class="pl-c">// json will also send the content-type: application/json</span></span>
-<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>send([</span>
-<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>x<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>y<span class="pl-pds">'</span></span></span>
-<span class="pl-s1">    ]);</span>
-<span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// json too ..</span></span>
-<span class="pl-s1">    <span class="pl-c">// + content-type: application/json</span></span>
-<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>json([</span>
+<span class="pl-s1">    <span class="pl-c">// you can also do it multiple times at once</span></span>
+<span class="pl-s1">    <span class="pl-c">// like $app-&gt;set([...])</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>append([</span>
 <span class="pl-s1">        <span class="pl-c">// ...</span></span>
 <span class="pl-s1">    ]);</span>
 <span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// jsonp</span></span>
-<span class="pl-s1">    <span class="pl-c">// + content-type: application/json</span></span>
-<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>jsonp([</span>
-<span class="pl-s1">        <span class="pl-c">// ..</span></span>
-<span class="pl-s1">    ]); <span class="pl-c">//&gt; default jsonp callback is 'callback'</span></span>
+<span class="pl-s1">    <span class="pl-c">// remove header field(s) from header-list ?</span></span>
+<span class="pl-s1">    <span class="pl-c">// Note: this method return '$this' for chaining purposes</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>remove(<span class="pl-s"><span class="pl-pds">'</span>field-name<span class="pl-pds">'</span></span>);</span>
 <span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// change it ?</span></span>
-<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>jsonp([], <span class="pl-s"><span class="pl-pds">'</span>myfunction<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1">    <span class="pl-c">// remove multiple fields ?</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>remove([<span class="pl-s"><span class="pl-pds">'</span>field-name<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>content-type<span class="pl-pds">'</span></span>]);</span>
 <span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// setcookie</span></span>
-<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>cookie(<span class="pl-s"><span class="pl-pds">'</span>name<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>value<span class="pl-pds">'</span></span>, [<span class="pl-c">/* options here */</span>]);</span>
-<span class="pl-s1">    <span class="pl-c">/*</span></span>
-<span class="pl-s1"><span class="pl-c">        cookie options</span></span>
-<span class="pl-s1"><span class="pl-c">        'domain'    =&gt;  empty by default</span></span>
-<span class="pl-s1"><span class="pl-c">        'path'      =&gt;  directory of the main index file</span></span>
-<span class="pl-s1"><span class="pl-c">        'expires'   =&gt;  zero by default</span></span>
-<span class="pl-s1"><span class="pl-c">        'secure'    =&gt;  horus detect it</span></span>
-<span class="pl-s1"><span class="pl-c">        'httpOnly'  =&gt;  true by default</span></span>
-<span class="pl-s1"><span class="pl-c">    */</span></span>
+<span class="pl-s1">    <span class="pl-c">// set the http status code ?</span></span>
+<span class="pl-s1">    <span class="pl-c">// this method is an alias for 'http_response_code()'</span></span>
+<span class="pl-s1">    <span class="pl-c">// Note: this method return '$this' for chaining purposes</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>status(<span class="pl-c1">404</span>);</span>
 <span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// cache web page for a $ttl</span></span>
-<span class="pl-s1">    <span class="pl-c">// cache for 10 seconds</span></span>
-<span class="pl-s1">    <span class="pl-c">// using last-modified</span></span>
-<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>cache(<span class="pl-c1">10</span>);</span>
+<span class="pl-s1">    <span class="pl-c">// write a message to the output buffer ?</span></span>
+<span class="pl-s1">    <span class="pl-c">// Note: this method return '$this' for chaining purposes</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>send(<span class="pl-s"><span class="pl-pds">'</span>this is a message<span class="pl-pds">'</span></span>);</span>
 <span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// cache using expires after 10 seconds from now</span></span>
-<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>expires(<span class="pl-c1">time</span>() <span class="pl-k">+</span> <span class="pl-c1">10</span>);</span>
-<span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// render file ?</span></span>
-<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>render(<span class="pl-s"><span class="pl-pds">'</span>filename.html<span class="pl-pds">'</span></span>);</span>
-<span class="pl-s1">    <span class="pl-c">// you can pass vars</span></span>
-<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>render(<span class="pl-s"><span class="pl-pds">'</span>filename.html<span class="pl-pds">'</span></span>, [<span class="pl-s"><span class="pl-pds">'</span>var<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>c<span class="pl-pds">'</span></span>]);</span>
-<span class="pl-s1">    <span class="pl-c">// you can use multiple files</span></span>
-<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>render([</span>
-<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>file1.html<span class="pl-pds">'</span></span>,</span>
-<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>file2.html<span class="pl-pds">'</span></span></span>
-<span class="pl-s1">    ], [</span>
-<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>var1<span class="pl-pds">'</span></span>  <span class="pl-k">=&gt;</span>  <span class="pl-s"><span class="pl-pds">'</span>val1<span class="pl-pds">'</span></span></span>
+<span class="pl-s1">    <span class="pl-c">// you are writing a RESTful api</span></span>
+<span class="pl-s1">    <span class="pl-c">// and want to send a json content</span></span>
+<span class="pl-s1">    <span class="pl-c">// with json headers just in one line ?</span></span>
+<span class="pl-s1">    <span class="pl-c">// Note: this method return '$this' for chaining purposes</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>json([</span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>state<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>ok<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>message<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>this is ok message<span class="pl-pds">'</span></span></span>
 <span class="pl-s1">    ]);</span>
 <span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// redirect ? "temporarily"</span></span>
-<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>redirect(<span class="pl-s"><span class="pl-pds">'</span>/target.php<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1">    <span class="pl-c">// Do you want to send a jsonp response and its headers ?</span></span>
+<span class="pl-s1">    <span class="pl-c">// i.e 'cb("some data")'</span></span>
+<span class="pl-s1">    <span class="pl-c">// Note: this method return '$this' for chaining purposes</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>jsonp(<span class="pl-s"><span class="pl-pds">'</span>some data<span class="pl-pds">'</span></span>); <span class="pl-c">// outputs&gt; cb('some data')</span></span>
 <span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// redirect ? "permanent"</span></span>
-<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>redirect(<span class="pl-s"><span class="pl-pds">"</span>/to.php<span class="pl-pds">"</span></span>, <span class="pl-c1">true</span>);</span>
+<span class="pl-s1">    <span class="pl-c">// Do you want to send a jsonp response with custom callback name ?</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>jsonp(<span class="pl-s"><span class="pl-pds">'</span>some data<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>mycb<span class="pl-pds">'</span></span>); <span class="pl-c">// outputs&gt; mycb('some data')</span></span>
 <span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// get a direct url for a local file ?</span></span>
-<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>urlFor(<span class="pl-s"><span class="pl-pds">"</span>/assets/style.css<span class="pl-pds">"</span></span>);</span>
-<span class="pl-s1">    <span class="pl-c">// by default it starts with "http",</span></span>
-<span class="pl-s1">    <span class="pl-c">// but you want to get a secure url "starts with https" ?</span></span>
-<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>urlFor(<span class="pl-s"><span class="pl-pds">"</span>/assets/style.css<span class="pl-pds">"</span></span>, <span class="pl-c1">true</span>);</span>
+<span class="pl-s1">    <span class="pl-c">// clean the output ?</span></span>
+<span class="pl-s1">    <span class="pl-c">// Note: this method return '$this' for chaining purposes</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>clear();</span>
 <span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// get a url for an internal route ?</span></span>
-<span class="pl-s1">    <span class="pl-c">// for "/user/1/settings"</span></span>
-<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>routeFor(<span class="pl-s"><span class="pl-pds">"</span>user/1/settings<span class="pl-pds">"</span></span>);</span>
-<span class="pl-s1">    <span class="pl-c">// it will return a clean and simple url</span></span>
-<span class="pl-s1">    <span class="pl-c">// but if your server does not support rewriting</span></span>
-<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>routeFor(<span class="pl-s"><span class="pl-pds">"</span>user/1/settings<span class="pl-pds">"</span></span>, <span class="pl-c1">false</span>);</span>
-<span class="pl-s1">    <span class="pl-c">// will use "index.php/" as a proxy</span></span>
-<span class="pl-s1">    <span class="pl-c">// do you want a secure clean url ?</span></span>
-<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>routeFor(<span class="pl-s"><span class="pl-pds">"</span>user/1/settings<span class="pl-pds">"</span></span>, <span class="pl-c1">true</span>, <span class="pl-c1">true</span>);</span>
+<span class="pl-s1">    <span class="pl-c">// set cookie ?</span></span>
+<span class="pl-s1">    <span class="pl-c">// Note: this method return '$this' for chaining purposes</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>cookie(<span class="pl-s"><span class="pl-pds">'</span>name<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>value<span class="pl-pds">'</span></span>);</span>
 <span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// clear the output</span></span>
-<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>clear();</span>
+<span class="pl-s1">    <span class="pl-c">// set a cookie with some options ?</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>cookie(<span class="pl-s"><span class="pl-pds">'</span>name<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>value<span class="pl-pds">'</span></span>, </span>
+<span class="pl-s1">    [</span>
+<span class="pl-s1">        <span class="pl-c">// cookie domain ?</span></span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>domain<span class="pl-pds">'</span></span>    <span class="pl-k">=&gt;</span>  <span class="pl-c1">null</span>,</span>
 <span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// now the time to end the response</span></span>
-<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>end();</span>
-<span class="pl-s1">    <span class="pl-c">// or end with some text</span></span>
-<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>end(<span class="pl-s"><span class="pl-pds">"</span>By<span class="pl-pds">"</span></span>);</span>
-<span class="pl-s1">    <span class="pl-c">// or end with some text and status code</span></span>
-<span class="pl-s1">    <span class="pl-smi">$res</span><span class="pl-k">-&gt;</span>end(<span class="pl-s"><span class="pl-pds">"</span>404 not found<span class="pl-pds">"</span></span>, <span class="pl-c1">404</span>);</span></pre></div>
+<span class="pl-s1">        <span class="pl-c">// cookie path ? </span></span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>path<span class="pl-pds">'</span></span>      <span class="pl-k">=&gt;</span>  <span class="pl-s"><span class="pl-pds">'</span>/<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">        <span class="pl-c">// when it will expires ?</span></span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>expires<span class="pl-pds">'</span></span>   <span class="pl-k">=&gt;</span>  <span class="pl-c1">0</span>,</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">        <span class="pl-c">// whether it will be sent over ssl or not</span></span>
+<span class="pl-s1">        <span class="pl-c">// this is automatically set with the value of</span></span>
+<span class="pl-s1">        <span class="pl-c">// $app-&gt;config-&gt;secure</span></span>
+<span class="pl-s1">        <span class="pl-c">// 'secure'    =&gt;  (bool) $this-&gt;config-&gt;secure,</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1">        <span class="pl-c">// whether to send it over httpOnly or not ?</span></span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>httpOnly<span class="pl-pds">'</span></span>  <span class="pl-k">=&gt;</span>  <span class="pl-c1">true</span></span>
+<span class="pl-s1">    ]);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// render a file, i.e: 'html' and "optionally" set some vars in its scope ?</span></span>
+<span class="pl-s1">    <span class="pl-c">// Note: this method return '$this' for chaining purposes</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>render(<span class="pl-s"><span class="pl-pds">'</span>path/to/file.html<span class="pl-pds">'</span></span>, [<span class="pl-s"><span class="pl-pds">'</span>var_1<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>value<span class="pl-pds">'</span></span>]);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// render multiple files ?</span></span>
+<span class="pl-s1">    <span class="pl-c">// Note: this method return '$this' for chaining purposes</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>render([<span class="pl-s"><span class="pl-pds">'</span>path/to/file-1.html<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>path/to/file-2.html<span class="pl-pds">'</span></span>]);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// redirect to another url with 302 code "temp redirect" ?</span></span>
+<span class="pl-s1">    <span class="pl-c">// Note: this method return '$this' for chaining purposes</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>redirect(<span class="pl-s"><span class="pl-pds">'</span>/new-page<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// redirect with 301 code "permanent redirect" ?</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>redirect(<span class="pl-s"><span class="pl-pds">'</span>/new-page<span class="pl-pds">'</span></span>, <span class="pl-c1">true</span>);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// end the response ?</span></span>
+<span class="pl-s1">    <span class="pl-c">// Note: this method return '$this' for chaining purposes</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>end();</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// end the response with some message ?</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>end(<span class="pl-s"><span class="pl-pds">'</span>some data<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// end the response with a message and status code with headers ?!</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>end(<span class="pl-s"><span class="pl-pds">'</span>data<span class="pl-pds">'</span></span>, <span class="pl-c1">200</span>, [<span class="pl-s"><span class="pl-pds">'</span>content-type<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>text/html<span class="pl-pds">'</span></span>]);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// register a function that will be triggered when its pattern matches</span></span>
+<span class="pl-s1">    <span class="pl-c">// the current path ?</span></span>
+<span class="pl-s1">    <span class="pl-c">// Note: this method return '$this' for chaining purposes</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>on(<span class="pl-s"><span class="pl-pds">'</span>/path-1<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(){</span>
+<span class="pl-s1">        <span class="pl-c">// $this ?!!!</span></span>
+<span class="pl-s1">        <span class="pl-c">// yes, any listener 'callback' can access</span></span>
+<span class="pl-s1">        <span class="pl-c">// the '$app' scope using '$this'</span></span>
+<span class="pl-s1">        <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>end(<span class="pl-s"><span class="pl-pds">'</span>we are in path-1<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1">    });</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// register a function that will be triggered when its pattern matches</span></span>
+<span class="pl-s1">    <span class="pl-c">// the current path and a certain request method ?</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>on(<span class="pl-s"><span class="pl-pds">'</span>GET /my-path<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(){</span>
+<span class="pl-s1">        <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>end(<span class="pl-s"><span class="pl-pds">'</span>we are in GET /my-path<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1">    });</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// register a function that will be triggered when its pattern matches</span></span>
+<span class="pl-s1">    <span class="pl-c">// the current path and a certain request methods ?</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>on(<span class="pl-s"><span class="pl-pds">'</span>GET|POST|PUT /my-path<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(){</span>
+<span class="pl-s1">        <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>end(<span class="pl-s"><span class="pl-pds">'</span>we are in GET, POST or PUT /my-path<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1">    });</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// named route ?</span></span>
+<span class="pl-s1">    <span class="pl-c">// :? --&gt; means '([^\/]+)'</span></span>
+<span class="pl-s1">    <span class="pl-c">// :* --&gt; means '?(.*)'</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>on(<span class="pl-s"><span class="pl-pds">'</span>/page/:?<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">$page</span>){</span>
+<span class="pl-s1">        <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>end(<span class="pl-s"><span class="pl-pds">'</span>we are in page --&gt; <span class="pl-pds">'</span></span> <span class="pl-k">.</span> <span class="pl-smi">$page</span>);</span>
+<span class="pl-s1">    })<span class="pl-k">-&gt;</span>on(<span class="pl-s"><span class="pl-pds">'</span>/posts/:?/([0-9]+)<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">$category</span>, <span class="pl-smi">$num</span>){</span>
+<span class="pl-s1">        <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>end(<span class="pl-s"><span class="pl-pds">'</span>first-param: <span class="pl-pds">'</span></span> <span class="pl-k">.</span> <span class="pl-smi">$category</span> <span class="pl-k">.</span> <span class="pl-s"><span class="pl-pds">'</span> and second is: <span class="pl-pds">'</span></span> <span class="pl-k">.</span> <span class="pl-smi">$num</span>);</span>
+<span class="pl-s1">    });</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// Do you want to get a url for a local file ?</span></span>
+<span class="pl-s1">    <span class="pl-c">// its schema will be 'http(s)' based on your configurations</span></span>
+<span class="pl-s1">    <span class="pl-c">// of '$app-&gt;config-&gt;secure'</span></span>
+<span class="pl-s1">    <span class="pl-smi">$jquery</span> <span class="pl-k">=</span> <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>url(<span class="pl-s"><span class="pl-pds">'</span>/assets/js/jquery.min.js<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// Do you want to get a url for  a local route ?</span></span>
+<span class="pl-s1">    <span class="pl-c">// its schema will be 'http(s)' based on your configurations</span></span>
+<span class="pl-s1">    <span class="pl-c">// of '$app-&gt;config-&gt;secure' and its base also </span></span>
+<span class="pl-s1">    <span class="pl-c">// '$app-&gt;config-&gt;base'</span></span>
+<span class="pl-s1">    <span class="pl-smi">$my_path</span> <span class="pl-k">=</span> <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>route(<span class="pl-s"><span class="pl-pds">'</span>/my-path<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// register a source directory for PSR-4 based packages ?</span></span>
+<span class="pl-s1">    <span class="pl-c">// Note: this method return '$this' for chaining purposes</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>autoload(<span class="pl-sr"><span class="pl-pds">'/</span>packages<span class="pl-pds">/'</span></span>);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// register multiple directories ?</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>autoload([<span class="pl-s"><span class="pl-pds">'</span>/packages<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>/components<span class="pl-pds">'</span></span>]);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// Do you want to access the _GET ?</span></span>
+<span class="pl-s1">    <span class="pl-c">// i.e: '?id=4&amp;user[firstName]=Mohammed&amp;user[lastName]=Al Ashaal'</span></span>
+<span class="pl-s1">    <span class="pl-smi">$id</span> <span class="pl-k">=</span> <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span><span class="pl-smi">query</span><span class="pl-k">-&gt;</span><span class="pl-smi">id</span>;</span>
+<span class="pl-s1">    <span class="pl-smi">$firstName</span> <span class="pl-k">=</span> <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span><span class="pl-smi">query</span><span class="pl-k">-&gt;</span><span class="pl-smi">user</span><span class="pl-k">-&gt;</span><span class="pl-smi">firstName</span>;</span>
+<span class="pl-s1">    <span class="pl-smi">$lastName</span> <span class="pl-k">=</span> <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span><span class="pl-smi">query</span><span class="pl-k">-&gt;</span><span class="pl-smi">user</span><span class="pl-k">-&gt;</span><span class="pl-smi">lastName</span>;</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// Do you want to access the request body of 'POST/PUT/...'</span></span>
+<span class="pl-s1">    <span class="pl-c">// like what we did with '$app-&gt;query' ?</span></span>
+<span class="pl-s1">    <span class="pl-c">// it automatically parses 'JSON/XML/urlencoded' data as an object</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span><span class="pl-smi">body</span><span class="pl-k">-&gt;</span>{<span class="pl-s"><span class="pl-pds">'</span>keyName<span class="pl-pds">'</span></span>};</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// access cookies like them too ?</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span><span class="pl-smi">cookies</span><span class="pl-k">-&gt;</span>{<span class="pl-s"><span class="pl-pds">'</span>keyName<span class="pl-pds">'</span></span>};</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// you can use '$app' itself as an object container</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span><span class="pl-smi">k1</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>v1<span class="pl-pds">'</span></span>;</span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span><span class="pl-smi">mycb</span> <span class="pl-k">=</span> <span class="pl-k">function</span>(){</span>
+<span class="pl-s1">        <span class="pl-c">// $this !!!! ;)</span></span>
+<span class="pl-s1">        <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>end(<span class="pl-smi">$this</span><span class="pl-k">-&gt;</span><span class="pl-smi">k1</span>);</span>
+<span class="pl-s1">    };</span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>mycb();</span></pre></div>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/alash3al/Horus">Horus</a> is maintained by <a href="https://github.com/alash3al">alash3al</a>.</span>
@@ -335,7 +293,16 @@ rapid apps developments .  </p>
 
     </section>
 
-  
+            <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-66350360-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
   </body>
 </html>
-
