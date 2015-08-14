@@ -1,287 +1,258 @@
-### #Horus 12
-An imporved layer for any php application
+# # Horus 13
+-------------
+A simple yet powerful micro-framework for php5 >= php5.4
 
-### #Overview
-In php world, there are many and many frameworks, but there are no simple and standalone
-layers that is just a wrapper for any web application, and this is Horus .  
-Horus is a very simple layer/foundation for any "any" web application, it will help you in 
-rapid apps developments .  
+# # Why a large framework ?
+> Why i need a large framework when i can use a `foundation` + `composer` ! .
+> Really we don't need a large framework, but we need a simple powerful modular `foundation` framework that helps me building small or large application and with the help of the `composer` ecosystem you can build a large framework .
+> We should know that a `framework` is not just a folder that contains some libraries but it is a better designed modular workflow that contains the application logic easily .
+
+
+# # Quick Demo
+----------------
 
 ```php
 <?php
 
-    require("Horus.php");
+	require('Horus.php');
 
-    (new \Horus\App)->on('/', function($request, $response){
-        $response->send("hello world");
-        $response->end();
-    })->on('GET|POST /test', function($request, $response){
-        $response->end("What is this ?");
-    });
-
-?>
-```
-
-### #Contents
-
-- **Download**
-- **Prorotype**     
-- **App**    
-- **Request**  
-- **Response** 
-
-### #Download
-
-> `composer require alash3al/horus`  
-
-> `git clone https://github.com/alash3al/Horus.git`  
-
-> `https://github.com/alash3al/Horus/archive/master.zip`  
-
-
-### #Prototype
-> just an improved `stdClass` that supports closure  
-
-```php
-    require "Horus.php";
-
-    $proto = new \Horus\Prototype;
-
-    $proto->key = "value";
-    $proto->func = function() use($proto) {
-        print $proto->key;
-        return $proto;
-    };
-```
-
-### #App
-> Our main class that handles request and response ..  
-
-```php
-
-    require "Horus.php";
-
-    // you can optionally create layers "middlewares"
-    // layers are just array of callbacks
-    // executed each request .
-    // e.g: you can create a layer that add
-    // some properties to the 'req' object.
-    $layers = [
-        function($req, $res, $app){},
-        function($req, $res, $app){},
-        // and so ...
-    ];
-
-    $app = new \Horus\App($layers);
-
-    // you register a callback for a uri
-    // when the user access it, it will be distpatched
-    $app->on('/index', function($req, $res){
-        $res->send("index");
-        // we don't need any other route
-        // so we will end the app
-        $res->end();
-    });
-
-    // for a certain method ?
-    $app->on('POST /test', function($req, $res){
-        $res->end("post request on '/test'");
-    });
-
-    // multiple methods?
-    $app->on('POST|GET /t', function($req, $res){
-        $res->end('will work for "POST /t" and "GET /t"');
-    });
-
-    // unknown/dynamic params ?
-    $app->on('/user/?/settings', function($req, $res, $id){
-        // yes, the dynamic args, will be passed with the "$req, $res"
-        $res->end("you want the settings of the user {$id}");
-    });
-
-    // more ?
-    $app->on('/user/?/set/?', function($req, $res, $id, $section){
-        $res->end("you want the settings of {$section} for the user {$id}");
-    });
-
-    // wildcards ?
-    $app->on('/test/*', function($req, $res, $path){
-        $res->end("you are in 'test/{$path}'");
-    });
-
-    // group of routes ?
-    $app->group("/group", function($req, $res, $app){
-        // group/page-1
-        $app->on('/page-1', function(){});
-        // you can create nested groups too .
-    });
-
-    // vhosts ?
-    $app->vhost("user-*.my.com", function($req, $res, $app, $uid){
-        // you can apply routes here too
-    });
-
-	// lets put this at the end of our routes
-	// so if "PHP" didn't find the right route
-	// it will display '404'
-	$app->on('/*', function($req, $res){
-		$res->end("404 not found");
+	(new Horus)->on('/', function(){
+		$this->end("Hello World");
+	})->on('/page/:?', function($page){
+		$this->end(sprintf('current param is %s', $page));
+	})->on('POST /api/user', function(){
+		$username = $this->body->username;
+		$token = $this->query->token;
+		// do some database operations
+	})->on(':*', function(){
+		$this->end('404, cannot find any matched route !');
 	});
-    
-``` 
-
-### #Request
-
-> Manage the input easily  
-
-```php
-    // instead of _GET
-    // a wrapper
-    // ?k=v
-    $req->query->k; //> "v";
-    // ?k[k1][k2]=v2
-    $req->k->k1->k2; //> "v2"
-
-    // for _POST, PUT, DELETE, or any request body
-    // POST -> x=v&b=c
-    $req->body->x; //> v;
-
-    // $_COOKIE ?
-    // $_COOKIE['key']
-    $req->cookies->key;
-
-    // get the current request method
-    $req->method;
-
-    // the hostname of the host headers
-    // for example.com:8080
-    // hostname is example.com
-    $req->hostname;
-
-    // the request path "/x/y/z/"
-    // it also the same as "PATH_INFO"
-    $req->path; //> x/y/z
-
-    // headers ?
-    $req->headers->host; //> returns the host headers
-    $req->headers->user_agent //> returns the user agent value
-    // and so ...
 ```
 
-### #Response
-
-> Useful methods for handling the output 
-
+# # Learn By Examples
+-------------
 ```php
-    // Response object
 
-    // set a http header [will replace any header with the same field]
-    // this is case in-sensitive
-    // it return $this, usefull for chaining
-    $res->set('content-type', 'text/html');
-    // multiple ?
-    $res->set([
-        'x-header-1'    =>  'value',
-        'x-header-2'    =>  'value2'
-    ]);
+	// load the Horus File
+	require('Horus.php');
 
-    // don't want to replace ?
-    // just use append
-    // also returns $this
-    $res->append('x-header3', 'value3');
-    $res->append([
-        /*
-            same as set
-            array of key value paris
-        */
-    ]);
+	// create a new instance of Horus with default configs
+	$app = new Horus;
 
-    // set the status code
-    $res->status(404)->set('x-code', '404 not found');
+	// or you can initialize it and set some options
+	$app = new Horus
+	([
+		// whether your site is using ssl or not ?
+		// true/false
+		'secure' => true,
 
-    // write to the client
-    $res->send('just a message');
-    // or json ?
-    // json will also send the content-type: application/json
-    $res->send([
-        'x' => 'y'
-    ]);
+		// There are some methods that will helps you
+		// generating some urls/routes
+		// any route is about <schema>://<host>/<base>/<path>
+		// and <base> is what this option affects
+		// i.e: you may set it to 'index.php' if your server
+		// doesn't support url-rewriting
+		'base' => '/',
+	
+		// Do you want to apply some filters to the whole application
+		// output ?, then you will use this options
+		// it will has the current output as the first argument
+		// and it must return any value to be the new output
+		// i.e: function($output){ return trim($output); }
+		'output.filter' => null
+	]);
 
-    // json too ..
-    // + content-type: application/json
-    $res->json([
-        // ...
-    ]);
+	// You can access "set/get" options of the configs directly
+	// after initialization using this object "$app->configs"
+	// i.e
+	$app->config->secure = false;
+	$app->config->base = '/';
+	$app->config->{'output.filter'} = function($output){
+			// remove duplicated white-spaces
+			return preg_replace('/\s+/', ' ', $output);
+	};
+	$app->config->myOwnConfig1 = 'value1';
 
-    // jsonp
-    // + content-type: application/json
-    $res->jsonp([
-        // ..
-    ]); //> default jsonp callback is 'callback'
+	// send a header ?
+	// Note: this will override any previously headers with the same fields
+	// Note: fields are case in-sensitive
+	// Note: this method return '$this' for chaining purposes
+	$app->set('content-type', 'text/html; charset=UTF-8');
 
-    // change it ?
-    $res->jsonp([], 'myfunction');
+	// set multiple headers at once ?
+	$app->set([
+		'content-type' => 'text/plain',
+		'x-powered-by' => 'Horus13, by Mohammed Al Ashaal'
+	]);
 
-    // setcookie
-    $res->cookie('name', 'value', [/* options here */]);
-    /*
-        cookie options
-        'domain'    =>  empty by default
-        'path'      =>  directory of the main index file
-        'expires'   =>  zero by default
-        'secure'    =>  horus detect it
-        'httpOnly'  =>  true by default
-    */
+	// but how about appending header fields
+	// i.e: sending a header field multiple times
+	// with no overriding ?
+	// Note: fields are case in-sensitive
+	// Note: this method return '$this' for chaining purposes
+	$app->append('field-name', 'value');
 
-    // cache web page for a $ttl
-    // cache for 10 seconds
-    // using last-modified
-    $res->cache(10);
+	// you can also do it multiple times at once
+	// like $app->set([...])
+	$app->append([
+		// ...
+	]);
 
-    // cache using expires after 10 seconds from now
-    $res->expires(time() + 10);
+	// remove header field(s) from header-list ?
+	// Note: this method return '$this' for chaining purposes
+	$app->remove('field-name');
 
-    // render file ?
-    $res->render('filename.html');
-    // you can pass vars
-    $res->render('filename.html', ['var' => 'c']);
-    // you can use multiple files
-    $res->render([
-        'file1.html',
-        'file2.html'
-    ], [
-        'var1'  =>  'val1'
-    ]);
+	// remove multiple fields ?
+	$app->remove(['field-name', 'content-type']);
+	
+	// set the http status code ?
+	// this method is an alias for 'http_response_code()'
+	// Note: this method return '$this' for chaining purposes
+	$app->status(404);
 
-    // redirect ? "temporarily"
-    $res->redirect('/target.php');
+	// write a message to the output buffer ?
+	// Note: this method return '$this' for chaining purposes
+	$app->send('this is a message');
 
-    // redirect ? "permanent"
-    $res->redirect("/to.php", true);
+	// you are writing a RESTful api
+	// and want to send a json content
+	// with json headers just in one line ?
+	// Note: this method return '$this' for chaining purposes
+	$app->json([
+		'state' => 'ok',
+		'message' => 'this is ok message'
+	]);
 
-    // get a direct url for a local file ?
-    $app->urlFor("/assets/style.css");
-    // by default it starts with "http",
-    // but you want to get a secure url "starts with https" ?
-    $app->urlFor("/assets/style.css", true);
+	// Do you want to send a jsonp response and its headers ?
+	// i.e 'cb("some data")'
+	// Note: this method return '$this' for chaining purposes
+	$app->jsonp('some data'); // outputs> cb('some data')
 
-    // get a url for an internal route ?
-    // for "/user/1/settings"
-    $app->routeFor("user/1/settings");
-    // it will return a clean and simple url
-    // but if your server does not support rewriting
-    $app->routeFor("user/1/settings", false);
-    // will use "index.php/" as a proxy
-    // do you want a secure clean url ?
-    $app->routeFor("user/1/settings", true, true);
+	// Do you want to send a jsonp response with custom callback name ?
+	$app->jsonp('some data', 'mycb'); // outputs> mycb('some data')
 
-    // clear the output
-    $res->clear();
+	// clean the output ?
+	// Note: this method return '$this' for chaining purposes
+	$app->clear();
 
-    // now the time to end the response
-    $res->end();
-    // or end with some text
-    $res->end("By");
-    // or end with some text and status code
-    $res->end("404 not found", 404);
+	// set cookie ?
+	// Note: this method return '$this' for chaining purposes
+	$app->cookie('name', 'value');
+
+	// set a cookie with some options ?
+	$app->cookie('name', 'value', 
+	[
+		// cookie domain ?
+		'domain'    =>  null,
+
+		// cookie path ? 
+		'path'      =>  '/',
+	
+		// when it will expires ?
+		'expires'   =>  0,
+	
+		// whether it will be sent over ssl or not
+		// this is automatically set with the value of
+		// $app->config->secure
+		// 'secure'    =>  (bool) $this->config->secure,
+	
+		// whether to send it over httpOnly or not ?
+		'httpOnly'  =>  true
+	]);
+
+	// render a file, i.e: 'html' and "optionally" set some vars in its scope ?
+	// Note: this method return '$this' for chaining purposes
+	$app->render('path/to/file.html', ['var_1' => 'value']);
+
+	// render multiple files ?
+	// Note: this method return '$this' for chaining purposes
+	$app->render(['path/to/file-1.html', 'path/to/file-2.html']);
+
+	// redirect to another url with 302 code "temp redirect" ?
+	// Note: this method return '$this' for chaining purposes
+	$app->redirect('/new-page');
+
+	// redirect with 301 code "permanent redirect" ?
+	$app->redirect('/new-page', true);
+
+	// end the response ?
+	// Note: this method return '$this' for chaining purposes
+	$app->end();
+
+	// end the response with some message ?
+	$app->end('some data');
+
+	// end the response with a message and status code with headers ?!
+	$app->end('data', 200, ['content-type' => 'text/html']);
+
+	// register a function that will be triggered when its pattern matches
+	// the current path ?
+	// Note: this method return '$this' for chaining purposes
+	$app->on('/path-1', function(){
+		// $this ?!!!
+		// yes, any listener 'callback' can access
+		// the '$app' scope using '$this'
+		$this->end('we are in path-1');
+	});
+
+	// register a function that will be triggered when its pattern matches
+	// the current path and a certain request method ?
+	$app->on('GET /my-path', function(){
+		$this->end('we are in GET /my-path');
+	});
+
+	// register a function that will be triggered when its pattern matches
+	// the current path and a certain request methods ?
+	$app->on('GET|POST|PUT /my-path', function(){
+		$this->end('we are in GET, POST or PUT /my-path');
+	});
+
+	// named route ?
+	// :? --> means '([^\/]+)'
+	// :* --> means '?(.*)'
+	$app->on('/page/:?', function($page){
+		$this->end('we are in page --> ' . $page);
+	})->on('/posts/:?/([0-9]+)', function($category, $num){
+		$this->end('first-param: ' . $category . ' and second is: ' . $num);
+	});
+
+	// Do you want to get a url for a local file ?
+	// its schema will be 'http(s)' based on your configurations
+	// of '$app->config->secure'
+	$jquery = $app->url('/assets/js/jquery.min.js');
+
+	// Do you want to get a url for  a local route ?
+	// its schema will be 'http(s)' based on your configurations
+	// of '$app->config->secure' and its base also 
+	// '$app->config->base'
+	$my_path = $app->route('/my-path');
+
+	// register a source directory for PSR-4 based packages ?
+	// Note: this method return '$this' for chaining purposes
+	$app->autoload('/packages/');
+
+	// register multiple directories ?
+	$app->autoload(['/packages', '/components']);
+
+	// Do you want to access the _GET ?
+	// i.e: '?id=4&user[firstName]=Mohammed&user[lastName]=Al Ashaal'
+	$id = $app->query->id;
+	$firstName = $app->query->user->firstName;
+	$lastName = $app->query->user->lastName;
+
+	// Do you want to access the request body of 'POST/PUT/...'
+	// like what we did with '$app->query' ?
+	// it automatically parses 'JSON/XML/urlencoded' data as an object
+	$app->body->{'keyName'};
+
+	// access cookies like them too ?
+	$app->cookies->{'keyName'};
+ 
+    // you can use '$app' itself as an object container
+    $app->k1 = 'v1';
+    $app->mycb = function(){
+        // $this !!!! ;)
+        $this->end($this->k1);
+    };
+    $app->mycb();
 ```
