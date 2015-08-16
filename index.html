@@ -1,25 +1,34 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html>
   <head>
-    <meta charset="UTF-8">
-    <title>Horus by alash3al</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
-  </head>
-  <body>
-    <section class="page-header">
-      <h1 class="project-name">Horus</h1>
-      <h2 class="project-tagline">A Micro PHP 5 Framework Perfect For Getting Programmers Start</h2>
-      <a href="https://github.com/alash3al/Horus" class="btn">View on GitHub</a>
-      <a href="https://github.com/alash3al/Horus/zipball/master" class="btn">Download .zip</a>
-      <a href="https://github.com/alash3al/Horus/tarball/master" class="btn">Download .tar.gz</a>
-    </section>
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
 
-    <section class="main-content">
-      <h1>
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Horus by alash3al</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Horus</h1>
+        <h2>A Micro PHP 5 Framework Perfect For Getting Programmers Start</h2>
+        <a href="https://github.com/alash3al/Horus" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
 <a id="-horus-13--" class="anchor" href="#-horus-13--" aria-hidden="true"><span class="octicon octicon-link"></span></a># Horus 13 <a href="https://scrutinizer-ci.com/g/alash3al/Horus/build-status/master"><img src="https://scrutinizer-ci.com/g/alash3al/Horus/badges/build.png?b=master" alt="Build Status"></a> <a href="https://scrutinizer-ci.com/g/alash3al/Horus/?branch=master"><img src="https://scrutinizer-ci.com/g/alash3al/Horus/badges/quality-score.png?b=master" alt="Scrutinizer Code Quality"></a>
 </h1>
 
@@ -49,7 +58,7 @@ We should know that a <code>framework</code> is not just a folder that contains 
 <span class="pl-s1">        <span class="pl-smi">$username</span> <span class="pl-k">=</span> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span><span class="pl-smi">body</span><span class="pl-k">-&gt;</span><span class="pl-smi">username</span>;</span>
 <span class="pl-s1">        <span class="pl-smi">$token</span> <span class="pl-k">=</span> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span><span class="pl-smi">query</span><span class="pl-k">-&gt;</span><span class="pl-smi">token</span>;</span>
 <span class="pl-s1">        <span class="pl-c">// do some database operations</span></span>
-<span class="pl-s1">    })<span class="pl-k">-&gt;</span>on(<span class="pl-s"><span class="pl-pds">'</span>:*<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(){</span>
+<span class="pl-s1">    })<span class="pl-k">-&gt;</span>on(<span class="pl-s"><span class="pl-pds">'</span>/:*<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(){</span>
 <span class="pl-s1">        <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>end(<span class="pl-s"><span class="pl-pds">'</span>404, cannot find any matched route !<span class="pl-pds">'</span></span>);</span>
 <span class="pl-s1">    });</span></pre></div>
 
@@ -232,8 +241,8 @@ We should know that a <code>framework</code> is not just a folder that contains 
 <span class="pl-s1">    });</span>
 <span class="pl-s1"></span>
 <span class="pl-s1">    <span class="pl-c">// named route ?</span></span>
-<span class="pl-s1">    <span class="pl-c">// :? --&gt; means '([^\/]+)'</span></span>
-<span class="pl-s1">    <span class="pl-c">// :* --&gt; means '?(.*)'</span></span>
+<span class="pl-s1">    <span class="pl-c">// /:? --&gt; means '([^\/]+)'</span></span>
+<span class="pl-s1">    <span class="pl-c">// /:* --&gt; means '?(.*)'</span></span>
 <span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>on(<span class="pl-s"><span class="pl-pds">'</span>/page/:?<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">$page</span>){</span>
 <span class="pl-s1">        <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>end(<span class="pl-s"><span class="pl-pds">'</span>we are in page --&gt; <span class="pl-pds">'</span></span> <span class="pl-k">.</span> <span class="pl-smi">$page</span>);</span>
 <span class="pl-s1">    })<span class="pl-k">-&gt;</span>on(<span class="pl-s"><span class="pl-pds">'</span>/posts/:?/([0-9]+)<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">$category</span>, <span class="pl-smi">$num</span>){</span>
@@ -279,14 +288,24 @@ We should know that a <code>framework</code> is not just a folder that contains 
 <span class="pl-s1">        <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>end(<span class="pl-smi">$this</span><span class="pl-k">-&gt;</span><span class="pl-smi">k1</span>);</span>
 <span class="pl-s1">    };</span>
 <span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>mycb();</span></pre></div>
+        </section>
 
-      <footer class="site-footer">
-        <span class="site-footer-owner"><a href="https://github.com/alash3al/Horus">Horus</a> is maintained by <a href="https://github.com/alash3al">alash3al</a>.</span>
+        <aside id="sidebar">
+          <a href="https://github.com/alash3al/Horus/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/alash3al/Horus/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
 
-        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
-      </footer>
+          <p class="repo-owner"><a href="https://github.com/alash3al/Horus"></a> is maintained by <a href="https://github.com/alash3al">alash3al</a>.</p>
 
-    </section>
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
 
             <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
