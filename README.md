@@ -24,7 +24,7 @@ A simple yet powerful micro-framework for php5 >= php5.4
 		$username = $this->body->username;
 		$token = $this->query->token;
 		// do some database operations
-	})->on(':*', function(){
+	})->on('/:*', function(){
 		$this->end('404, cannot find any matched route !');
 	});
 ```
@@ -208,8 +208,8 @@ A simple yet powerful micro-framework for php5 >= php5.4
 	});
 
 	// named route ?
-	// :? --> means '([^\/]+)'
-	// :* --> means '?(.*)'
+	// /:? --> means '([^\/]+)'
+	// /:* --> means '?(.*)'
 	$app->on('/page/:?', function($page){
 		$this->end('we are in page --> ' . $page);
 	})->on('/posts/:?/([0-9]+)', function($category, $num){
