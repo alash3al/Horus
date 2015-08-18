@@ -249,16 +249,32 @@ We should know that a <code>framework</code> is not just a folder that contains 
 <span class="pl-s1">        <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>end(<span class="pl-s"><span class="pl-pds">'</span>first-param: <span class="pl-pds">'</span></span> <span class="pl-k">.</span> <span class="pl-smi">$category</span> <span class="pl-k">.</span> <span class="pl-s"><span class="pl-pds">'</span> and second is: <span class="pl-pds">'</span></span> <span class="pl-k">.</span> <span class="pl-smi">$num</span>);</span>
 <span class="pl-s1">    });</span>
 <span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// vhost ?</span></span>
+<span class="pl-s1">    <span class="pl-c">// NOTE: if you want to use vhost, then put it before any basic routers</span></span>
+<span class="pl-s1">    <span class="pl-c">// because Horus engine is using the frist matched router ignoring its type</span></span>
+<span class="pl-s1">    <span class="pl-c">// [basic, vhost]</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>on(<span class="pl-s"><span class="pl-pds">'</span>([^\.]).locahost.com<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">$sub</span>){</span>
+<span class="pl-s1">        <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>on(<span class="pl-s"><span class="pl-pds">'</span>/<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(){</span>
+<span class="pl-s1">            <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>end(<span class="pl-smi">$sub</span> <span class="pl-k">.</span> <span class="pl-s"><span class="pl-pds">'</span>.localhost.com<span class="pl-pds">'</span></span> <span class="pl-k">.</span> <span class="pl-s"><span class="pl-pds">'</span> -&gt; index<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1">        });</span>
+<span class="pl-s1">    });</span>
+<span class="pl-s1"></span>
 <span class="pl-s1">    <span class="pl-c">// Do you want to get a url for a local file ?</span></span>
 <span class="pl-s1">    <span class="pl-c">// its schema will be 'http(s)' based on your configurations</span></span>
 <span class="pl-s1">    <span class="pl-c">// of '$app-&gt;config-&gt;secure'</span></span>
 <span class="pl-s1">    <span class="pl-smi">$jquery</span> <span class="pl-k">=</span> <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>url(<span class="pl-s"><span class="pl-pds">'</span>/assets/js/jquery.min.js<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// a change the -&gt;url() host ?</span></span>
+<span class="pl-s1">    <span class="pl-smi">$jQuery</span> <span class="pl-k">=</span> <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>url(<span class="pl-s"><span class="pl-pds">'</span>/assets/js/jQuery.js<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>cdn.myownhost.com<span class="pl-pds">'</span></span>);</span>
 <span class="pl-s1"></span>
 <span class="pl-s1">    <span class="pl-c">// Do you want to get a url for  a local route ?</span></span>
 <span class="pl-s1">    <span class="pl-c">// its schema will be 'http(s)' based on your configurations</span></span>
 <span class="pl-s1">    <span class="pl-c">// of '$app-&gt;config-&gt;secure' and its base also </span></span>
 <span class="pl-s1">    <span class="pl-c">// '$app-&gt;config-&gt;base'</span></span>
 <span class="pl-s1">    <span class="pl-smi">$my_path</span> <span class="pl-k">=</span> <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>route(<span class="pl-s"><span class="pl-pds">'</span>/my-path<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// a change the -&gt;route() host ?</span></span>
+<span class="pl-s1">    <span class="pl-smi">$jQuery</span> <span class="pl-k">=</span> <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>url(<span class="pl-s"><span class="pl-pds">'</span>/my-path<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>sub.myownhost.com<span class="pl-pds">'</span></span>);</span>
 <span class="pl-s1"></span>
 <span class="pl-s1">    <span class="pl-c">// register a source directory for PSR-4 based packages ?</span></span>
 <span class="pl-s1">    <span class="pl-c">// Note: this method return '$this' for chaining purposes</span></span>
