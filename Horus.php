@@ -75,6 +75,7 @@ class Horus extends stdClass
 
             else {
                 parse_str(file_get_contents('php://input'), $return);
+                $return = json_decode(json_encode($return));
             }
 
             return $return;
@@ -353,13 +354,38 @@ class Horus extends stdClass
     }
 
     /**
+     * Listen on hostname and handle custome virtual-hosts
+     * 
+     * @param   string      $pattern
+     * @param   Closure     $listener
+     * @return  $this
+     */
+    public function vhost($pattern, Closure $listener)
+    {
+        $listener = $listener->bindTo($this);
+        $host = (empty($_SERVER['SERVER_NAME']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME']);
+
+        if ( preg_match("/^{$pattern}$/", $host, $m) ) {
+            array_shift($m);
+            call_user_func_array($listener, $m);            
+         }
+
+        return $this;
+    }
+
+    /**
      * Return an url for a local path
      * 
      * @param   string  $path
+     * @param   string  $host
      * @return  string
      */
-    public function url($path = '')
+    public function url($path = '', $host = null)
     {
+        if ( empty($host) ) {
+            $host = (empty($_SERVER['SERVER_NAME']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME']);
+        }        
+
         return sprintf
         (
             // the required template
@@ -368,8 +394,8 @@ class Horus extends stdClass
             // schema 'http/https'
             ($this->config->secure ? 'https' : 'http'),
 
-            // schema 'http/https'
-            (empty($_SERVER['SERVER_NAME']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME']),
+            // host
+            $host,
 
             // the required path
             ltrim($path, '/')
@@ -380,10 +406,15 @@ class Horus extends stdClass
      * Return an url for a local path
      * 
      * @param   string  $path
+     * @param   string  $host
      * @return  string
      */
-    public function route($path = '')
+    public function route($path = '', $host = null)
     {
+        if ( empty($host) ) {
+            $host = (empty($_SERVER['SERVER_NAME']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME']);
+        }
+
         return sprintf
         ( 
             // the required template
@@ -392,8 +423,8 @@ class Horus extends stdClass
             // schema 'http/https'
             ($this->config->secure ? 'https' : 'http'),
 
-            // schema 'http/https'
-            (empty($_SERVER['SERVER_NAME']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME']),
+            // host
+            $host,
 
             // the base
             preg_replace('/\/+/', '/', ('/' . $this->config->base . '/')),
