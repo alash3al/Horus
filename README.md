@@ -216,16 +216,32 @@ A simple yet powerful micro-framework for php5 >= php5.4
 		$this->end('first-param: ' . $category . ' and second is: ' . $num);
 	});
 
+    // vhost ?
+    // NOTE: if you want to use vhost, then put it before any basic routers
+    // because Horus engine is using the frist matched router ignoring its type
+    // [basic, vhost]
+    $app->on('([^\.]).locahost.com', function($sub){
+        $this->on('/', function(){
+            $this->end($sub . '.localhost.com' . ' -> index');
+        });
+    });
+
 	// Do you want to get a url for a local file ?
 	// its schema will be 'http(s)' based on your configurations
 	// of '$app->config->secure'
 	$jquery = $app->url('/assets/js/jquery.min.js');
+
+    // a change the ->url() host ?
+    $jQuery = $app->url('/assets/js/jQuery.js', 'cdn.myownhost.com');
 
 	// Do you want to get a url for  a local route ?
 	// its schema will be 'http(s)' based on your configurations
 	// of '$app->config->secure' and its base also 
 	// '$app->config->base'
 	$my_path = $app->route('/my-path');
+
+    // a change the ->route() host ?
+    $jQuery = $app->url('/my-path', 'sub.myownhost.com');
 
 	// register a source directory for PSR-4 based packages ?
 	// Note: this method return '$this' for chaining purposes
