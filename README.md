@@ -216,6 +216,15 @@ A simple yet powerful micro-framework for php5 >= php5.4
 		$this->end('first-param: ' . $category . ' and second is: ' . $num);
 	});
 
+    // hmmmmmmmmmm, how about rewriting "aliasing" ?!! o.O
+    // rewrite from '/api/v1' to '/api/v2'
+    // NOTE: any rewrite operation must be before any routing operation
+    $app->rewrite('/api/v1', '/api/v2');
+
+    // rewrite with "regex" ?
+    // "will rewrite from /api/v1/<anything>" to "/api/v2/<anything>"
+    $app->rewrite('/api/v1/?(.+)', '/api/v2/$1'); // !!!!!! ;)
+
     // vhost ?
     // NOTE: if you want to use vhost, then put it before any basic routers
     // because Horus engine is using the frist matched router ignoring its type
@@ -263,6 +272,9 @@ A simple yet powerful micro-framework for php5 >= php5.4
 
 	// access cookies like them too ?
 	$app->cookies->{'keyName'};
+ 
+    // access "POST/GET" (body/query) vars !!
+    $app->request->{'keyName'};
  
     // you can use '$app' itself as an object container
     $app->k1 = 'v1';
