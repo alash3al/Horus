@@ -81,6 +81,9 @@ class Horus extends stdClass
             return $return;
         });
 
+        // request vars
+        $this->request = json_decode(json_encode(array_merge((array) $this->query, (array) $this->body)));
+
         // fix the virtual path
         $_SERVER['PATH_INFO'] = call_user_func(function($uri)
         {
@@ -354,6 +357,24 @@ class Horus extends stdClass
     }
 
     /**
+     * Rewrite from `old` to `new`
+     * 
+     * @param   string  $old
+     * @param   string  $new
+     * @return  $this
+     */
+    public function rewrite($old, $new)
+    {
+        $old = "/^".(addcslashes(preg_replace('/\/+/', '/', '/' . ($old) . '/'), '/'))."$/";
+
+        if ( preg_match($old, $_SERVER['PATH_INFO']) ) {
+            $_SERVER['PATH_INFO'] = preg_replace('/\/+/', '/', '/' . (preg_replace($old, $new, $_SERVER['PATH_INFO'])) . '/');
+        }
+
+        return $this;
+    }
+
+    /**
      * Listen on hostname and handle custome virtual-hosts
      * 
      * @param   string      $pattern
@@ -386,10 +407,10 @@ class Horus extends stdClass
             $host = (empty($_SERVER['SERVER_NAME']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME']);
         }        
 
-        return sprintf
+        return  sprintf
         (
             // the required template
-            "%s://%s/%s",
+            "%s://%s%s",
 
             // schema 'http/https'
             ($this->config->secure ? 'https' : 'http'),
@@ -397,8 +418,8 @@ class Horus extends stdClass
             // host
             $host,
 
-            // the required path
-            ltrim($path, '/')
+            // the path
+            preg_replace('/\/+/', '/', '/' . trim(dirname($_SERVER['SCRIPT_NAME']), '/') . '/' . $path)
         );
     }
 
@@ -415,22 +436,24 @@ class Horus extends stdClass
             $host = (empty($_SERVER['SERVER_NAME']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME']);
         }
 
-        return sprintf
-        ( 
-            // the required template
-            "%s://%s%s%s",
-
-            // schema 'http/https'
-            ($this->config->secure ? 'https' : 'http'),
-
-            // host
-            $host,
-
-            // the base
-            preg_replace('/\/+/', '/', ('/' . $this->config->base . '/')),
-
-            // the required path
-            ltrim($path, '/')
+        return preg_replace
+        (
+            '/\/+$/',
+            '/',
+            sprintf
+            ( 
+                // the required template
+                "%s://%s%s",
+    
+                // schema 'http/https'
+                ($this->config->secure ? 'https' : 'http'),
+    
+                // host
+                $host,
+    
+                // path
+                preg_replace('/\/+/', '/', '/' . ( dirname($_SERVER['SCRIPT_NAME']) . '/' . $this->config->base ) . '/' . $path)
+            )
         );
     }
 
