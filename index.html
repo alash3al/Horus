@@ -249,6 +249,15 @@ We should know that a <code>framework</code> is not just a folder that contains 
 <span class="pl-s1">        <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>end(<span class="pl-s"><span class="pl-pds">'</span>first-param: <span class="pl-pds">'</span></span> <span class="pl-k">.</span> <span class="pl-smi">$category</span> <span class="pl-k">.</span> <span class="pl-s"><span class="pl-pds">'</span> and second is: <span class="pl-pds">'</span></span> <span class="pl-k">.</span> <span class="pl-smi">$num</span>);</span>
 <span class="pl-s1">    });</span>
 <span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// hmmmmmmmmmm, how about rewriting "aliasing" ?!! o.O</span></span>
+<span class="pl-s1">    <span class="pl-c">// rewrite from '/api/v1' to '/api/v2'</span></span>
+<span class="pl-s1">    <span class="pl-c">// NOTE: any rewrite operation must be before any routing operation</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>rewrite(<span class="pl-s"><span class="pl-pds">'</span>/api/v1<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>/api/v2<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// rewrite with "regex" ?</span></span>
+<span class="pl-s1">    <span class="pl-c">// "will rewrite from /api/v1/&lt;anything&gt;" to "/api/v2/&lt;anything&gt;"</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>rewrite(<span class="pl-s"><span class="pl-pds">'</span>/api/v1/?(.+)<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>/api/v2/$1<span class="pl-pds">'</span></span>); <span class="pl-c">// !!!!!! ;)</span></span>
+<span class="pl-s1"></span>
 <span class="pl-s1">    <span class="pl-c">// vhost ?</span></span>
 <span class="pl-s1">    <span class="pl-c">// NOTE: if you want to use vhost, then put it before any basic routers</span></span>
 <span class="pl-s1">    <span class="pl-c">// because Horus engine is using the frist matched router ignoring its type</span></span>
@@ -296,6 +305,9 @@ We should know that a <code>framework</code> is not just a folder that contains 
 <span class="pl-s1"></span>
 <span class="pl-s1">    <span class="pl-c">// access cookies like them too ?</span></span>
 <span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span><span class="pl-smi">cookies</span><span class="pl-k">-&gt;</span>{<span class="pl-s"><span class="pl-pds">'</span>keyName<span class="pl-pds">'</span></span>};</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// access "POST/GET" (body/query) vars !!</span></span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span><span class="pl-smi">request</span><span class="pl-k">-&gt;</span>{<span class="pl-s"><span class="pl-pds">'</span>keyName<span class="pl-pds">'</span></span>};</span>
 <span class="pl-s1"></span>
 <span class="pl-s1">    <span class="pl-c">// you can use '$app' itself as an object container</span></span>
 <span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span><span class="pl-smi">k1</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>v1<span class="pl-pds">'</span></span>;</span>
