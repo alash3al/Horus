@@ -48,6 +48,7 @@ class Horus extends stdClass
             [
                 'secure' => false,
                 'base' => '/',
+                'path_info.strip' => $_SERVER['SCRIPT_NAME'],
                 'output.handler' => null
             ],
 
@@ -65,7 +66,7 @@ class Horus extends stdClass
         {
             $return = null;
 
-            if ( is_array($a = json_decode(file_get_contents('php://input'), true)) ) {
+            if ( ! is_null($a = json_decode(file_get_contents('php://input'))) ) {
                 $return = &$a;
             }
 
@@ -84,11 +85,14 @@ class Horus extends stdClass
         // request vars
         $this->request = json_decode(json_encode(array_merge((array) $this->query, (array) $this->body)));
 
+        // strip from path_info
+        $strip_path_info = $this->config->{'path_info.strip'};
+
         // fix the virtual path
-        $_SERVER['PATH_INFO'] = call_user_func(function($uri)
+        $_SERVER['PATH_INFO'] = call_user_func(function($uri) use($strip_path_info)
         {
             $path = preg_replace('/\/+/', '/', ('/' . explode('?', $uri, 2)[0] . '/'));
-            $script_name = preg_replace('/\/+/', '/', ('/' . ltrim($_SERVER['SCRIPT_NAME'], '/')));
+            $script_name = preg_replace('/\/+/', '/', ('/' . ltrim($strip_path_info, '/')));
             $return = $path;
 
             if ( stripos($path, $script_name) === 0 )
