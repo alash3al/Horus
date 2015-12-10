@@ -29,8 +29,7 @@
       <div class="inner clearfix">
         <section id="main-content">
           <h1>
-<a id="-horus-13--" class="anchor" href="#-horus-13--" aria-hidden="true"><span class="octicon octicon-link"></span></a># Horus 13 <a href="https://scrutinizer-ci.com/g/alash3al/Horus/build-status/master"><img src="https://scrutinizer-ci.com/g/alash3al/Horus/badges/build.png?b=master" alt="Build Status"></a> <a href="https://scrutinizer-ci.com/g/alash3al/Horus/?branch=master"><img src="https://scrutinizer-ci.com/g/alash3al/Horus/badges/quality-score.png?b=master" alt="Scrutinizer Code Quality"></a>
-</h1>
+<a id="-horus-13" class="anchor" href="#-horus-13" aria-hidden="true"><span class="octicon octicon-link"></span></a># Horus 13</h1>
 
 <p>A simple yet powerful micro-framework for php5 &gt;= php5.4</p>
 
@@ -46,7 +45,7 @@ We should know that a <code>framework</code> is not just a folder that contains 
 <h1>
 <a id="-quick-demo" class="anchor" href="#-quick-demo" aria-hidden="true"><span class="octicon octicon-link"></span></a># Quick Demo</h1>
 
-<div class="highlight highlight-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
+<div class="highlight highlight-text-html-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
 <span class="pl-s1"></span>
 <span class="pl-s1">    <span class="pl-k">require</span>(<span class="pl-s"><span class="pl-pds">'</span>Horus.php<span class="pl-pds">'</span></span>);</span>
 <span class="pl-s1"></span>
@@ -65,7 +64,7 @@ We should know that a <code>framework</code> is not just a folder that contains 
 <h1>
 <a id="-learn-by-examples" class="anchor" href="#-learn-by-examples" aria-hidden="true"><span class="octicon octicon-link"></span></a># Learn By Examples</h1>
 
-<div class="highlight highlight-php"><pre><span class="pl-s1"></span>
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"></span>
 <span class="pl-s1">    <span class="pl-c">// load the Horus File</span></span>
 <span class="pl-s1">    <span class="pl-k">require</span>(<span class="pl-s"><span class="pl-pds">'</span>Horus.php<span class="pl-pds">'</span></span>);</span>
 <span class="pl-s1"></span>
@@ -92,7 +91,18 @@ We should know that a <code>framework</code> is not just a folder that contains 
 <span class="pl-s1">        <span class="pl-c">// it will has the current output as the first argument</span></span>
 <span class="pl-s1">        <span class="pl-c">// and it must return any value to be the new output</span></span>
 <span class="pl-s1">        <span class="pl-c">// i.e: function($output){ return trim($output); }</span></span>
-<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>output.filter<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">null</span></span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>output.filter<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">null</span>,</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">        <span class="pl-c">// sometimes you put Horus in a sub/nested-sub directories</span></span>
+<span class="pl-s1">        <span class="pl-c">// and you rewrite from a virtual-url to the real path of horus index.php</span></span>
+<span class="pl-s1">        <span class="pl-c">// so sometimes the SCRIPT_NAME is invalid so the PATH_INFO becomes invalid too !</span></span>
+<span class="pl-s1">        <span class="pl-c">// so we introduce our new magic-config for horus</span></span>
+<span class="pl-s1">        <span class="pl-c">// you will set it manually to your needs</span></span>
+<span class="pl-s1">        <span class="pl-c">// for example, rewrite from "/myapi/" to "api/index.php"</span></span>
+<span class="pl-s1">        <span class="pl-c">// and our main dir that will contains i.e ".htaccess" is in "docroot"</span></span>
+<span class="pl-s1">        <span class="pl-c">// so we must strip "docroot/myapi/index.php" from urls</span></span>
+<span class="pl-s1">        <span class="pl-c">// NOTE: "the default value for this is ($_SERVER['SCRIPT_NAME'])"</span></span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>path_info.strip<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">"</span>docroot/myapi/index.php<span class="pl-pds">"</span></span>,</span>
 <span class="pl-s1">    ]);</span>
 <span class="pl-s1"></span>
 <span class="pl-s1">    <span class="pl-c">// You can access "set/get" options of the configs directly</span></span>
