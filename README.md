@@ -59,7 +59,18 @@ A simple yet powerful micro-framework for php5 >= php5.4
 		// it will has the current output as the first argument
 		// and it must return any value to be the new output
 		// i.e: function($output){ return trim($output); }
-		'output.filter' => null
+		'output.filter' => null,
+
+		// sometimes you put Horus in a sub/nested-sub directories
+		// and you rewrite from a virtual-url to the real path of horus index.php
+		// so sometimes the SCRIPT_NAME is invalid so the PATH_INFO becomes invalid too !
+		// so we introduce our new magic-config for horus
+		// you will set it manually to your needs
+		// for example, rewrite from "/myapi/" to "api/index.php"
+		// and our main dir that will contains i.e ".htaccess" is in "docroot"
+		// so we must strip "docroot/myapi/index.php" from urls
+		// NOTE: "the default value for this is ($_SERVER['SCRIPT_NAME'])"
+		'path_info.strip' => "docroot/myapi/index.php",
 	]);
 
 	// You can access "set/get" options of the configs directly
