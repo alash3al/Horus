@@ -20,7 +20,7 @@
     <header>
       <div class="inner">
         <h1>Horus</h1>
-        <h2>A Micro PHP 5 Framework Perfect For Getting Programmers Start</h2>
+        <h2>A simple yet powerful micro-framework for php5 &gt;= php5.4</h2>
         <a href="https://github.com/alash3al/Horus" class="button"><small>View project on</small> GitHub</a>
       </div>
     </header>
@@ -29,11 +29,6 @@
       <div class="inner clearfix">
         <section id="main-content">
           <h1>
-<a id="-horus-13" class="anchor" href="#-horus-13" aria-hidden="true"><span class="octicon octicon-link"></span></a># Horus 13</h1>
-
-<p>A simple yet powerful micro-framework for php5 &gt;= php5.4</p>
-
-<h1>
 <a id="-why-a-large-framework-" class="anchor" href="#-why-a-large-framework-" aria-hidden="true"><span class="octicon octicon-link"></span></a># Why a large framework ?</h1>
 
 <blockquote>
@@ -269,10 +264,10 @@ We should know that a <code>framework</code> is not just a folder that contains 
 <span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>rewrite(<span class="pl-s"><span class="pl-pds">'</span>/api/v1/?(.+)<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>/api/v2/$1<span class="pl-pds">'</span></span>); <span class="pl-c">// !!!!!! ;)</span></span>
 <span class="pl-s1"></span>
 <span class="pl-s1">    <span class="pl-c">// vhost ?</span></span>
-<span class="pl-s1">    <span class="pl-c">// NOTE: if you want to use vhost, then put it before any basic routers</span></span>
-<span class="pl-s1">    <span class="pl-c">// because Horus engine is using the frist matched router ignoring its type</span></span>
+<span class="pl-s1">    <span class="pl-c">// NOTE: if you want to use vhost, then put it before any basic routes</span></span>
+<span class="pl-s1">    <span class="pl-c">// because Horus engine is using the frist matched route .</span></span>
 <span class="pl-s1">    <span class="pl-c">// [basic, vhost]</span></span>
-<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>on(<span class="pl-s"><span class="pl-pds">'</span>([^\.]).locahost.com<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">$sub</span>){</span>
+<span class="pl-s1">    <span class="pl-smi">$app</span><span class="pl-k">-&gt;</span>vhost(<span class="pl-s"><span class="pl-pds">'</span>([^\.]).locahost.com<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">$sub</span>){</span>
 <span class="pl-s1">        <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>on(<span class="pl-s"><span class="pl-pds">'</span>/<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(){</span>
 <span class="pl-s1">            <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>end(<span class="pl-smi">$sub</span> <span class="pl-k">.</span> <span class="pl-s"><span class="pl-pds">'</span>.localhost.com<span class="pl-pds">'</span></span> <span class="pl-k">.</span> <span class="pl-s"><span class="pl-pds">'</span> -&gt; index<span class="pl-pds">'</span></span>);</span>
 <span class="pl-s1">        });</span>
