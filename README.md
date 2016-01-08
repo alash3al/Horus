@@ -237,10 +237,10 @@ A simple yet powerful micro-framework for php5 >= php5.4
     $app->rewrite('/api/v1/?(.+)', '/api/v2/$1'); // !!!!!! ;)
 
     // vhost ?
-    // NOTE: if you want to use vhost, then put it before any basic routers
-    // because Horus engine is using the frist matched router ignoring its type
+    // NOTE: if you want to use vhost, then put it before any basic routes
+    // because Horus engine is using the frist matched route .
     // [basic, vhost]
-    $app->on('([^\.]).locahost.com', function($sub){
+    $app->vhost('([^\.]).locahost.com', function($sub){
         $this->on('/', function(){
             $this->end($sub . '.localhost.com' . ' -> index');
         });
