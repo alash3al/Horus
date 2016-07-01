@@ -2,6 +2,12 @@
 Horus 14 is a new version of Horus Framework, this version has been build from scratch to be up-to-date with my new simplicity and also to use the latest PHP7 features .
 
 ---
+# Composer ?
+```bash
+composer require alash3al/horus
+```
+
+---
 
 # Quick Overview
 ```php
