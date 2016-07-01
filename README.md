@@ -7,7 +7,7 @@ Horus 14 is a new version of Horus Framework, this version has been build from s
 ```php
 <?php
 
-	// load Core "Horus15"
+	// load Core "Horus14"
 	require "Horus.php";
 
 	(new Horus)->on("/", function(){
