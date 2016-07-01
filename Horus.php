@@ -1,512 +1,252 @@
 <?php
 /**
- * Horus (xpress) - the most powerful tiny php5 framework
+ * Horus "Core" - be simple :)
  * 
+ * This version will only work on PHP 7 and higher .
+ *
  * @package     Horus
- * @copyright   2015 (c) Horus
- * @author      Mohammed Al Ashaal
+ * @copyright   2014 - 2016 (c) Horus
+ * @author      nfinity <nfinity.space>
  * @license     MIT LICENSE
- * @version     13.0
+ * @version     v14
  */
-class Horus extends stdClass
-{
+Class Horus extends stdClass {
     /**
      * An instance of this class
      * @var Horus
      */
-    protected static $instance;
+    private static $instance;
 
     /**
-     * Horus configurations container
-     * @var object
+     * Whether to break the routes chain or not
+     * @var bool
      */
-    public $config;
+    private $breakRoutes;
+
+    /**
+     * The parent of the current route
+     * @var string
+     */
+    private $parent;
+
+    /**
+     * Constructor
+     *
+     * @param   string  $index
+     */
+    public function __construct(array $configs = []) {
+    	static::$instance = $this;
+        $this->configs = array_merge(["index" => "/", "secure" => null], $configs);
+    	$_SERVER["PATH_INFO"] = explode("?", $_SERVER["REQUEST_URI"])[0] ?? $_SERVER["REQUEST_URI"];
+    	$strip = "/";
+    	if ( stripos($_SERVER["PATH_INFO"], $_SERVER["SCRIPT_NAME"]) === 0 ) {
+    		$strip = $_SERVER["SCRIPT_NAME"];
+    	} else if ( stripos($_SERVER["PATH_INFO"], dirname($_SERVER["SCRIPT_NAME"])) === 0 ) {
+    		$strip = dirname($_SERVER["SCRIPT_NAME"]);
+    	}
+    	$_SERVER["PATH_INFO"] = preg_replace("~/+~", "/", "/" . substr($_SERVER["PATH_INFO"], strlen($strip)) . "/");
+        $this->parent = "/";
+    }
+
+    /** @ignore */
+    public function __call($name, $args) {
+    	if ( isset($this->{$name}) ) {
+            if ( $this->{$name} instanceof Closure ) {
+                return call_user_func_array($this->{$name}->bindTo($this), $args);
+            }
+    		return call_user_func_array($this->{$name}, $args);
+    	}
+    	throw new Exception("Undefined method {$name}");
+    }
+
+    /** @ignore */
+    public function __set($name, $val) {
+    	if ( $val instanceof Closure ) {
+    		$this->{$name} = $val->bindTo($val);
+    	} else {
+    		$this->{$name} = $val;
+    	}
+    }
 
     /**
      * Return horus instance
      * 
      * @return  Horus
      */
-    public static function instance()
-    {
-        return static::$instance;
-    }
-
-    /**
-     * Construct
-     * 
-     * @param   array   $config
-     */
-    public function __construct(array $config = [])
-    {
-        // enable output buffering
-        ob_start();
-
-        // configs
-        $this->config = (object) array_merge
-        (
-            [
-                'secure' => false,
-                'base' => '/',
-                'path_info.strip' => $_SERVER['SCRIPT_NAME'],
-                'output.handler' => null
-            ],
-
-            $config
-        );
-
-        // query string
-        $this->query = json_decode(json_encode($_GET));
-
-        // cookies
-        $this->cookies = json_decode(json_encode($_COOKIE));
-
-        // request body
-        $this->body = call_user_func(function()
-        {
-            $return = null;
-
-            if ( ! is_null($a = json_decode(file_get_contents('php://input'))) ) {
-                $return = &$a;
-            }
-
-            elseif ( ($a = @simplexml_load_string(file_get_contents('php://input'))) ) {
-                $return = &$a;
-            }
-
-            else {
-                parse_str(file_get_contents('php://input'), $return);
-                $return = json_decode(json_encode($return));
-            }
-
-            return $return;
-        });
-
-        // request vars
-        $this->request = json_decode(json_encode(array_merge((array) $this->query, (array) $this->body)));
-
-        // strip from path_info
-        $strip_path_info = $this->config->{'path_info.strip'};
-
-        // fix the virtual path
-        $_SERVER['PATH_INFO'] = call_user_func(function($uri) use($strip_path_info)
-        {
-            $path = preg_replace('/\/+/', '/', ('/' . explode('?', $uri, 2)[0] . '/'));
-            $script_name = preg_replace('/\/+/', '/', ('/' . ltrim($strip_path_info, '/')));
-            $return = $path;
-
-            if ( stripos($path, $script_name) === 0 )
-                $return = substr($path, strlen($script_name));
-            elseif ( stripos($path, dirname($script_name)) === 0 )
-                $return = substr($path, strlen(dirname($script_name)));
-
-            return preg_replace('/\/+/', '/', ('/' . $return . '/'));
-        }, $_SERVER['REQUEST_URI']);
-
-        // the instance
-        static::$instance = $this;
+    public static function getInstance() {
+    	return static::$instance;
     }
 
     /**
      * Set http header(s)
      * 
-     * @param   mixed   $field
-     * @param   string  $value
+     * @param   array    $field
+     * @param   integer  $status
      * @return  $this
      */
-    public function set($field, $value = null)
-    {
-        if ( is_array($field) ) {
-            foreach ( $field as $f => $v )
-                $this->set($f, $v);
-            return $this;
-        }
-
-        $field = str_replace(' ', '-', ucwords(str_replace('-', ' ', strtolower($field))));
-
-        header(sprintf("%s: %s", $field, $value), true);
-
-        return $this;
-    }
-
-    /**
-     * Append http header(s)
-     * 
-     * @param   mixed   $field
-     * @param   string  $value
-     * @return  $this
-     */
-    public function append($field, $value = null)
-    {
-        if ( is_array($field) ) {
-            foreach ( $field as $f => $v )
-                $this->append($f, $v);
-            return $this;
-        }
-
-        $field = str_replace(' ', '-', ucwords(str_replace('-', ' ', strtolower($field))));
-
-        header(sprintf("%s: %s", $field, $value), false);
-
-        return $this;
-    }
-
-    /**
-     * Remove header field(s)
-     * 
-     * @param   mixed   $field
-     * @return  $this
-     */
-    public function remove($field)
-    {
-        foreach ( (array) $field as $f ) {
+    public function header(array $headers, $status = null)  {
+        $status && ($status >= 100) && http_response_code($status);
+        foreach ( $field as $f => $v ) {
             $f = str_replace(' ', '-', ucwords(str_replace('-', ' ', strtolower($f))));
-            header_remove($f);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Set/Get the http status code
-     * 
-     * @param   int     $code
-     * @return  $this
-     */
-    public function status($code)
-    {
-        http_response_code((int) $code);
-
-        return $this;
-    }
-
-    /**
-     * Output a message to the browser
-     * 
-     * @param   string     $message
-     * @return  $this
-     */
-    public function send($message)
-    {
-        echo $message;
-
-        return $this;
-    }
-
-    /**
-     * Output json to the browser
-     * 
-     * @param   mixed   $message
-     * @return  $this
-     */
-    public function json($message)
-    {
-        $this->set('content-type', 'application/json; charset=UTF-8')->send(json_encode($message));
-        return $this;
-    }
-
-    /**
-     * Output json to the browser
-     * 
-     * @param   string  $message
-     * @return  $this
-     */
-    public function jsonp($message, $cb = 'cb')
-    {
-        $this->set('content-type', 'application/javascript; charset=UTF-8')->send(sprintf('%s(%s)', $cb, json_encode($message)));
-        return $this;
-    }
-
-    /**
-     * Clear the output
-     * 
-     * @return  $this
-     */
-    public function clear()
-    {
-        ob_clean();
-        return $this;
-    }
-
-    /**
-     * Send a cookie to the borwser
-     * 
-     * @param   string  $name
-     * @param   string  $value
-     * @param   array   $options
-     * @return  $this
-     */
-    public function cookie($name, $value = "", array $options = [])
-    {
-        $options    =   array_merge(
-        [
-            'domain'    =>  null,
-            'path'      =>  '/',
-            'expires'   =>  0,
-            'secure'    =>  (bool) $this->config->secure,
-            'httpOnly'  =>  true
-        ], array_change_key_case($options, CASE_LOWER));
-
-        setcookie (
-            $name,
-            $value,
-            (int) $options['expires'], 
-            $options['path'],
-            $options['domain'],
-            $options['secure'], 
-            $options['httpOnly']
-        );
-
-        return $this;
-    }
-
-    /**
-     * Output the specified filename(s) to the browser and optionally pass vars to it/them
-     * 
-     * @param   string  $filename
-     * @param   array   $scope
-     * @return  $this
-     */
-    public function render($filename, array $scope = [])
-    {
-        extract($scope, EXTR_OVERWRITE|EXTR_REFS);
-
-        foreach ( (array) $filename as $_____ ) {
-            if ( is_file($_____) ) {
-                require $_____;
+            if ( is_array($v) ) {
+                foreach ( $v as $v2 ) {
+                    header(sprintf("%s: %s", $f, $v2), flase);
+                }
+            } else {
+                header(sprintf("%s: %s", $f, $v), true);
             }
         }
-
         return $this;
     }
 
     /**
-     * Redirect to the specified '$target'
+     * Make class in the specified dir(s) be autoloaded
      * 
-     * @param   string  $target
-     * @param   bool    $permanent
+     * @param   string|array    $src
      * @return  $this
      */
-    public function redirect($target, $permanent = false)
-    {
-        $code = $permanent ? 301 : 302;
-
-        $this->set('location', $target)->clear()->status($code)->end();
-
-        return $this;
+    public function autoload($src) {
+    	foreach ( (array) $src as $dir ) {
+    		spl_autoload_register(function($class) use($dir) {
+    			$ds = DIRECTORY_SEPARATOR;
+    			$class_orig = $class;
+    			$class = str_replace("\\", $ds, $class);
+    			$filenames = [
+    				$dir . $ds . $class . ".php",
+    				$dir . $ds . $class . $ds . basename($class) . ".php"
+    			];
+                $found = true;
+    			foreach ( $filenames as $filename ) {
+    				if ( ! is_file($filename) ) {
+    					$found = false;
+    				} else {
+                        $found = true;
+    					require_once $filename;
+                        return ;
+    				}
+    			}
+                if ( ! $found ) {
+                    throw new Exception("Cannot find the class '{$class_orig}'");
+                }
+    		});
+    	}
+    	return $this;
     }
 
     /**
-     * Ends the application with data, http headers and status code
+     * Whether the current request maybe under https or not
      * 
-     * @param   string  $data
-     * @param   int     $status
-     * @param   array   $headers
-     * @return  void
+     * @return  bool
      */
-    public function end($data = null, $status = null, array $headers = [])
-    {
-        if ( null !== $status ) {
-            $this->status($status);
+    public function secure() {
+        if ( null !== $this->configs->status && $this->configs->status ) {
+            $_SERVER["HTTPS"] = "on";
         }
-
-        if ( [] !== $headers ) {
-            $this->set($headers);
+        if ( isset($_SERVER["HTTPS"]) && ($_SERVER["HTTPS"] !== "off") ) {
+            return true;
         }
+        return isset($_SERVER["HTTP_X_FORWARDED_PROTO"]) && (strtolower($_SERVER["HTTP_X_FORWARDED_PROTO"]) == "https");
+    }
 
-        if ( null !== $data ) {
-            $this->send($data);
-        }
+    /**
+     * Return an url for a local path
+     * 
+     * @param   string  $path
+     * @param   array   $options
+     * @param   bool    $secure
+     * @return  string
+     */
+    public function url($path = "", $host = "", $secure = null) {
+        $secure = null === $secure ? $this->secure() : $secure;
+        $scheme = $secure ? "https://" : "http";
+        $host = $host ?? $_SERVER["SERVER_NAME"];
+        return $scheme . $host . preg_replace("~/+~", "/", "/" . $path);
+    }
 
-        $output = ob_get_clean();
-
-        if ( is_callable($this->config->{'output.handler'}) ) {
-            $output = call_user_func($this->config->{'output.handler'}, $output);
-        }
-
-        die($output);
+    /**
+     * Return an url for a local route
+     * 
+     * @param   string  $path
+     * @param   array   $options
+     * @param   bool    $secure
+     * @return  string
+     */
+    public function route($path = "", $host = "", $secure = null) {
+        return $this->url($this->configs->index . "/" . $path, $host, $secure);
     }
 
     /**
      * Listen on the requested uri
      * 
      * @param   string      $pattern
-     * @param   Closure     $listener
+     * @param   Callback    $cb
      * @return  $this
      */
-    public function on($pattern, Closure $listener)
-    {
-        $listener = $listener->bindTo($this);
-        $parts = explode(' ', $pattern, 2);
-
-        if ( ! isset($parts[1]) ) {
-            $method = $_SERVER['REQUEST_METHOD'];
-            $pattern = $parts[0];
-        }
-
-        else {
+    public function on(string $pattern, callable $cb) {
+    	if ( $this->breakRoutes === true ) {
+    		return $this;
+    	}
+    	$parts = explode(" ", $pattern, 2);
+        if ( sizeof($parts) < 2 ) {
+            $method = $_SERVER["REQUEST_METHOD"];
+        } else {
             $method = $parts[0];
             $pattern = $parts[1];
         }
-
-        $method = explode('|', strtolower($method));
-        $pattern = "~^" . (preg_replace('/\/+/', '/', ('/' . str_replace(['/:*', '/:?'], ['/?(.*)', '/([^\/]+)'], $pattern) . '/'))) . "$~";
-
-        if ( in_array(strtolower($_SERVER['REQUEST_METHOD']), $method) && preg_match($pattern, $_SERVER['PATH_INFO'], $args) ) {
-            array_shift($args);
-            call_user_func_array($listener, $args);
-        }
-
-        return $this;
+        $pattern = preg_replace("~/+~", "/", "/" . $this->parent . "/" . $pattern . "/");
+    	if ( ! preg_match("~^{$method}$~i", $_SERVER["REQUEST_METHOD"]) ) {
+    		return $this;
+    	} else if ( ! preg_match("~^{$pattern}$~", $_SERVER["PATH_INFO"], $m) ) {
+    		return $this;
+    	}
+    	array_shift($m);
+    	if ( call_user_func_array($cb->bindTo($this), $m) !== true ) {
+            // the callback didn't return true "continue"
+            // but returned none-true "stop" .
+    		$this->breakRoutes = true;
+    	}
+    	return $this;
     }
 
     /**
-     * Rewrite from `old` to `new`
-     * 
-     * @param   string  $old
-     * @param   string  $new
-     * @return  $this
-     */
-    public function rewrite($old, $new)
-    {
-        $old = "/^".(addcslashes(preg_replace('/\/+/', '/', '/' . ($old) . '/'), '/'))."$/";
-
-        if ( preg_match($old, $_SERVER['PATH_INFO']) ) {
-            $_SERVER['PATH_INFO'] = preg_replace('/\/+/', '/', '/' . (preg_replace($old, $new, $_SERVER['PATH_INFO'])) . '/');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Listen on hostname and handle custome virtual-hosts
+     * Group some routes under the same pattern without the need to repeate anything
      * 
      * @param   string      $pattern
-     * @param   Closure     $listener
+     * @param   Callback    $cb
      * @return  $this
      */
-    public function vhost($pattern, Closure $listener)
-    {
-        $listener = $listener->bindTo($this);
-        $host = (empty($_SERVER['SERVER_NAME']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME']);
-
-        if ( preg_match("/^{$pattern}$/", $host, $m) ) {
-            array_shift($m);
-            call_user_func_array($listener, $m);            
-         }
-
+    public function group($pattern, callable $cb) {
+        $old = $this->parent;
+        $this->parent = preg_replace("~/+~", "/", "/" . $this->parent . "/" . $pattern . "/");
+        if ( preg_match("~^" . $this->parent . "~", $_SERVER["PATH_INFO"], $m) ) {
+            call_user_func_array($cb->bindTo($this), $m);
+        }
+        $this->parent = $old;
         return $this;
     }
 
     /**
-     * Return an url for a local path
+     * Output the specified filename(s) to the browser and optionally pass vars to it/them
      * 
-     * @param   string  $path
-     * @param   string  $host
-     * @return  string
+     * @param   string  $tpls
+     * @param   array   $ctx
+     * @param   bool    $return
+     * @return  $this|string
      */
-    public function url($path = '', $host = null)
-    {
-        if ( empty($host) ) {
-            $host = (empty($_SERVER['SERVER_NAME']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME']);
-        }        
-
-        return  sprintf
-        (
-            // the required template
-            "%s://%s%s",
-
-            // schema 'http/https'
-            ($this->config->secure ? 'https' : 'http'),
-
-            // host
-            $host,
-
-            // the path
-            preg_replace('/\/+/', '/', '/' . trim(dirname($_SERVER['SCRIPT_NAME']), '/') . '/' . $path)
-        );
-    }
-
-    /**
-     * Return an url for a local path
-     * 
-     * @param   string  $path
-     * @param   string  $host
-     * @return  string
-     */
-    public function route($path = '', $host = null)
-    {
-        if ( empty($host) ) {
-            $host = (empty($_SERVER['SERVER_NAME']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME']);
+    public function tpl($tpls, array $ctx = [], $return = false) {
+        if ( $return ) {
+            ob_start();
         }
-
-        return preg_replace
-        (
-            '/\/+$/',
-            '/',
-            sprintf
-            ( 
-                // the required template
-                "%s://%s%s",
-    
-                // schema 'http/https'
-                ($this->config->secure ? 'https' : 'http'),
-    
-                // host
-                $host,
-    
-                // path
-                preg_replace('/\/+/', '/', '/' . ( dirname($_SERVER['SCRIPT_NAME']) . '/' . $this->config->base ) . '/' . $path)
-            )
-        );
-    }
-
-    /**
-     * Make class in the specified dir(s) be autoloaded
-     * 
-     * @param   string|array    $dir
-     * @return  $this
-     */
-    public function autoload($dir)
-    {
-        foreach ( (array) $dir as $d )
-        {
-            spl_autoload_register(function($class) use($d)
-            {
-                $ds = DIRECTORY_SEPARATOR;
-                $class = trim(str_replace(['\\'], $ds, $class), '\\_/');
-                $name = basename($class);
-                $prop = [ '.php', $ds . $name . '.php' ];
-
-                foreach ( $prop as $p )
-                {
-                    if ( is_file($file = $d . $ds. $class . $p) )
-                    {
-                        include_once($file);
-                        return ;
-                    }
-                }
-            });
+    	extract($ctx, EXTR_OVERWRITE);
+    	foreach ( (array) $tpls as $v ) {
+    		if ( ! is_file($v) ) {
+    			throw new Exception("Template file cannot be found '{$v}'");
+    		}
+    		require $v;
+    	}
+        if ( $return ) {
+            return ob_get_clean();
         }
-
-        return $this;
-    }
-
-    /** @ignore */
-    public function __call($name, $args)
-    {
-        return  isset($this->{$name}) && is_callable($this->{$name})
-                ? call_user_func_array($this->{$name}, $args)
-                : null
-        ;
-    }
-
-    /** @ignore */
-    public function __set($k, $v)
-    {
-        if ( $v instanceof Closure )
-            $this->{$k} = $v->bindTo($this);
-        else
-            $this->{$k} = $v;
+    	return $this;
     }
 }
