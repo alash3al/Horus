@@ -36,7 +36,7 @@ Class Horus extends stdClass {
      */
     public function __construct(array $configs = []) {
     	static::$instance = $this;
-        $this->configs = array_merge(["index" => "/", "secure" => null], $configs);
+        $this->configs = (object) array_merge(["index" => "/", "secure" => null], $configs);
     	$_SERVER["PATH_INFO"] = explode("?", $_SERVER["REQUEST_URI"])[0] ?? $_SERVER["REQUEST_URI"];
     	$strip = "/";
     	if ( stripos($_SERVER["PATH_INFO"], $_SERVER["SCRIPT_NAME"]) === 0 ) {
