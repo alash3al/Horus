@@ -1,5 +1,5 @@
-# Horus 15 "Core"
-Horus 15 is a new version of Horus Framework, this version has been build from scratch to be up-to-date with my new simplicity and also to use the latest PHP7 features .
+# Horus 14 "Core"
+Horus 14 is a new version of Horus Framework, this version has been build from scratch to be up-to-date with my new simplicity and also to use the latest PHP7 features .
 
 ---
 
