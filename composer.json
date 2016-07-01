@@ -1,5 +1,6 @@
 {
     "name": "alash3al/horus",
+    "version": "v14",
     "description": "A micro PHP7 framework",
     "keywords": ["framework", "standalone", "router", "response", "request", "psr", "autoload"],
     "license": "MIT",
