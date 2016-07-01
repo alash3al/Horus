@@ -1,7 +1,7 @@
 {
     "name": "alash3al/horus",
-    "description": "A micro php 5 framework",
-    "keywords": ["framework", "standalone", "router", "response", "request", "psr"],
+    "description": "A micro PHP7 framework",
+    "keywords": ["framework", "standalone", "router", "response", "request", "psr", "autoload"],
     "license": "MIT",
     "authors": [
         {
@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "php": ">=5.4"
+        "php": ">=7"
     },
     "minimum-stability": "stable"
 }
