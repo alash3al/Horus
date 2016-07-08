@@ -1,5 +1,5 @@
-# Horus 14 "Core"
-Horus 14 is a new version of Horus Framework, this version has been build from scratch to be up-to-date with my new simplicity and also to use the latest PHP7 features .
+# Horus 15
+Horus 15 is a new light and simple version of Horus Framework .
 
 ---
 
@@ -7,16 +7,16 @@ Horus 14 is a new version of Horus Framework, this version has been build from s
 ```php
 <?php
 
-	// load Core "Horus14"
+	// load Horus
 	require "Horus.php";
 
-	(new Horus)->on("/", function(){
+	(new \Horus\App)->on("/", function(){
 		// the first param is an array of key => value
 		// for the header field => value
 		// the value may be an array "will be appended"
 		// the second param "optional" to set the response status code .
 		$this->header([
-			"x-powered-by" => "Horus/15"
+			"x-powered-by" => "Horus"
 		], 200);
 		echo "Hello World";
 	});
@@ -33,7 +33,7 @@ Horus 14 is a new version of Horus Framework, this version has been build from s
 	require "Horus.php";
 
 	// Initialize Horus with optional configurations
-	$app = new Horus([
+	$app = new \Horus\App([
 		// Force all urls/cookies to be secured "https"
 		// Note, Horus will try to detect whether the request is done over 
 		// https or not, but this will force it to be yes or no 
@@ -66,22 +66,20 @@ Horus 14 is a new version of Horus Framework, this version has been build from s
 		echo $word . " : " . $num;
 	});
 
-	// group routes ?
-	$app->group("/api/", function(){
-		$this->on("POST /post/", function(){
-			// ...
-		});
-	});
-
-	// display php templates,
-	// and also pass some vars as its context
-	$var = "test";
-	$app->tpl("tpl.php", ["var1" => $var]);
-
-	// but i need to get the tpl as string,
-	// don't display !
-	$var = "test";
-	$app->tpl("tpl.php", ["var1" => $var], true);
+	// execute multiple functions/layers ?
+	// each function will be executed after the previous one is ended
+	// if a function returned false, the chain will be break,
+	// the result of each function will be the last param of the next function in the chain .
+	$app->on("/page/([^/]+)", [
+		function($page){
+			echo "layer 1 <br />";
+			return "test"; // or return false to cancel the execution of the next function
+		},
+		function($page, $result){
+			echo $result;
+		}
+	]);
+	
 	
 	// access the configs
 	// you can also create/access anything inside horus
@@ -127,4 +125,11 @@ Horus 14 is a new version of Horus Framework, this version has been build from s
 	// now play with your libraries !
 	// or multiples sources:
 	$app->autoload(["./vendor", "./components"]);
+
+	// you can create your own object container using horus new stdClass
+	// or extending it .
+	$app->obj = new \App\stdClass;
+	$app->obj->test = function(){
+		// ...
+	};
 ```
