@@ -127,8 +127,9 @@ Horus 15 is a new light and simple version of Horus Framework .
 	$app->autoload(["./vendor", "./components"]);
 
 	// you can create your own object container using horus new stdClass
-	// or extending it .
-	$app->obj = new \App\stdClass;
+	// or extending it, by default \Horus\App extends it .
+	$app->obj = new \App\stdClass; // or new \App\stdClass(['k' => 'v']); to import some data
+	$app->import([...]);
 	$app->obj->test = function(){
 		// ...
 	};
