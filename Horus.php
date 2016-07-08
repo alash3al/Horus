@@ -12,6 +12,9 @@
  */
 namespace Horus;
 
+use \Closure;
+use \Exception;
+
 /**
  * stdClass
  * 
@@ -26,7 +29,7 @@ class stdClass extends \stdClass {
     /** @ignore */
     public function __call($name, $args) {
         if ( isset($this->{$name}) ) {
-            if ( $this->{$name} instanceof Closure ) {
+            if ( $this->{$name} instanceof \Closure ) {
                 return call_user_func_array($this->{$name}->bindTo($this), $args);
             }
             return call_user_func_array($this->{$name}, $args);
@@ -41,6 +44,29 @@ class stdClass extends \stdClass {
         } else {
             $this->{$name} = $val;
         }
+    }
+
+    /**
+     * Constructor
+     *
+     * @param   array   $data
+     */
+    public function __construct(array $data = []) {
+        $this->import($data);
+    }
+
+    /**
+     * import an array of data into our context
+     *
+     * @param   array   $data
+     *
+     * @return  $this
+     */
+    public function import(array $data) {
+        foreach ( $data as $k => $v ) {
+            $this->{$k} = $v;
+        }
+        return $this;
     }
 }
 
@@ -75,7 +101,7 @@ class App extends stdClass {
     public function __construct(array $configs = []) {
     	static::$instance = $this;
         $this->shortcuts = [];
-        $this->configs = (object) array_merge(["index" => "/", "secure" => null], $configs);
+        $this->configs = new stdClass(array_merge(["index" => "/", "secure" => null], $configs));
     	$_SERVER["PATH_INFO"] = explode("?", $_SERVER["REQUEST_URI"])[0] ?? $_SERVER["REQUEST_URI"];
     	$strip = "/";
     	if ( stripos($_SERVER["PATH_INFO"], $_SERVER["SCRIPT_NAME"]) === 0 ) {
