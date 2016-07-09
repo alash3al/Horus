@@ -117,6 +117,10 @@ Horus 15 is a new light and simple version of Horus Framework .
 	// also you can change the resulting host and scheme "secure or not"
 	$app->route("/post/", "my.domain", false);
 
+	// view some html template(s)
+	$app->view(["tpl.php"], ["var" => "val"]);
+	$result = $app->view(["tpl.php"], ["var" => "val"], true);
+
 	// get Horus instance ?
 	Horus::getInstance();
 
