@@ -263,4 +263,26 @@ class App extends stdClass {
         }
     	return $this;
     }
+
+    /**
+     * View the specified html template(s)
+     * 
+     * @param   []string    $tpl
+     * @param   array       $ctx
+     * @param   bool        $return
+     * @return  $this|string
+     */
+    public function view($tpl, array $ctx = [], $return = false) {
+        if ( $return ) {
+            ob_start();
+        }
+        extract($ctx, EXTR_OVERWRITE);
+        foreach ( (array) $tpl as $f ) {
+            is_file($f) && reqire($f);
+        }
+        if ( $return ) {
+            return ob_get_clean();
+        }
+        return $this;
+    }
 }
