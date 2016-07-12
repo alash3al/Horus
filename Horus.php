@@ -97,6 +97,12 @@ class App extends stdClass {
     private $parent;
 
     /**
+     * whether there is a route matched the request or not
+     * @var bool
+     */
+    private $found;
+
+    /**
      * Constructor
      *
      * @param   array  $configs
@@ -242,11 +248,15 @@ class App extends stdClass {
      * @return  $this
      */
     public function on(string $pattern, $cb) {
+        if ( $this->found ) {
+            return $this;
+        }
     	list($method, $pattern) = array_pad(explode(" ", $pattern, 2), -2, $_SERVER["REQUEST_METHOD"]);
         $pattern = preg_replace("~/+~", "/",  "/" . str_ireplace(array_keys($this->shortcuts), array_values($this->shortcuts), "/" . $this->parent . "/" . $pattern) . "/");
     	if ( ! preg_match("~^{$method}$~i", $_SERVER["REQUEST_METHOD"]) || ! preg_match("~^{$pattern}$~", $_SERVER["PATH_INFO"], $m) ) {
     		return $this;
     	}
+    	$this->found = true;
     	array_shift($m);
         $call = function($obj, $callback, $args){
             if ( $callback instanceof \Closure ) {
