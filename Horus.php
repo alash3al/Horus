@@ -12,9 +12,6 @@
  */
 namespace Horus;
 
-use \Closure;
-use \Exception;
-
 /**
  * stdClass
  * 
@@ -94,6 +91,12 @@ class App extends stdClass {
     private $shortcuts;
 
     /**
+     * the parent of current route context
+     * @var string
+     */
+    private $parent;
+
+    /**
      * Constructor
      *
      * @param   array  $configs
@@ -102,6 +105,7 @@ class App extends stdClass {
     	static::$instance = $this;
         $this->shortcuts = [];
         $this->configs = new stdClass(array_merge(["index" => "/", "secure" => null], $configs));
+        $this->parent = "/";
     	$_SERVER["PATH_INFO"] = explode("?", $_SERVER["REQUEST_URI"])[0] ?? $_SERVER["REQUEST_URI"];
     	$strip = "/";
     	if ( stripos($_SERVER["PATH_INFO"], $_SERVER["SCRIPT_NAME"]) === 0 ) {
@@ -239,7 +243,7 @@ class App extends stdClass {
      */
     public function on(string $pattern, $cb) {
     	list($method, $pattern) = array_pad(explode(" ", $pattern, 2), -2, $_SERVER["REQUEST_METHOD"]);
-        $pattern = preg_replace("~/+~", "/",  "/" . str_ireplace(array_keys($this->shortcuts), array_values($this->shortcuts), $pattern) . "/");
+        $pattern = preg_replace("~/+~", "/",  "/" . str_ireplace(array_keys($this->shortcuts), array_values($this->shortcuts), "/" . $this->parent . "/" . $pattern) . "/");
     	if ( ! preg_match("~^{$method}$~i", $_SERVER["REQUEST_METHOD"]) || ! preg_match("~^{$pattern}$~", $_SERVER["PATH_INFO"], $m) ) {
     		return $this;
     	}
@@ -265,6 +269,23 @@ class App extends stdClass {
     }
 
     /**
+     * Group some routes under the same pattern without the need to repeate anything
+     * 
+     * @param   string      $pattern
+     * @param   Callback    $cb
+     * @return  $this
+     */
+    public function group($pattern, callable $cb) {
+        $old = $this->parent;
+        $this->parent = preg_replace("~/+~", "/", "/" . $this->parent . "/" . $pattern . "/");
+        if ( preg_match("~^" . $this->parent . "~", $_SERVER["PATH_INFO"], $m) ) {
+            call_user_func_array($cb->bindTo($this), $m);
+        }
+        $this->parent = $old;
+        return $this;
+    }
+
+    /**
      * View the specified html template(s)
      * 
      * @param   []string    $tpl
@@ -286,3 +307,5 @@ class App extends stdClass {
         return $this;
     }
 }
+
+
