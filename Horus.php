@@ -309,7 +309,7 @@ class App extends stdClass {
         }
         extract($ctx, EXTR_OVERWRITE);
         foreach ( (array) $tpl as $f ) {
-            is_file($f) && reqire($f);
+            is_file($f) && require($f);
         }
         if ( $return ) {
             return ob_get_clean();
