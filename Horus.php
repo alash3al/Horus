@@ -143,7 +143,7 @@ class App extends stdClass {
      */
     public function header(array $headers, $status = null)  {
         $status && ($status >= 100) && http_response_code($status);
-        foreach ( $field as $f => $v ) {
+        foreach ( $headers as $f => $v ) {
             $f = str_replace(' ', '-', ucwords(str_replace('-', ' ', strtolower($f))));
             if ( is_array($v) ) {
                 foreach ( $v as $v2 ) {
