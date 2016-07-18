@@ -202,12 +202,15 @@ class App extends stdClass {
     public function autoload($src) {
     	foreach ( (array) $src as $dir ) {
     		spl_autoload_register(function($class) use($dir) {
-    			$ds = DIRECTORY_SEPARATOR;
+    		    $ds = DIRECTORY_SEPARATOR;
     			$class_orig = $class;
     			$class = str_replace("\\", $ds, $class);
+                $namespace=str_replace("\\",$ds,__NAMESPACE__);
     			$filenames = [
-    				$dir . $ds . $class . ".php",
-    				$dir . $ds . $class . $ds . basename($class) . ".php"
+                    $dir . $ds . $class . ".php",
+    				$dir . $ds . $class . $ds . basename($class) . ".php",
+                    $dir . $ds . (empty($namespace) ? "" : $namespace."/") . $class . ".php",
+
     			];
                 $found = true;
     			foreach ( $filenames as $filename ) {
