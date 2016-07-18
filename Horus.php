@@ -178,7 +178,7 @@ class App extends stdClass {
      */
     public function url($path = "") {
         return (
-            $this->secure() ? "https://" : "http://" .
+            ($this->secure() ? "https://" : "http://") .
             $_SERVER["SERVER_NAME"] .
             preg_replace("~/+~", "/", "/" . dirname($_SERVER["SCRIPT_NAME"]) . "/" . $path . "/")
         );
