@@ -180,7 +180,7 @@ class App extends stdClass {
         return (
             ($this->secure() ? "https://" : "http://") .
             $_SERVER["SERVER_NAME"] .
-            preg_replace("~/+~", "/", "/" . dirname($_SERVER["SCRIPT_NAME"]) . "/" . $path . "/")
+            preg_replace("~/+~", "/", "/" . dirname($_SERVER["SCRIPT_NAME"]) . "/" . $path)
         );
     }
 
